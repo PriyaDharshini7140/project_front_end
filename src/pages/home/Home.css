@@ -1,0 +1,74 @@
+*{
+    box-sizing: border-box;
+    margin: 0%;
+    padding: 0;
+  }
+.homepage{
+    
+    display: flex;
+    /* height: 90vh; */
+   
+    justify-content: center;
+    font-size: 3rem;
+    background: linear-gradient(290deg, #263035 30%, #e9e5e5 110%);
+        color: #fff;
+        font-size: 50px;
+        flex-direction: column;
+        
+  /* overflow: scroll;  */
+}
+
+.homepage__card{
+    display: flex;
+  flex-direction: column;
+  font-family: cursive;
+  justify-content: start;
+  width: 800px;
+  min-height: 500px;
+  
+
+/* align-items: justify; */
+margin: 128px auto;
+border-radius: 10px;
+padding-bottom: 32px;
+align-self: flex-end;
+margin-top: 4%;
+padding-left: 3%;
+padding-top: 2%;
+text-align: left;
+ 
+}
+.homepage__card__body{ 
+ 
+  font-family: cursive;
+  font-size: x-large;
+  align-self: center; 
+ margin-left: -55%;
+ color: rgb(97, 96, 96);
+}
+.homepage__card__header{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-right: solid lightgray;
+  background-color: rgb(243, 220, 220);
+  margin-top: -3.5%;
+  margin-left: -5.2%;
+  margin-right: -0.5%;
+  justify-items: center;
+}
+.homepage__card__header__avatar{
+  align-self: center;
+  margin-left: 2%;
+}
+.homepage__card__headerRight{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 10vw;
+}
+
+.homepage__card__headerRight > .MuiSvgIcon-root{
+  margin-right: 2vw;
+  font-size: 24px !important;
+}
