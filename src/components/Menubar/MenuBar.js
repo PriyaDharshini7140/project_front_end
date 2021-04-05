@@ -2,11 +2,11 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-
+import { Link } from 'react-router-dom'
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
-
+import "./MenuBar.css"
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -131,14 +131,19 @@ export default function PersistentDrawerRight() {
         </div>
         <Divider />
         <List>
-          {['Profile','My account','Logout'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index  === 0 ? <PersonRoundedIcon/> : (index === 1) ? <AccountBoxIcon/>:<ExitToAppRoundedIcon/>}
-              {/*  */}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+        <ListItem>
+        <ListItemIcon><PersonRoundedIcon/></ListItemIcon>
+        <ListItemIcon><Link to="Profile" className="links">Profile</Link></ListItemIcon>
+        </ListItem>
+        <ListItem>
+        <ListItemIcon><AccountBoxIcon/></ListItemIcon>
+        <ListItemIcon><Link to="Account" className="links">My Account</Link></ListItemIcon>
+        </ListItem>
+        <ListItem>
+        <ListItemIcon><ExitToAppRoundedIcon/></ListItemIcon>
+        <ListItemIcon>Logout</ListItemIcon>
+        </ListItem>
+          
         </List>
        
       </Drawer>

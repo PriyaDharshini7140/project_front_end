@@ -6,6 +6,8 @@ import AboutUs from './pages/aboutUs/AboutUs';
 import ContactUs from './pages/contactUs/ContactUs';
 import UserLogin from './pages/userLogin/UserLogin';
 import Home from './pages/home/Home';
+import Profile from './pages/profile/Profile';
+import Account from './pages/account/Account';
 function App() {
   return (
     <Router>
@@ -16,6 +18,8 @@ function App() {
         <Route path='/Sign in' component={UserLogin}/>
         <Route path='/Sign up' component={UserSIgnup}/>
         <Route path='/home page' component={Home}/>
+        <Route path='/Profile' component={Profile}/>
+        <Route path='/Account' component={Account}/>
       </Switch>
    </Router>
     

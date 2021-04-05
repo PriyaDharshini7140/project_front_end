@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,TextField } from '@material-ui/core';
+import { Avatar,Icon,IconButton,TextField } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
 function rand() {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     width: 500,
-    height:500,
+    height:300,
     backgroundColor: theme.palette.background.paper,
     borderRadius:"20px",
     padding: theme.spacing(2, 4, 3),
@@ -41,7 +41,7 @@ export default function SimpleModal() {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => {
+  const  handleOpen = () => {
     setOpen(true);
     console.log("clicked");
   };
@@ -58,19 +58,19 @@ export default function SimpleModal() {
                 UserNAme
                 </div>
       </div>
-     <div>
+     {/* <div> */}
       <TextField className={classes.text}
           id="standard-multiline-flexible"
           label="Type a Message"
           multiline
           rowsMax={4}/>
-        <IconButton>
-          <AttachFileRoundedIcon className='modal__input__item1'/>
+        <IconButton type="file">
+          <AttachFileRoundedIcon  className='modal__input__item1' />
           </IconButton>
           <IconButton>
-              <AddAPhotoRoundedIcon className='modal__input__item2'/>
+              <AddAPhotoRoundedIcon type="image" className='modal__input__item2'/>
           </IconButton>
-          </div> 
+          {/* </div>  */}
          
          <div className="modal___button">
                 <div className="modal___button_Container">
