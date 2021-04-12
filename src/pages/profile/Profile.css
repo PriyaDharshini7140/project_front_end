@@ -2,7 +2,7 @@
     display: grid;
     place-items: center;
     height: 100vh;
-   background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%);
+    background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%);
 } 
 .profile__body{
     display: flex;
@@ -16,24 +16,33 @@
 }
 .profile__body__left{
     display: flex;
-/* flex-direction: column; */
-/* flex: 0.35; */
-justify-content: space-between;
-    padding: 20px; 
+    flex-direction: column;
+    flex: 0.35;
+    justify-content: space-between;
+    padding: 20px;
+    border-right: solid lightgray;
+    /* color: rgb(255, 157, 171); */
+}
+.camera{
+    color:#E3ABAB
 }
 .avatar{
     align-self: center;
      display: flex;
+
+     width: 10px;
+     size: 10vh 10hh ;
     }
     .container{
         display: flex;
         background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%);
         height:100px;
-        width: 500px;
+        width: 800px;
         border-radius: 20px;
+        margin-top:48%;
     }
     .profileImage{
-        color:transparent;
+        /* color:transparent; */
         align-self: center;
         margin-bottom: -40%;
         
@@ -43,8 +52,11 @@ justify-content: space-between;
     
   
 }
-.profile__body__right > h2{
+.profile__body__left > h1{
     align-self: center;
     font-family: cursive;
     color: rgb(231, 172, 172) ;
+    padding: 180px; 
+    margin-top: -6%;
+
 }

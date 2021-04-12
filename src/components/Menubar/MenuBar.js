@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import "./MenuBar.css"
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-
+import { useHistory } from 'react-router-dom';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
@@ -80,9 +80,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight() {
+export default function PersistentDrawerRight(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -93,6 +94,7 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
 
+  console.log(history);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -139,11 +141,10 @@ export default function PersistentDrawerRight() {
         <ListItemIcon><AccountBoxIcon/></ListItemIcon>
         <ListItemIcon><Link to="Account" className="links">My Account</Link></ListItemIcon>
         </ListItem>
-        <ListItem>
+        <ListItem onClick={()=>{history.goBack()}}>
         <ListItemIcon><ExitToAppRoundedIcon/></ListItemIcon>
         <ListItemIcon>Logout</ListItemIcon>
         </ListItem>
-          
         </List>
        
       </Drawer>

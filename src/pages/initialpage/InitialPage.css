@@ -12,8 +12,21 @@
         font-size: 50px;
         
 }
-.initialpage__body{
+.initialpage > h4{
      padding-top: 5%; 
      font-weight: lighter;
-    font-family: cursive;     
+    font-family: cursive;
+    position: relative;
+    animation-name:dash;
+    animation-duration: 4s;     
 }
+@keyframes example {
+   0%,
+    50% {
+      stroke-dashoffset: 100%;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  

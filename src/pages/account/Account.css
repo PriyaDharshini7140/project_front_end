@@ -1,0 +1,12 @@
+.account{
+    display: flex;
+    
+  
+}
+.account> h1{
+    align-self: center;
+    font-family: cursive;
+    color: grey ;
+    padding-left: 2%; 
+    /* margin-top: -6%; */
+}

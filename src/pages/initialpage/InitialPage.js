@@ -6,9 +6,9 @@ function InitialPage() {
         <>
         <Navbar/>
         <div className="initialpage">
-         <div className="initialpage__body">
+         <h4 className="initialpage__body">
           Everything begin's with an idea  
-         </div>  
+         </h4>  
         </div>
         </>
     )

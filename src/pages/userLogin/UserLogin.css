@@ -3,22 +3,24 @@
   margin: 0%;
   padding: 0;
 }
+
 .user-login{
   display: flex;
- 
+
   background-image: url('../../images/wp2478210-idea-wallpapers.png');
-  background-position: center;
-  background-size:cover;
-  background-repeat: no-repeat;
+        background-position: center;
+        background-size:cover;
+        background-repeat: no-repeat;
 }
 
 .user-login-card{
   display: flex;
+  flex-direction: row;
   flex-direction: column;
   font-family: cursive;
   justify-content: start;
-  width: 500px;
-  min-height: 500px;
+  width: 480px;
+  min-height: 475px;
   background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%); 
 
 /* align-items: justify; */
@@ -31,6 +33,9 @@ padding-left: 3%;
 padding-top: 2%;
 text-align: left;
 
+}
+.button{
+  align-self: center;
 }
 .user-login-card-input{
   padding: 14px 32px 14px 16px;
@@ -48,6 +53,7 @@ font-family: cursive;
 }
 .user-login-card-button{
   padding: 16px;
+   border-radius: 20px;
 border:thick white;
 border-radius: 0 4px 4px 0 ;
 cursor: pointer;
@@ -58,4 +64,10 @@ box-sizing:border-box;
 width: 120px;
 text-transform: capitalize;
  align-self: center;
+ margin-top: 14%;
+}
+.buttonAlign{
+  display: grid;
+  align-self: center;
+  margin-top: 5%;
 }
