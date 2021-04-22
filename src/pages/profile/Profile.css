@@ -20,9 +20,15 @@
     flex: 0.35;
     justify-content: space-between;
     padding: 20px;
+    /* margin-top: -10%; */
     border-right: solid lightgray;
     /* color: rgb(255, 157, 171); */
 }
+/* .profile__body__left__icon{
+    display: flex;
+    flex-direction: column;
+     margin-top: -10%;
+} */
 .camera{
     color:#E3ABAB
 }
@@ -36,8 +42,8 @@
     .container{
         display: flex;
         background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%);
-        height:100px;
-        width: 800px;
+        height:500px;
+        width: 400px;
         border-radius: 20px;
         margin-top:48%;
     }

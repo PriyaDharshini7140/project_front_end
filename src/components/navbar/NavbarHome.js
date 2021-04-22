@@ -8,7 +8,8 @@ import PersistentDrawerRight from '../Menubar/MenuBar';
 
 
 
-function NavbarHome() {
+function NavbarHome({user}) {
+  console.log(user);
   const [click, setClick] = useState(false);
   
   
@@ -17,7 +18,7 @@ function NavbarHome() {
    
       <nav className='navbar'>
         <Link to='/' className='navbar-logo' >
-         IDEA WRAPPER
+       hello {user.user_name}
           <i class='fab fa-firstdraft' />
         </Link>
         <div className='menu-icon' >
@@ -41,11 +42,11 @@ function NavbarHome() {
           </li>
           <li className='nav-item'>
           
-          <PersistentDrawerRight/>
+          <PersistentDrawerRight user={user}/>
                </li>
           <li className='nav-item'>
          
-          <SimpleModal/>
+          <SimpleModal user={user}/>
             
           </li>
         </ul>

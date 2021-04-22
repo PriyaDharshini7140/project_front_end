@@ -80,12 +80,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight(props) {
+export default function PersistentDrawerRight({user}) {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-
+// console.log(props);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -94,7 +94,9 @@ export default function PersistentDrawerRight(props) {
     setOpen(false);
   };
 
-  console.log(history);
+  // console.log(history.location.state);
+  const {location:{state}} =history;
+  console.log(state);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -107,7 +109,7 @@ export default function PersistentDrawerRight(props) {
             onClick={handleDrawerOpen}
             className={clsx(open && classes.hide)}
           >
-            <Avatar alt="Priya" src="/static/images/avatar/1.jpg"/>
+            <Avatar alt={user.user_name} src="/static/images/avatar/1.jpg"/>
           </IconButton>
         </Toolbar>
      
@@ -131,14 +133,14 @@ export default function PersistentDrawerRight(props) {
             {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
-        <Divider />
+        <Divider/>
         <List>
         <ListItem>
         <ListItemIcon><PersonRoundedIcon/></ListItemIcon>
-        <ListItemIcon><Link to="Profile" className="links">Profile</Link></ListItemIcon>
+        <ListItemIcon><Link to={{pathname:'/profile',state:state}} className="links">Profile</Link></ListItemIcon>
         </ListItem>
-        <ListItem>
-        <ListItemIcon><AccountBoxIcon/></ListItemIcon>
+        <ListItem >
+        <ListItemIcon><AccountBoxIcon /></ListItemIcon>
         <ListItemIcon><Link to="Account" className="links">My Account</Link></ListItemIcon>
         </ListItem>
         <ListItem onClick={()=>{history.goBack()}}>

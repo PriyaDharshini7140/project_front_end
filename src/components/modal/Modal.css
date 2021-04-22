@@ -1,3 +1,17 @@
+.modal{
+  border:rgb(243, 220, 220);
+  border-radius: 20px solid;
+}
+
+.select{
+  border:transparent;
+  position: relative;
+  font-family: Arial;
+  background-color: rgb(243, 220, 220);
+  border-radius: 20px;
+  width: 200px;
+  margin-top: 3%;
+}
 .modal__header{
     display: flex;
     justify-content: space-between;

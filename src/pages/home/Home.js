@@ -4,10 +4,12 @@ import NavbarHome from '../../components/navbar/NavbarHome'
 
 import './Home.css'
 import PostCard from '../../components/card/PostCard';
-function Home() {
+function Home(props) {
+    const {location:{state}}=props;
+    console.log(state);
     return (
        <div>
-       <NavbarHome/>
+       <NavbarHome user={state}/>
          <div className='homepage'>
         
           <PostCard/>

@@ -29,26 +29,21 @@ function PostCard() {
     const [Data,setData] = useState([]);
     useEffect(()=>{
       Axios.post('http://localhost:4000/user/newFeed/').then(
-        (res)=>setData(res.data)
+        (res)=>setData(res.data),
        )
       },[])
-     
-    //  console.log(Data);
-
-  
-   
-
-
     return (
      <>
      {Data.map((e)=> <>
-          {e.posts.length > 0 ? <Card className='homepage__card'>
+          {e.posts.length > 0 ? <>{e.posts.map((a)=><Card className='homepage__card' key={a._id}>
               
           <div className="homepage__card__header">
  
                <Avatar alt={e.user_name} src="/static/images/avatar/1.jpg" className="homepage__card__header__avatar" />
                <div className="homepage__card__body">
                {e.user_name}
+               <div className="category">
+              -Category{a.category}</div>
                </div>
                
                <div className="homepage__card__headerRight">
@@ -61,29 +56,25 @@ function PostCard() {
                </div>
            </div>
            
-           <div className="post">
-         {e.posts.map(a=> a.post_text )}
+           <div className="post" id={a._id}>
+         {a.post_text}
          {/* {e.posts.map(a=> a.post_url )} */}
            </div>
            <div className="card_body">
            <IconButton>
                <ThumbUpAltOutlinedIcon/>  
-               </IconButton>{e.posts.map(a=> a.up_vote)}
+               </IconButton>{a.up_vote}
               <IconButton>
                    <ThumbDownAltOutlinedIcon/>  
-                   </IconButton>{e.posts.map(a=> a.down_vote)} 
+                   </IconButton>{a.down_vote} 
                    <IconButton>
                        <CommentOutlinedIcon/>
                    </IconButton>
            </div>
           
-          </Card> : <>{console.log("no posts")}</>}
-           
-          </>
-     
-           
-     
-        )}
+          </Card>)}</>
+           : <>{console.log("no posts")}</>}
+            </>)}
      </>
            
           

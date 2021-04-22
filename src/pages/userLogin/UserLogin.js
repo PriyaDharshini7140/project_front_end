@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Card, FormControl, IconButton, InputAdornment, Inp
 import './UserLogin.css'
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-
+import {connect} from 'react-redux';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
@@ -39,20 +39,13 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 function UserLogin(props) {
+  console.log(props);
     const classes = useStyles();
-const [login, setLogin] = useState({email_id:'',password:''})
-const [Data, setData] = useState([])
-     useEffect(()=>{
-      Axios.post('http://localhost:4000/user/login').then(
-        (res)=>setData(res.data)
-       )
-      },[])
-     
-    console.log(Data);
-  
+const [email, setEmail] = useState('')
+const [password,setPassword] = useState('')
+const [isLoggedIn,setIsLoggedIn] = useState(false)
+const [Data,setData] = useState({})
     const [values, setValues] = React.useState({
-        email: '',
-        password: '',
         showPassword: false,
       });
     
@@ -67,6 +60,25 @@ const [Data, setData] = useState([])
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
+
+      const login=(email_id,password)=>{
+         Axios.post('http://localhost:4000/user/login',{
+           email_id:email_id,
+         password:password}
+         )
+         .then((res)=>{setData(res.data)
+          console.log(res.data);
+         
+          alert(res.data.message)
+          // props.onLogin_user(Data)
+          if(res.data.message === "logged in successfully"){
+            props.history.push('/home page',res.data)
+          }
+        })
+         .catch((e)=>{console.log(e)})
+         console.log(Data);
+        
+      }
   
     return (
         
@@ -79,7 +91,7 @@ const [Data, setData] = useState([])
            <form className={classes.root}  autoComplete="on">
                 
           
-            <b>Email</b>          <center> <TextField id="outlined-basic" label='email' type="email" variant="outlined" /></center>
+            <b>Email</b>          <center> <TextField id="outlined-basic" label='email' type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></center>
            
 
             
@@ -89,7 +101,7 @@ const [Data, setData] = useState([])
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
-            onChange={handleChange('password')}
+            onChange={(e)=>setPassword(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -108,8 +120,7 @@ const [Data, setData] = useState([])
            
              </form>
             <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>{props.history.push('/home page')}
-                 }>login</Button><br/>
+             <Button className='user-login-card-button' onClick={()=>{login(email,password)}}>login</Button><br/>
                  
              <Button className='user-login-card-button' onClick={()=>{
                 
@@ -125,4 +136,13 @@ const [Data, setData] = useState([])
     )
 }
 
-export default UserLogin
+const mapDispatchToProps=(dispatch)=>{
+  return{
+      onLogin_user : (user)=>dispatch({
+        type:'LOGIN_USER',
+        payload:user
+      }),
+  }
+}
+
+export default connect(null,mapDispatchToProps)(UserLogin);

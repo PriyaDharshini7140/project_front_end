@@ -43,9 +43,9 @@ function UserSIgnup(props) {
     const [values, setValues] = useState({
         showPassword: false,
       });
-    const [name,setName] = useState('');
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+    const [name,setName] = useState('priya');
+    const [email,setEmail] = useState('priya714@gmail.com');
+    const [password,setPassword] = useState('priya714');
       const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
       };
@@ -64,8 +64,12 @@ function UserSIgnup(props) {
           password:password
         }
          console.log(signup)
-         Axios.post('http://localhost:4000/user/login',{signup})
-         .then( (res)=>console.log(res.data))
+         Axios.post('http://localhost:4000/user/addUser',{
+          user_name:user_name,
+          email_id:email_id,
+          password:password
+         })
+         .then( (res)=>console.log(res.data))        
          .then(
           alert("Registered successful")
          ).catch((e)=>{alert(e.message)})

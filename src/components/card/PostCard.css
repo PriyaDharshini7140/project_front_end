@@ -24,7 +24,7 @@ text-align: left;
   font-family: cursive;
   font-size: x-large;
   align-self: center; 
- margin-left: -55%;
+ margin-left: -50%;
  color: rgb(97, 96, 96);
 }
 .homepage__card__header{
@@ -58,6 +58,11 @@ text-align: left;
    /* margin-top: 70%; */
    margin-left: -2%;
   
+}
+.category{
+  font-size: small;
+  padding-left:2%;
+  margin-left: -2%;  
 }
 .chat__footer{
   display: flex;
