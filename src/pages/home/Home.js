@@ -12,7 +12,7 @@ function Home(props) {
        <NavbarHome user={state}/>
          <div className='homepage'>
         
-          <PostCard/>
+          <PostCard user={state}/>
            </div>
        </div>
     )

@@ -18,7 +18,7 @@ function NavbarHome({user}) {
    
       <nav className='navbar'>
         <Link to='/' className='navbar-logo' >
-       hello {user.user_name}
+      IdeaWrapper
           <i class='fab fa-firstdraft' />
         </Link>
         <div className='menu-icon' >

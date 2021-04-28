@@ -6,20 +6,20 @@ import SimpleModal from '../modal/Modal';
 import PersistentDrawerRight from '../Menubar/MenuBar';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { Avatar } from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 
 
-
-function NavbarAcc() {
+function NavbarAcc({user}) {
   const [click, setClick] = useState(false);
-  
-  
+  const history = useHistory();
+  console.log(history);
 
   return (
    
       <nav className='navbar'>
         <Link to='/profile' className='navbar-logo' >
-         Hello UserName
+         Hello {user.user_name}
           <i class='fab fa-firstdraft' />
         </Link>
         <div className='menu-icon' >
@@ -34,19 +34,19 @@ function NavbarAcc() {
           >
           </li>
           <li className='nav-item1'>
-          <Link
+          {/* <Link
               to='/home page'
               className='nav-links'
              
-            >
-                 <HomeRoundedIcon fontSize='large'/>
+            > */}
+                 <HomeRoundedIcon fontSize='large' onClick={()=>history.goBack()}/>
             <i className='fas fa-caret-down' />
-            </Link>
+            {/* </Link> */}
           </li>
-          <li className='nav-item'>
+          {/* <li className='nav-item'>
          
-          <Avatar alt="Priya" src="/static/images/avatar/1.jpg"/>
-               </li>
+          <Avatar alt={user.user_name} src="/static/images/avatar/1.jpg"/>
+               </li> */}
           
         </ul>
        </nav>

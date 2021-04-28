@@ -141,7 +141,7 @@ export default function PersistentDrawerRight({user}) {
         </ListItem>
         <ListItem >
         <ListItemIcon><AccountBoxIcon /></ListItemIcon>
-        <ListItemIcon><Link to="Account" className="links">My Account</Link></ListItemIcon>
+        <ListItemIcon><Link to={{pathname:'/Account',state:state}} className="links">My Account</Link></ListItemIcon>
         </ListItem>
         <ListItem onClick={()=>{history.goBack()}}>
         <ListItemIcon><ExitToAppRoundedIcon/></ListItemIcon>

@@ -11,6 +11,7 @@ import Account from './pages/account/Account';
 function App() {
   return (
     <Router>
+      
       <Switch>
         <Route path='/' exact component={InitialPage} />
         <Route path='/About us' component={AboutUs}/>

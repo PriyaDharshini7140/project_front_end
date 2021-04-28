@@ -7,7 +7,8 @@ import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 import Axios from 'axios'
 import'./PostCard.css'
-
+import SendRoundedIcon from '@material-ui/icons/SendRounded';
+import Comment from './Comment';
 
 const comment=()=>{
       console.log("comments");
@@ -24,9 +25,29 @@ const comment=()=>{
 
 
 
-function PostCard() {
+function PostCard({user}) {
+console.log(user);
+const addComment =(user_id,post_id,comment,up_vote,down_vote)=>{
+     
+console.log(user_id,post_id,comment,up_vote,down_vote);
+
+Axios.post('http://localhost:4000/comment/addComment/',{
+    user_id:user_id,
+    post_id:post_id,
+    comment_text:comment,
+    up_vote:up_vote,
+    down_vote:down_vote
+}).then(
+        (res)=>console.log(res.data),
+       ).catch((e)=>console.log(e))
+
+}
+
   
     const [Data,setData] = useState([]);
+    const [comment,setComment] = useState('');
+    const [up_vote,setup_vote] = useState('0');
+    const [down_vote,setdown_vote] = useState('0');
     useEffect(()=>{
       Axios.post('http://localhost:4000/user/newFeed/').then(
         (res)=>setData(res.data),
@@ -47,12 +68,6 @@ function PostCard() {
                </div>
                
                <div className="homepage__card__headerRight">
-               <IconButton>
-               <PersonAddOutlinedIcon/>
-               </IconButton>
-                   <IconButton>
-                       <MoreVertIcon/>
-                   </IconButton>
                </div>
            </div>
            
@@ -70,6 +85,16 @@ function PostCard() {
                    <IconButton>
                        <CommentOutlinedIcon/>
                    </IconButton>
+                   <div className="comments">
+                <div className="commentspost">
+                    <input placeholder="add comment"   type="text" onChange={(e)=>setComment(e.target.value)}/>
+                    <IconButton>
+                    <SendRoundedIcon onClick={()=>addComment(user._id,a._id,comment,up_vote,down_vote)}/>
+                    </IconButton>
+                </div>
+               
+            </div>
+           <Comment post={a._id} user={user}/>
            </div>
           
           </Card>)}</>
