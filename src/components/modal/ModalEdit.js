@@ -5,6 +5,7 @@ import "./Modal.css"
 import { Avatar,IconButton,TextField } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 
+import MenuItem from '@material-ui/core/MenuItem';
 import Services from '../../services/Services'
 
 import AuthService from '../../auth/AuthService';
@@ -51,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
  
 }));
 
-export default function SimpleModal() {
+export default function ModalEdit({post_id,post_text}) {
+    console.log(post_id,post_text);
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
@@ -65,16 +67,12 @@ export default function SimpleModal() {
     setOpen(true);
     console.log("clicked");
   };
-  // const handleChange = (e) => {
-  //   if (e.target.files[0]) {
-  //     setPostUrl(e.target.files[0]);
-  //   }
-  // };
+ 
   const handleClose = () => {
     setOpen(false);
   };
 
- const post = async(user_id,postText,category)=>{
+ const post = async(post_id,postText,category)=>{
   var formdata = new FormData();
 
   formdata.append("file", image);
@@ -91,16 +89,24 @@ export default function SimpleModal() {
   )
   .then(res=>res.json())
   .then(data=>{
-    Services.handlePost(user_id,postText,data.url,category).then(setOpen(false))
+    Services.editPost(user._id,post_id,postText,data.url,category);
+    setOpen(false)
   })
   .catch(err=>{
       console.log(err)
   })
+
+ 
+
+  
  }
+
+
+  
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <div className="modal__header">
-      <Avatar className="modal__header__avatar" alt={user.user_name} src={user.profile_picture}/>
+      <Avatar className="modal__header__avatar"  alt={user.user_name} src={user.profile_picture}/>
                 <div className="modal__header__body">
                 {user.user_name}
                 </div>
@@ -108,9 +114,10 @@ export default function SimpleModal() {
      {/* <div> */}
       <TextField className={classes.text}
           id="standard-multiline-flexible"
-          label="Type a Message"
+        //   label="Type a Message"
           multiline
           rowsMax={4}
+        //   value={post_text}
           onChange={(e)=>setPostText(e.target.value)}
           />
          {/* <progress className="imageupload__progress" value={Progress} max="100" /> */}
@@ -139,7 +146,7 @@ export default function SimpleModal() {
          <div className="modal___button">
                 <div className="modal___button_Container">
                 <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button" onClick={()=> post(user._id,postText,category)}>Post</button>
+                   <button type="button" className="modal_Button" onClick={()=>post(post_id,postText,category)}>Post</button>
                 </div>
             </div>
 
@@ -149,14 +156,7 @@ export default function SimpleModal() {
 
   return (
     <div>
-      <div className="sidebar__search">
-                <div className="sidebar__searchContainer"> 
-              <button 
-                   className="NavBar_Button" 
-                onClick={handleOpen}>Add Post</button>
-              
-                </div>
-            </div>
+      <MenuItem onClick={handleOpen}>edit</MenuItem>
       <Modal
         open={open}
         aria-labelledby="simple-modal-title"

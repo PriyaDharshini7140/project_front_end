@@ -42,11 +42,11 @@ function NavbarHome({user}) {
           </li>
           <li className='nav-item'>
           
-          <PersistentDrawerRight user={user}/>
+          {/* <PersistentDrawerRight user={user}/> */}
                </li>
           <li className='nav-item'>
          
-          <SimpleModal user={user}/>
+          {/* <SimpleModal user={user}/> */}
             
           </li>
         </ul>

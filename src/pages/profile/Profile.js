@@ -9,6 +9,10 @@ import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import {connect} from 'react-redux';
 import {useLocation} from "react-router-dom";
 import Axios from 'axios';
+import AuthService from "../../auth/AuthService"
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import { useHistory } from "react-router-dom";
+import Services from '../../services/Services';
 const useStyles = makeStyles((theme) => ({
     large: {
       width: theme.spacing(18),
@@ -37,27 +41,53 @@ function Profile(props) {
     const classes = useStyles();
     const [gender, setGender] = useState('');
     const [profile_picture, setprofile_picture] =useState('');
+    const [image, setImage] =useState('');
     const [age, setAge] =useState('');
-    const [user_name, setUser_name] =useState('');
+
     const [phone_number, setphone_number] =useState('');
-    const [password, setpassword] =useState('');
    
+    const [description, setDescription] =useState('');
+   const history = useHistory();
+  console.log(history)
+  const user = AuthService.getCurrentUser();
+  console.log(user);
+const handleSubmit = async(age,gender,phone_number,description)=>{
+  console.log(description ,age);
+  var formdata = new FormData();
 
-const handleSubmit =(user_name,age,gender,phone_number,profile_picture,password)=>{
+  formdata.append("file", image);
+  formdata.append("cloud_name", "ideawrapper");
+  formdata.append("upload_preset", "ideahub");
+
+  let res = await fetch(
+  "https://api.cloudinary.com/v1_1/ideawrapper/image/upload",
+  {
+      method: "post",
+      mode: "cors",
+      body: formdata
+  }
+  )
+  .then(res=>res.json())
+  .then(data=>{
+    Axios.patch(`http://localhost:4000/user/updateUser/${user._id}`,{
+      
+      age:age,
+      gender:gender,
+      phone_number:phone_number,
+      profile_picture:data.url,
+     description:description
+    })
+     .then( (res)=>{console.log( "updated",res.data)
+     localStorage.setItem("user", JSON.stringify(res.data));
+    })      
+     .catch((e)=>{alert(e.message)})
   
-  Axios.patch(`http://localhost:4000/user/updateUser/${state._id}`,{
-    user_name:user_name,
-    age:age,
-    gender:gender,
-    phone_number:phone_number,
-    profile_picture:profile_picture,
-    password:password
   })
-   .then( (res)=>console.log(res.data))        
-   .then(
-    alert("updated successfully to view go to account page")
-   ).catch((e)=>{alert(e.message)})
-
+  .catch(err=>{
+      console.log(err)
+  })
+ 
+ 
  
 }
 
@@ -67,30 +97,35 @@ const {state} =location;
   console.log(state);
     return (
     
-        <div className="profile" key={state._id}>
+        <div className="profile" key={user._id}>
+       
             <div className="profile__body">
+             
                 <div className="profile__body__left">
-               <Avatar  alt="Sharp" src="/static/images/avatar/1.jpg" className={classes.large}/>
+                
+               <Avatar  alt={user.user_name} src={user.profile_picture} className={classes.large}/>
               
-               <input accept="image/*" className={classes.input} onChange={(e)=>setprofile_picture(e.target.value)} id="icon-button-file" type="file" />
+               <input accept="image/*" className={classes.input} onChange={(e)=>setImage(e.target.files[0])} id="icon-button-file" type="file" />
       <label htmlFor="icon-button-file">
         <IconButton className={classes.camera}  aria-label="upload picture" component="span">
           <CreateRoundedIcon />
         </IconButton>
       </label>
-      <Container className="container">
+      {/* <div className="container">
         <TextField
           label="your skills"
           type="text"
-           
+          onChange={(e)=>setDescription(e.target.value)}
         />
-      </Container>
+      </div> */}
             </div>
             <form className={classes.root} noValidate autoComplete="off">
-      <div> <TextField
+             <HomeRoundedIcon className="nav-item1" fontSize="large" onClick={()=>history.goBack()}/>
+      <div>
+         <TextField
           label="userName"
           type="text"
-          onChange={(e)=>setUser_name(e.target.value)}
+          value={user.user_name}
            variant="outlined"
         /><br/>
        
@@ -98,6 +133,7 @@ const {state} =location;
           id="outlined-password-input"
           label="age"
           type="text"
+         
           onChange={(e)=>setAge(e.target.value)}
           
           variant="outlined"
@@ -118,15 +154,16 @@ const {state} =location;
           variant="outlined"
         /><br/>
          <TextField
-          id="outlined-password-input"
-          label="password"
-          type="password"
-          onChange={(e)=>setpassword(e.target.value)}
-          autoComplete="current-password"
+          // id="outlined-password-input"
+          label="skills"
+          type="text"
+          // value={user.password}
+          onChange={(e)=>setDescription(e.target.value)}
           variant="outlined"
+          // className="container"
         />
         </div>
-        <Button variant="outlined" onClick={()=>handleSubmit(user_name,age,gender,phone_number,profile_picture,password)}>save</Button>
+        <Button variant="outlined" onClick={()=>handleSubmit(age,gender,phone_number,profile_picture,description)}>save</Button>
         <Button variant="outlined">reset</Button>
         <div>
         

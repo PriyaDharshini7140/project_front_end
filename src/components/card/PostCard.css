@@ -19,15 +19,41 @@ text-align: left;
 
  
 }
+.delete-icon{
+  margin-left:90%;
+ margin-top:-5%
+
+}
 .card{
   border-radius: 20px;
   padding-left:5% ;
   padding-top: 2%;
+
 }
 .card >h4{
   font-family: cursive;
   color: gray;
 }
+ .nav-links {
+    color:whitesmoke;
+    
+    text-decoration: whitesmoke;
+    padding: 0.5rem 1rem;
+  }
+  .nav-links:link{
+    color:white;
+  }
+  .nav-links:hover {
+    background-color: transparent;
+    /* color:white; */
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+  }
+  .image{
+    width: 50%;
+    display: flex;
+
+  }
 .reply{
   padding-left:5% ;
   padding-top: 2%;
@@ -143,5 +169,12 @@ text-align: left;
 .post{
   margin-top: 2%;
   color: rgb(97, 96, 96);
-  font-size: large;
+  font-size: medium;
+}
+.text{
+  font-family: cursive;
+  /* margin-right: 73%; */
+  text-overflow: inherit;
+    white-space: normal;
+   word-wrap: break-word;
 }

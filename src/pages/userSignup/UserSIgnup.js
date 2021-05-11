@@ -3,11 +3,12 @@ import {Button, Card } from '@material-ui/core';
 import './UserSIgnup.css'
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-
 import {ButtonGroup,FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
+import AuthService from '../../auth/AuthService';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -40,12 +41,13 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 function UserSIgnup(props) {
+  
     const [values, setValues] = useState({
         showPassword: false,
       });
-    const [name,setName] = useState('priya');
-    const [email,setEmail] = useState('priya714@gmail.com');
-    const [password,setPassword] = useState('priya714');
+    const [name,setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
       const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
       };
@@ -128,7 +130,9 @@ function UserSIgnup(props) {
                
                 
          
-         <Button className='user-signup-card-button' onClick={()=>{register(name,email,password)}}  disabled={!validateForm()}>Register</Button><br/>
+         <Button className='user-signup-card-button' onClick={()=>{
+           AuthService.register(name,email,password)
+         }}  disabled={!validateForm()}>Register</Button><br/>
          </form>
          <center>
          

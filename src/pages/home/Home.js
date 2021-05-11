@@ -1,18 +1,17 @@
 import React from 'react'
 
-import NavbarHome from '../../components/navbar/NavbarHome'
+import Navbar from '../../components/navbar/Navbar'
 
 import './Home.css'
 import PostCard from '../../components/card/PostCard';
-function Home(props) {
-    const {location:{state}}=props;
-    console.log(state);
+function Home() {
+    // const {location:{state}}=props;
+    // console.log(state);
     return (
        <div>
-       <NavbarHome user={state}/>
-         <div className='homepage'>
+    <div className='homepage'>
         
-          <PostCard user={state}/>
+        <PostCard/>
            </div>
        </div>
     )

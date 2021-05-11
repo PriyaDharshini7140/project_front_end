@@ -16,10 +16,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar } from '@material-ui/core';
-import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import Services from '../../services/Services';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -80,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight() {
+export default function MenuLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
@@ -95,6 +97,10 @@ console.log(user);
     setOpen(false);
   };
 
+const remove=()=>{
+ 
+         
+}
   console.log(history);
   // const {location:{state}} =history;
   // console.log(state);
@@ -125,7 +131,7 @@ console.log(user);
       <Drawer
         className={classes.drawer}
         variant="persistent"
-        anchor="right"
+        anchor="left"
         open={open}
         classes={{
           paper: classes.drawerPaper,
@@ -133,29 +139,31 @@ console.log(user);
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <Divider/>
         <List>
-        <ListItem>
-        <ListItemIcon><PersonRoundedIcon/></ListItemIcon>
-        <ListItemIcon><Link to={{pathname:'/profile',state:user}} className="links">Profile</Link></ListItemIcon>
-        </ListItem>
         <ListItem >
-        <ListItemIcon><AccountBoxIcon /></ListItemIcon>
-        <ListItemIcon><Link to={{pathname:'/Account',state:user}} className="links">My Account</Link></ListItemIcon>
+        <ListItemIcon><HomeRoundedIcon/></ListItemIcon>
+        <ListItemIcon><Link to="/home page" className="links">Home page</Link></ListItemIcon>
         </ListItem>
-        <ListItem onClick={()=>{
-          AuthService.logout()
-          history.replace("/Sign in")
-          window.location.reload()
-          }}>
-        <ListItemIcon><ExitToAppRoundedIcon/></ListItemIcon>
-        <ListItemIcon>Logout</ListItemIcon>
+        <ListItem onClick={()=>
+        {
+          if(window.confirm("Do you want to delete your account")){
+            Services.DeleteAccount(user._id);
+             history.replace("/Sign in")
+             window.location.reload()
+          }
+        }
+            
+        }>
+        <ListItemIcon><DeleteRoundedIcon/></ListItemIcon>
+        <ListItemIcon>Delete Account</ListItemIcon>
         </ListItem>
         </List>
-       </Drawer>
+       
+      </Drawer>
     </div>
   );
 }

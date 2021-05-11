@@ -5,78 +5,110 @@ import'./PostCard.css'
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
-function Comment({post,user}) {
+import AuthService from "../../auth/AuthService"
+import Services from '../../services/Services'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import RedoRoundedIcon from '@material-ui/icons/RedoRounded';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+function Comment({post}) {
+  const user = AuthService.getCurrentUser();
 console.log(user);
     const [Data,setData] = useState([]);
+    const [Open,setOpen] = useState(1);
     const [reply,setReply] = useState('');
-    const [up_vote,setup_vote] = useState('0');
-    const [down_vote,setdown_vote] = useState('0');
+    
     useEffect(()=>{
       Axios.post('http://localhost:4000/comment/getComment/',{
        post_id:post
+       
       }).then(
-        (res)=>setData(res.data),
-        (res)=>console.log(res.data)
+        (res)=>{setData(res.data)
+        
+        
+        
+        }
        )
       },[post])
 console.log(Data);
 
+console.log(Open);
 
-const addReply=(user_id,comment_id,reply_text,up_vote,down_vote)=>{
-
-    console.log(user_id,comment_id,reply_text,up_vote,down_vote);
-    Axios.post('http://localhost:4000/reply/addReply/',{
-       user_id:user_id,
-       comment_id:comment_id,
-       reply_text:reply_text,
-       up_vote:up_vote,
-       down_vote:down_vote
-       }).then(
-         (res)=>console.log(res.data),
-         (res)=>console.log(res.data)
-        )
-}
     return (
        <>
        {Data.map((e)=>
         <Card className="card" key={e._id}>
             <h4>
-            {user.user_name}
+            {e.user_name}
+            
+           {user._id === e.user_id ? <div className="delete-icon">
+          <IconButton>
+              <HighlightOffIcon onClick={()=>Services.deleteComment(e._id)}/>
+               </IconButton>
+               </div> :<></>}
+          
             </h4>
             
             <div>
             {e.comment_text}  
+             
             </div>
               
              <div>
              <IconButton>
-               <ThumbUpAltOutlinedIcon/>  
-               </IconButton>{e.up_vote}
+               <ThumbUpAltOutlinedIcon  onClick={()=>{
+                        
+                        Services.commentUpVotes(e._id,user._id)
+                  }}/>  
+               </IconButton>{e.up_vote.length}
               <IconButton>
-                   <ThumbDownAltOutlinedIcon/>  
-                   </IconButton>{e.down_vote} 
-                   
+                   <ThumbDownAltOutlinedIcon onClick={()=>{
+                        
+                        Services.commentDownVotes(e._id,user._id)
+                  }}/>  
+                   </IconButton>{e.down_vote.length} 
+                   <IconButton>
+                   <RedoRoundedIcon  onClick={()=>{
+                        //   console.log(Open+1);
+                          const add = Open+1;
+                           setOpen(add)
+                       }}/> 
+                   </IconButton>{e.replys.length}
                    <div className="comments">
                 <div className="commentspost">
                     <input placeholder="add reply"   type="text" onChange={(e)=>setReply(e.target.value)}/>
                     <IconButton>
-                    <SendRoundedIcon onClick={()=>addReply(user._id,e._id,reply,up_vote,down_vote)} />
+                    <SendRoundedIcon onClick={()=>
+                    Services.addReply(user._id,user.user_name,e._id,reply)} />
                     </IconButton>
                 </div>
                 </div>
-                {e.replys.map(a=><div className="reply">
+                {Open % 2 === 0 ? <> 
+                  {e.replys.map(a=><div className="reply">
                     <h4>
-            {user.user_name}
+            {a.user_name}
+            
+            {user._id === a.user_id ? <div className="delete-icon">
+          <IconButton>
+              <HighlightOffIcon onClick={()=>Services.deleteReply(a._id)}/>
+               </IconButton>
+               </div> :<></>}
             </h4>
               {a.reply_text}    
               <IconButton>
-               <ThumbUpAltOutlinedIcon/>  
-               </IconButton>{a.up_vote}
+               <ThumbUpAltOutlinedIcon  onClick={()=>{
+                        
+                        Services.replyUpVotes(a._id,user._id)
+                  }}/>  
+               </IconButton>{a.up_vote.length}
               <IconButton>
-                   <ThumbDownAltOutlinedIcon/>  
-                   </IconButton>{a.down_vote} 
+                   <ThumbDownAltOutlinedIcon onClick={()=>{
+                         Services.replyDownVotes(a._id,user._id)
+                  }}/>  
+                   </IconButton>{a.down_vote.length} 
                    
                 </div>)}
+                </>:<></>
+}
              </div>
             </Card>)}  
             

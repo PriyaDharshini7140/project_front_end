@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card, FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
 import './UserLogin.css'
 import { Link } from 'react-router-dom';
-import Axios from 'axios';
-import {connect} from 'react-redux';
+import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
+import AuthService from '../../auth/AuthService';
+import { fetchUsers } from '../../redux/Actions';
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -39,11 +40,13 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 function UserLogin(props) {
+const dispatch = useDispatch();
+
   console.log(props);
     const classes = useStyles();
 const [email, setEmail] = useState('')
 const [password,setPassword] = useState('')
-const [isLoggedIn,setIsLoggedIn] = useState(false)
+const [isLoggedIn,setIsLoggedIn] = useState(true)
 const [Data,setData] = useState({})
     const [values, setValues] = React.useState({
         showPassword: false,
@@ -60,27 +63,8 @@ const [Data,setData] = useState({})
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
-
-      const login=(email_id,password)=>{
-         Axios.post('http://localhost:4000/user/login',{
-           email_id:email_id,
-         password:password}
-         )
-         .then((res)=>{setData(res.data)
-          console.log(res.data);
-         
-          alert(res.data.message)
-          // props.onLogin_user(Data)
-          if(res.data.message === "logged in successfully"){
-            props.history.push('/home page',res.data)
-          }
-        })
-         .catch((e)=>{console.log(e)})
-         console.log(Data);
-        
-      }
-  
-    return (
+      
+      return (
         
         <div className='user-login'>
             <Card className='user-login-card'>
@@ -93,7 +77,7 @@ const [Data,setData] = useState({})
           
             <b>Email</b>          <center> <TextField id="outlined-basic" label='email' type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></center>
            
-
+     
             
              <b>Password</b>      <center> <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -120,11 +104,11 @@ const [Data,setData] = useState({})
            
              </form>
             <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>{login(email,password)}}>login</Button><br/>
-                 
-             <Button className='user-login-card-button' onClick={()=>{
+             <Button className='user-login-card-button' onClick={()=>dispatch(fetchUsers(email,password))}>login</Button><br/>
                 
-                 props.history.goBack()
+       <Button className='user-login-card-button' onClick={()=>{
+                
+                 props.history.replace("/")
                  }}>Back</Button> <br/>
                 </div>
               <center>
@@ -136,13 +120,6 @@ const [Data,setData] = useState({})
     )
 }
 
-const mapDispatchToProps=(dispatch)=>{
-  return{
-      onLogin_user : (user)=>dispatch({
-        type:'LOGIN_USER',
-        payload:user
-      }),
-  }
-}
 
-export default connect(null,mapDispatchToProps)(UserLogin);
+
+export default UserLogin;
