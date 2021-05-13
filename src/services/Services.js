@@ -43,23 +43,14 @@ addReply=(user_id,user_name,comment_id,reply_text)=>{
        reply_text:reply_text,
       
        }).then(
-         (res)=>console.log(res.data),
          (res)=>console.log(res.data)
+         // (res)=>console.log(res.data)
         ).catch((e)=>console.log(e))
 }
  handlePost = (user_id,a,postUrl,c) => {
-       console.log(user_id,a,postUrl,c);
+       
 
-        
-      return  axios.post('http://localhost:4000/post/addPost',{
-          user_id:user_id,
-          post_text:a,
-          post_url:postUrl,
-          category:c,
-        }).then(
-          (res)=>console.log(res.data),
-         )
-      
+     
     
   }
 
@@ -149,12 +140,14 @@ editUpVotes =(id,user_id)=>{
 }
 
 newFeeds=()=>{
-   
-      axios.post('http://localhost:4000/user/newFeed/')
+   const Token = () => localStorage.getItem("user");
+     return axios.post('http://localhost:4000/user/newFeed/',{},{
+         headers:{authorization:`Bearer ${Token()}`}
+      })
      .then(
          (res)=> {
-            const Data = res.data
-            return Data
+            console.log(res.data)
+           return res.data
          })
 .catch((e)=>console.log(e))
 }

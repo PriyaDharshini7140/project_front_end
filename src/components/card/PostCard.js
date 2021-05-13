@@ -4,23 +4,32 @@ import'./PostCard.css'
 import AuthService from "../../auth/AuthService"
 import CardCom from './CardCom';
 import Services from '../../services/Services';
-
+import { useSelector,useDispatch } from 'react-redux';
+import {newFeeds} from '../../redux/postActions'
 function PostCard() {
-    const user = AuthService.getCurrentUser()
-console.log(user);
+  const dispatch = useDispatch()
+   const user = useSelector((state)=> state.user.users)
+// console.log(user);
+const post = useSelector((state)=> state.post)
+console.log(post);
 const [Data,setData] = useState([]);
     const [Open,setOpen] = useState(1);
     const data = Services.newFeeds() 
     console.log(data);
     useEffect(()=>{
-      Axios.post('http://localhost:4000/user/newFeed/').then(
-        (res)=>{setData(res.data)
-         console.log(res.data)
-        }
-       
-       )
+ 
+     
+      const Token = () => localStorage.getItem("user");
+      Axios.post('http://localhost:4000/user/newFeed/',{},{
+         headers:{authorization:`Bearer ${Token()}`}
+      })
+     .then(
+         (res)=> 
+           dispatch(newFeeds(res.data)) 
+            )
+.catch((e)=>console.log(e))
       },[])
-     console.log(Open);
+    
     return (
      <>
      {Data.map((e)=> <>

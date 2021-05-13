@@ -21,6 +21,7 @@ import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import Services from '../../services/Services';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -83,11 +84,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MenuLeft() {
-  const classes = useStyles();
+const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const user = AuthService.getCurrentUser()
+   const user = useSelector((state)=> state.user.users)
 console.log(user);
   const handleDrawerOpen = () => {
     setOpen(true);

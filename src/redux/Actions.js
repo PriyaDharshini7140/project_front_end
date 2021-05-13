@@ -1,30 +1,32 @@
-import axios from 'axios'
+
 import AuthService from '../auth/AuthService'
 import {
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE
 } from './Types'
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 
-export const browserHistory = createBrowserHistory();
+const history = createBrowserHistory();
 
 export const fetchUsers = (email,password) => {
   
+   
   return (dispatch) => {
+    console.log(history);
     dispatch(fetchUsersRequest())
       AuthService.login(email,password)
       .then(response => {
         const users = response
         console.log(users.role);
-        if(users.message === "logged in successfully" && users.role === "user")
+        if(users.message === "logged in successfully" && users.role === "user" && localStorage.getItem('user') !== null)
                     {
-                    //     browserHistory.push("/home page");
-                    //   window.location.reload()
-                    // console.log(users.message,users.role);
-                    }
-        dispatch(fetchUsersSuccess(users))
-      })
+                      
+                      AuthService.getCurrentUser().then(res => {
+                        
+                        dispatch(fetchUsersSuccess(res))
+                      }) }
+})
       .catch(error => {
         console.log(error);
         // error.message is the error message
@@ -45,6 +47,7 @@ export const fetchUsersSuccess = users => {
     payload: users
   }
 }
+
 
 export const fetchUsersFailure = error => {
   return {

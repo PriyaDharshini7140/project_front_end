@@ -20,6 +20,7 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
+import { useSelector } from 'react-redux';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +86,7 @@ export default function PersistentDrawerRight() {
   const theme = useTheme();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const user = AuthService.getCurrentUser()
+  const user = useSelector((state)=> state.user.users)
 console.log(user);
   const handleDrawerOpen = () => {
     setOpen(true);

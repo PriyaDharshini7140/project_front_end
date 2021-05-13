@@ -41,10 +41,12 @@ class AuthService {
   }
 
   getCurrentUser() {
-    const Token =()=> localStorage.getItem("user");
-    return axios.post('http://localhost:4000/user/addUser',{
-      headers:{Authorization:`Bearer${Token}`}
-     }).then((res)=>console.log(res.data)).catch((e)=>console.log(e))
+    const Token = () => localStorage.getItem("user");
+    return axios.post('http://localhost:4000/user/particularUser',{},{
+      headers:{authorization:`Bearer ${Token()}`}
+     }).then((res)=>{console.log("res",res.data)
+         return res.data}
+     ).catch((e)=>console.log("err",e))
   }
 }
 

@@ -13,9 +13,10 @@ import Comment from './Comment';
 import AuthService from "../../auth/AuthService"
 import Services from '../../services/Services'
 import CardCom from './CardCom';
+import { useSelector } from 'react-redux';
 function PostAcc() {
     const [anchorEl, setAnchorEl] = React.useState(null);
-   const user = AuthService.getCurrentUser();
+    const user = useSelector((state)=> state.user.users)
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };

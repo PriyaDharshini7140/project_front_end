@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Card, FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
+import React, { useState } from 'react'
+import { Button, Card, FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
 import './UserLogin.css'
 import { Link } from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 import clsx from 'clsx';
-import AuthService from '../../auth/AuthService';
+
 import { fetchUsers } from '../../redux/Actions';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,20 +42,19 @@ const useStyles = makeStyles((theme) => ({
   }));
 function UserLogin(props) {
 const dispatch = useDispatch();
+console.log(props);
 
-  console.log(props);
+  
     const classes = useStyles();
 const [email, setEmail] = useState('')
 const [password,setPassword] = useState('')
-const [isLoggedIn,setIsLoggedIn] = useState(true)
-const [Data,setData] = useState({})
+
+
     const [values, setValues] = React.useState({
         showPassword: false,
       });
     
-      const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-      };
+      
     
       const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
@@ -104,7 +104,12 @@ const [Data,setData] = useState({})
            
              </form>
             <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>dispatch(fetchUsers(email,password))}>login</Button><br/>
+             <Button className='user-login-card-button' onClick={()=>{ 
+               dispatch(fetchUsers(email,password))
+           
+            }
+            
+            }>login</Button><br/>
                 
        <Button className='user-login-card-button' onClick={()=>{
                 

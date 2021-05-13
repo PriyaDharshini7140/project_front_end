@@ -14,9 +14,10 @@ import'./PostCard.css'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import ModalEdit from '../modal/ModalEdit';
+import { useSelector } from 'react-redux';
 
-function CardCom({e,a}) {
-    const user = AuthService.getCurrentUser()
+function CardCom({a}) {
+  const user = useSelector((state)=> state.user.users)
 console.log(user);
 const [anchorEl, setAnchorEl] = React.useState(null);
     const [Open,setOpen] = useState(1);
@@ -54,11 +55,11 @@ const [anchorEl, setAnchorEl] = React.useState(null);
               
               <div className="homepage__card__header">
      
-                   <Avatar alt={e.user_name} src={e.profile_picture} className="homepage__card__header__avatar" />
+                   <Avatar alt={a.user_name} src={a.profile_picture} className="homepage__card__header__avatar" />
                  
                    <div className="homepage__card__body">
-                    <Link to={{pathname:'/userProfile',state:e._id}} className="nav-links">
-                   {e.user_name}</Link> 
+                    <Link to={{pathname:'/userProfile',state:a.user_id}} className="nav-links">
+                   {a.user_name}</Link> 
                  
                    <div className="category">
                   -Category{a.category}</div>
@@ -136,7 +137,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                    
                 </div>
                 {Open % 2 === 0 ? 
-               <Comment post={a._id} e={e._id}/> :
+               <Comment post={a._id} e={a.user_id}/> :
                <></>
                
             }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -10,12 +10,13 @@ import { useHistory,useLocation } from "react-router-dom";
 import AuthService from '../../auth/AuthService';
 import { IconButton } from '@material-ui/core';
 import MenuLeft from '../Menubar/MenuLeft';
+import {useSelector} from "react-redux"
 function Navbar() {
   const [click, setClick] = useState(false);
   const [category, setCategory] = useState('');
 
- const user = AuthService.getCurrentUser()
- console.log(user);
+ const user = useSelector((state)=> state.user.users)
+ 
 let history = useHistory();
 let location = useLocation()
 console.log(location); 
@@ -25,6 +26,11 @@ const logo=<>
           <i class='fab fa-firstdraft' />
         </Link>
 </>
+// useEffect(() => {
+ 
+//   return () => user
+ 
+// }, [])
 
 const search =<>
   <div className="sidebar__search">
@@ -44,7 +50,7 @@ const search =<>
     <>
    
       
-        {AuthService.getCurrentUser() === null || location.pathname === "/" || location.pathname === "/Sign up"||location.pathname === "/Sign in" ? <>
+        {user === null || location.pathname === "/" || location.pathname === "/Sign up"||location.pathname === "/Sign in" ? <>
           <nav className='navbar'>
         {logo}
         <div className='menu-icon' >
@@ -100,12 +106,12 @@ const search =<>
           </li>
         </ul>
         </nav> 
-        </>:AuthService.getCurrentUser() != null && AuthService.getCurrentUser().role === "user" ? 
+        </>: user.role === 'user' && (location.pathname === "/home page" || location.pathname === "/Account" || location.pathname === "/profile" || location.pathname === "/search_by_category")? 
         
         <>
          <nav className='navbar'>
            {location.pathname === "/Account" || location.pathname === "/profile" || location.pathname === "/search_by_category" ? <MenuLeft/>:""}
-         <div className='navbar-logo'>{AuthService.getCurrentUser().user_name}</div> 
+         <div className='navbar-logo'>{user.user_name}</div> 
         <div className='menu-icon' >
           {/* <i className={click ? 'fas fa-times' : 'fas fa-bars'} /> */}
         </div>
@@ -118,12 +124,12 @@ const search =<>
        {search}
           </li>
           <li className='nav-item'>
-          {location.pathname === "/home page" ? <PersistentDrawerRight user={AuthService.getCurrentUser()}/>:""}
+          {location.pathname === "/home page" ? <PersistentDrawerRight user={user}/>:""}
           
                </li>
           <li className='nav-item'>
          
-          <SimpleModal user={AuthService.getCurrentUser()}/>
+          <SimpleModal user={user}/>
             
           </li>
         </ul>

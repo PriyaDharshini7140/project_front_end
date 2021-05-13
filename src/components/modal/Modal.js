@@ -4,10 +4,11 @@ import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
 import { Avatar,IconButton,TextField } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
-
+import {useDispatch} from 'react-redux'
 import Services from '../../services/Services'
-
+import {Post} from '../../redux/postActions'
 import AuthService from '../../auth/AuthService';
+import { useSelector } from 'react-redux';
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -59,8 +60,9 @@ export default function SimpleModal() {
   const [image,setImage]=useState('');
   const [postUrl,setPostUrl]=useState('');
    const [category,setCategory]=useState('');
-   const user = AuthService.getCurrentUser()
+   const user = useSelector((state)=> state.user.users)
   console.log(user);
+  const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
     console.log("clicked");
@@ -91,7 +93,8 @@ export default function SimpleModal() {
   )
   .then(res=>res.json())
   .then(data=>{
-    Services.handlePost(user_id,postText,data.url,category).then(setOpen(false))
+    dispatch(Post(user_id,postText,data.url,category))
+    
   })
   .catch(err=>{
       console.log(err)
@@ -139,7 +142,9 @@ export default function SimpleModal() {
          <div className="modal___button">
                 <div className="modal___button_Container">
                 <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button" onClick={()=> post(user._id,postText,category)}>Post</button>
+                   <button type="button" className="modal_Button" onClick={()=> {post(user._id,postText,category)
+                  setOpen(false)}
+                  }>Post</button>
                 </div>
             </div>
 

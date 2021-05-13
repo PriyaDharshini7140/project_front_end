@@ -10,8 +10,9 @@ import Services from '../../services/Services'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import RedoRoundedIcon from '@material-ui/icons/RedoRounded';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { useSelector } from 'react-redux';
 function Comment({post}) {
-  const user = AuthService.getCurrentUser();
+  const user = useSelector((state)=> state.user.users)
 console.log(user);
     const [Data,setData] = useState([]);
     const [Open,setOpen] = useState(1);
