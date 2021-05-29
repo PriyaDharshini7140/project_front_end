@@ -6,29 +6,31 @@
 
 .user-login{
   display: flex;
-
-  background-image: url('../../images/wp2478210-idea-wallpapers.png');
-        background-position: center;
-        background-size:cover;
-        background-repeat: no-repeat;
+  height: 90.9vh;
+  background-image:url('../../images/loginhd.jpg');
+  background-position: initial;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-origin: border-box;
 }
-
+.f{
+  
+}
 .user-login-card{
   display: flex;
   flex-direction: row;
   flex-direction: column;
   font-family: cursive;
   justify-content: start;
-  width: 480px;
-  min-height: 475px;
-  background: linear-gradient(90deg, rgb(231, 172, 172) 0%, rgb(165, 163, 163) 100%); 
-
-/* align-items: justify; */
-margin: 128px auto;
+  width: 370px;
+  min-height: 245px;
+  background-color:lightgrey; 
+ margin-bottom: 120px;
+margin-left: 5%;
 border-radius: 10px;
 padding-bottom: 32px;
 align-self: flex-end;
-margin-top: 4%;
+
 padding-left: 3%;
 padding-top: 2%;
 text-align: left;
@@ -50,6 +52,15 @@ align-self: center;
 }
 .user-login-cardAction{
 font-family: cursive;
+color:whitesmoke;
+background-color: rgb(19, 18, 18);
+margin-left: -12.5%;
+margin-top: -9%;
+border-radius: 10px;
+height: 10vh;
+text-align: center;
+/* text-align: justify; */
+padding-top: 4%;
 }
 .user-login-card-button{
   padding: 16px;
@@ -70,4 +81,23 @@ text-transform: capitalize;
   display: grid;
   align-self: center;
   margin-top: 5%;
+}
+.innerCard{
+  align-items: center;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0,0,0.75);
+  border-radius: 20px;
+  align-self: center;
+  background-color:transparent ;
+  width:320px;
+  margin-right: 13%;
+  margin-top: 3%;
+}
+.nav-lin{
+  color:lightslategray;
+  font-family: cursive;
+  text-decoration: whitesmoke;
+  padding: 0.5rem 1rem;
+  margin-bottom: 5%;
+  /* margin-left: 5%; */
+  /* margin-top: 10%; */
 }

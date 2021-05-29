@@ -1,11 +1,18 @@
 import {
     ADD_POST_FAILED,
-    ADD_POST_SUCCESS
+    ADD_POST_SUCCESS,
+    ADD_COMMENT_SUCCESS,
+    ADD_REPLY_SUCCESS,
+    STATUS
   } from './Types'
   
   const initialState = {
     
-   posts:[]
+   posts:[],
+  comments:[],
+  replys:[],
+  
+
     
   }
   
@@ -16,6 +23,19 @@ import {
         return {
          ...state,
          posts:action.payload
+          
+        }
+        case ADD_COMMENT_SUCCESS:
+        return {
+         ...state,
+         comments:action.payload
+          
+        }
+       
+        case ADD_REPLY_SUCCESS:
+        return {
+         ...state,
+        replys:action.payload
           
         }
       case ADD_POST_FAILED:

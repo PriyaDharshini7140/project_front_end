@@ -1,44 +1,61 @@
-.initialpage{
-    display: flex;
-    height: 100vh;
-   
-    justify-content: center;
-    font-size: 3rem;
-        background-image: url('../../images/wp2478210-idea-wallpapers.png');
-        background-position: center;
-        background-size:cover;
-        background-repeat: repeat;
-        color: #fff;
-        font-size: 50px;
-        
+.wrapper-class{
+  min-height: 100vh;
+  min-width: 768px;
+  position:relative;
+  padding-left: 0;
+  padding-right: 0;
+  display:flex;
+  flex-direction: column;
 }
-.nav-links{
-  /* display: flex; */
-  font-size:x-large;
-  font-family: cursive;
-  color: rgb(231, 172, 172)
-}
-.nav{
+.wrap{
   display: flex;
-  margin-top: 50%;
-  margin-left:20%;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
+.topbar-class{
+  background-color: transparent linear-gradient(270deg, #4e0202 0%, #00030a04 100%) 0% 0% no-repeat padding-box;;
+  position:sticky;
+  top:0;
+  width:100%;
+  z-index:999;
+}
+.topbar-class .contain{
+  height:4.5rem;
+  background:rgb(19, 18, 18);
+  display:flex !important;
+  flex-wrap: wrap!important;
+  padding-left:1rem;
+  padding-right: 1rem;
+}
+.topbar-class .containHome{
+  height:4.5rem;
+  background: transparent linear-gradient(270deg, #00BAFF 0%, #004DFF 100%) 0% 0% no-repeat padding-box;
+  display:flex !important;
+  flex-wrap: wrap!important;
+  padding-left:1rem;
+  padding-right: 1rem;
+}
+@media (max-width: 1280px){ .contain{padding-right: 1rem; padding-left: 1rem;}
+.c-card-header{display:flex;flex-direction: column; }
+.c-con{display: flex; flex-direction: column;}
+.containHome{padding-right: 1rem; padding-left: 1rem;
+}
+}
+.topbar-class .app-name{font-size: 2rem; font-weight: 500; font-family: cursive; padding:.5rem 0; margin-left: 1rem; color:#fff; align-items: center; display: flex !important; padding-right: .5rem 0;}
 
-.initialpage > h4{
-     padding-top: 5%; 
-     font-weight: lighter;
-    font-family: cursive;
-    position: relative;
-    animation-name:dash;
-    animation-duration: 4s;     
-}
-@keyframes example {
-   0%,
-    50% {
-      stroke-dashoffset: 100%;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-  
+a{text-decoration: none;}
+.topbar-items{display: flex; justify-content: flex-end !important; position: relative; margin-left: auto; min-width: 375px; padding: 1rem 1rem; margin-top: .5rem;}
+.topbar-links{text-decoration: none; color: #fff; font-family: cursive; font-size: 1.125rem; margin-left: 1rem;}
+.content{position: relative; background-color: #fff; flex: 1 1 auto!important; display: flex!important; flex-direction: column;}
+
+.carousel{background-color: grey; position: relative; width: 100%;}
+.carousel-item img{min-height: 20rem; border-radius: 0;}
+.carousel-inner .carousel-caption{color:black;}
+.c-footer{min-height: 2.5rem; text-align: center; font-size: .75rem; padding: .685rem 0; flex-shrink: 0; position: relative; color:white; background:transparent linear-gradient(270deg, #00BAFF 0%, #004DFF 100%) 0% 0% no-repeat padding-box ;}
+.c-card{display: flex; margin: 1rem 1rem; max-height: 20rem;}
+.c-card .c-card-img img{width: 20rem; height: 15rem; border-radius: 2rem;}
+.c-con{display: flex; flex-direction: row; margin: 2rem 3rem;  box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%); height: 600px; width: 350px; position: relative;}
+.c-card-con{margin-left: 3rem; font-size: 1rem; font-weight: 500; padding: 1rem;}
+.c-card-con p{justify-content: center; text-align: justify;}
+.c-card-con a{text-decoration: blue; margin-right: 1rem;}
+.c-card-header{display: flex; flex-direction: row;position: relative;}

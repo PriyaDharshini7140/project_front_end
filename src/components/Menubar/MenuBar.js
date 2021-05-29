@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme,withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import { Link } from 'react-router-dom'
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,17 +15,28 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Tooltip } from '@material-ui/core';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
 import { useSelector } from 'react-redux';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import axios from 'axios';
 const drawerWidth = 240;
-
+// const LightTooltip = withStyles((theme) => ({
+ 
+// }))(Tooltip);
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    marginTop:'-3%'
+  },
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -61,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
-    backgroundColor:"rgb(243, 220, 220)",
+    backgroundColor:"rgb(90, 168, 241)",
   },
   content: {
     flexGrow: 1,
@@ -82,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PersistentDrawerRight() {
+  const auth = useSelector((state)=> state.user.authorization)
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
@@ -104,17 +116,20 @@ console.log(user);
       <CssBaseline />
       
         <Toolbar>
-          <IconButton
+        <Tooltip title={auth.status} arrow>
+ <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerOpen}
             className={clsx(open && classes.hide)}
           >
+
             <Avatar
              alt={user.user_name} 
             src={user.profile_picture}/>
           </IconButton>
+          </Tooltip>
         </Toolbar>
      
       <main
@@ -139,21 +154,18 @@ console.log(user);
         </div>
         <Divider/>
         <List>
-        <ListItem>
-        <ListItemIcon><PersonRoundedIcon/></ListItemIcon>
-        <ListItemIcon><Link to={{pathname:'/profile',state:user}} className="links">Profile</Link></ListItemIcon>
-        </ListItem>
         <ListItem >
         <ListItemIcon><AccountBoxIcon /></ListItemIcon>
         <ListItemIcon><Link to={{pathname:'/Account',state:user}} className="links">My Account</Link></ListItemIcon>
         </ListItem>
-        <ListItem onClick={()=>{
+    
+        <ListItem  onClick={()=>{
           AuthService.logout()
           history.replace("/Sign in")
           window.location.reload()
           }}>
         <ListItemIcon><ExitToAppRoundedIcon/></ListItemIcon>
-        <ListItemIcon>Logout</ListItemIcon>
+        <ListItemIcon className="text">Logout</ListItemIcon>
         </ListItem>
         </List>
        </Drawer>

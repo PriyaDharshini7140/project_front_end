@@ -6,13 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import {Button, Container, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup} from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {useLocation} from "react-router-dom";
 import Axios from 'axios';
 import AuthService from "../../auth/AuthService"
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { useHistory } from "react-router-dom";
-import Services from '../../services/Services';
+import {useDispatch} from 'react-redux'
+import {updateUser} from '../../redux/Actions'
 const useStyles = makeStyles((theme) => ({
     large: {
       width: theme.spacing(18),
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function Profile(props) {
+  const dispatch = useDispatch()
     const classes = useStyles();
     const [gender, setGender] = useState('');
     const [profile_picture, setprofile_picture] =useState('');
@@ -49,7 +51,7 @@ function Profile(props) {
     const [description, setDescription] =useState('');
    const history = useHistory();
   console.log(history)
-  const user = AuthService.getCurrentUser();
+  const user = useSelector((state)=> state.user.users)
   console.log(user);
 const handleSubmit = async(age,gender,phone_number,description)=>{
   console.log(description ,age);
@@ -69,19 +71,7 @@ const handleSubmit = async(age,gender,phone_number,description)=>{
   )
   .then(res=>res.json())
   .then(data=>{
-    Axios.patch(`http://localhost:4000/user/updateUser/${user._id}`,{
-      
-      age:age,
-      gender:gender,
-      phone_number:phone_number,
-      profile_picture:data.url,
-     description:description
-    })
-     .then( (res)=>{console.log( "updated",res.data)
-     localStorage.setItem("user", JSON.stringify(res.data));
-    })      
-     .catch((e)=>{alert(e.message)})
-  
+     dispatch(updateUser(user._id,age,gender,phone_number,data.url,description))  
   })
   .catch(err=>{
       console.log(err)

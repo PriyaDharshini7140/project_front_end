@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react';
 // import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined';
 // import Dropdown from './Dropdown';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import SimpleModal from '../modal/Modal';
 import PersistentDrawerRight from '../Menubar/MenuBar';
 import { useHistory,useLocation } from "react-router-dom";
 import AuthService from '../../auth/AuthService';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import MenuLeft from '../Menubar/MenuLeft';
 import {useSelector} from "react-redux"
+import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 function Navbar() {
   const [click, setClick] = useState(false);
   const [category, setCategory] = useState('');
-
- const user = useSelector((state)=> state.user.users)
+  const auth = useSelector((state)=> state.user.authorization)
  
+ const user = useSelector((state)=> state.user.users)
+ console.log(user);
 let history = useHistory();
 let location = useLocation()
 console.log(location); 
@@ -50,96 +53,119 @@ const search =<>
     <>
    
       
-        {user === null || location.pathname === "/" || location.pathname === "/Sign up"||location.pathname === "/Sign in" ? <>
-          <nav className='navbar'>
-        {logo}
-        <div className='menu-icon' >
-          {/* <i className={click ? 'fas fa-times' : 'fas fa-bars'} /> */}
-        </div>
-        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-          <li className='nav-item'>
-          </li>
-          <li
-            className='nav-item'
-            
-          >
-       <Link
-              to='/contact us'
-              className='nav-links'
-             
-            >
-              Contact us <i className='fas fa-caret-down' />
+        {user === null || location.pathname === "/" || location.pathname === "/Sign up" || location.pathname === "/forgot password" ||location.pathname === "/Sign in" ? <>
+         
+       
+            <div class="topbar-class">
+              <div class="contain">
+                <h5 className="app-name"> IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
+                <div class="topbar-items">
+                <Tooltip title='contact us' arrow>
+       <Link to='/contact us' className='topbar-links'>
+              Contact us 
             </Link>
-          </li>
-          <li className='nav-item'>
-          
-          <Link
-              to='/About us'
-              className='nav-links'
-             
-            >
-              About us
-            </Link>
-               </li>
-          <li className='nav-item'>
-         {location.pathname === "/Sign in" ? <Link
+            </Tooltip>
+            <Tooltip title='About us' arrow>
+          <Link to='/About us' className='topbar-links'>About us</Link>
+            </Tooltip>
+              
+     {location.pathname === "/Sign in" ?
+         <Tooltip title='Register' arrow>
+         <Link
               to='/Sign up'
-              className='nav-links'
+              className='topbar-links'
               
             >
              Register
-            </Link>:location.pathname === "/Sign up" ?  <Link
+            </Link>
+            </Tooltip>
+            :location.pathname === "/Sign up" ? 
+            <Tooltip title='Login' arrow>
+            <Link
               to='/Sign in'
-              className='nav-links'
+              className='topbar-links'
               
             >
              Sign in
-            </Link>: <Link
+            </Link>
+            </Tooltip>
+            :<Tooltip title='Login' arrow>
+            <Link
               to='/Sign in'
-              className='nav-links'
+              className='topbar-links'
               
             >
              Sign in
-            </Link>}
+            </Link>
+            </Tooltip>}
           
             
-          </li>
-        </ul>
-        </nav> 
-        </>: user.role === 'user' && (location.pathname === "/home page" || location.pathname === "/Account" || location.pathname === "/profile" || location.pathname === "/search_by_category")? 
+            </div>
+            </div>
+            </div>
+           
+        </>: user.role === 'user' && (location.pathname === "/home page" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
         
         <>
-         <nav className='navbar'>
-           {location.pathname === "/Account" || location.pathname === "/profile" || location.pathname === "/search_by_category" ? <MenuLeft/>:""}
-         <div className='navbar-logo'>{user.user_name}</div> 
-        <div className='menu-icon' >
-          {/* <i className={click ? 'fas fa-times' : 'fas fa-bars'} /> */}
-        </div>
-        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-          <li className='nav-item'>
-          </li>
-          <li
-            className='nav-item'
-     >
-       {search}
-          </li>
-          <li className='nav-item'>
-          {location.pathname === "/home page" ? <PersistentDrawerRight user={user}/>:""}
+         <div class="topbar-class">
+         <div class="containHome">
+           {location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""}
+           <h5 className="app-name"> {user.user_name}
+         {auth.status === "Verified" ? 
+         <VerifiedUserRoundedIcon/>:<></>}
+          </h5>
+         <div class="topbar-items">
+        
           
-               </li>
-          <li className='nav-item'>
+       {search}
+          
+         
+          {location.pathname === "/home page" ? <PersistentDrawerRight user={user}/>:<></>}
+          
+        
          
           <SimpleModal user={user}/>
-            
-          </li>
-        </ul>
-        </nav>
+           
+      </div>
+      </div></div>
+        
         </>
         
         :
         
         <>
-        Admin
+        <div class="topbar-class">
+         <div class="containHome">
+       
+        { user.role === 'admin'&& location.pathname === "/verification"  ? "":""}
+        <h5 className="app-name">{user.user_name}{user.role}</h5>
+        <div class="topbar-items">
+        <div className='topbar-links'>
+          {location.pathname === "/verification"  ?  <Link
+              to='/verified Users'
+              className='nav-links'>
+             user list
+            </Link>:<Link
+              to='/verification'
+              className='nav-links'
+              
+            >
+             Home page
+            </Link>}
+            </div>
+         
+            <div className='topbar-links'>
+           
+       <button className='navbar_button' onClick={()=>{
+          AuthService.logout()
+          history.replace("/Sign in")
+          window.location.reload()
+          }}>logout</button>
+    </div>
+        </div>
+        </div>
+        </div>
+
         </>}
         
         

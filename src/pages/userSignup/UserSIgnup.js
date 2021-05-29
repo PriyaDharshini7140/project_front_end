@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Card } from '@material-ui/core';
+import {Button, Card, Tooltip } from '@material-ui/core';
 import './UserSIgnup.css'
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
@@ -8,7 +8,12 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
 import AuthService from '../../auth/AuthService';
-
+import EmailIcon from '@material-ui/icons/Email';
+import PersonIcon from '@material-ui/icons/Person';
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import validator from 'validator'
+import { validate } from 'react-email-validator';
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -59,60 +64,80 @@ function UserSIgnup(props) {
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
-      const register=(user_name,email_id,password)=>{
-        const signup = {
-          user_name:user_name,
-          email_id:email_id,
-          password:password
-        }
-         console.log(signup)
-         Axios.post('http://localhost:4000/user/addUser',{
-          user_name:user_name,
-          email_id:email_id,
-          password:password
-         })
-         .then( (res)=>console.log(res.data))        
-         .then(
-          alert("Registered successful")
-         ).catch((e)=>{alert(e.message)})
-      }
+      
       const handleSubmit =(e)=>{
         e.preventDefault()
       }
-      const  validateForm=()=>{
-        return(
-          name.length > 0 &&
-         email.length > 0 &&
-        password.length > 0 
-        )
-          }
+      function validateName() {
+        if(!name)
+        return("Name Required")
+    }
+    
+    function ValidateEmail() 
+    {
+    if (!email)
+      {
+        return ("Email Required")
+      }
+      else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))
+      {
+          return("Invalid Email")
+      }
+    }
+    
+    function validatepassword(){
+        if(!password){
+            return("Password Required")
+        }
+        else if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/.test(password))
+        {
+            return("password should have one uppercase,number and special character ")
+        }
+      }
+     
     
       const classes = useStyles();
     return (
         <div className='user-signup'>
-        <Card className='user-signup-card'>
-            <center>
-                <h3 >
-                    <b className="user-signup-cardAction">
-           Welcome to Idea Wrapper
-   </b> </h3></center>
-           
+        <div className='user-signup-card'>
+        <div className="user-login-cardAction">
+              REGISTER<EmojiObjectsIcon/>
+       </div>
+       <div className='innerCard'>
+         <center>
    <form className={classes.root}  autoComplete="on" onSubmit={handleSubmit}>
-   <b>userName</b>          <center> <TextField id="outlined-basic" label='UserName' type="text" variant="outlined"  onChange={(e)=>setName(e.target.value)} /></center>
+   <Tooltip title='From 4 to 20 letters' arrow>
+    <TextField id="outlined-basic" helperText={validateName()}
+    InputProps={{
+      startAdornment: <InputAdornment position="start"><PersonIcon/></InputAdornment>,
+    }}
+   placeholder="userName" type="text" variant="outlined"  onChange={(e)=>setName(e.target.value)} />
                
+          </Tooltip>
+          <Tooltip title='Enter valid Email' arrow>
+           <TextField id="outlined-basic" placeholder='email' type="email" variant="outlined" helperText={ValidateEmail()}
+             InputProps={{
+              startAdornment: <InputAdornment position="start"><EmailIcon/></InputAdornment>,
+            }}
           
-                <b>Email</b>          <center> <TextField id="outlined-basic" label='email' type="email" variant="outlined"  onChange={(e)=>setEmail(e.target.value)} /></center>
-               
-    
+            onChange={(e)=>setEmail(e.target.value)} />
+               </Tooltip>
+               <Tooltip title='From 8 to 15 characters' arrow>
                 
-                 <b>Password</b>      <center> <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-              <OutlinedInput
+          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+              
+              <TextField
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
                 value={values.password}
+                placeholder="password"
+                helperText={validatepassword()}
+                variant="outlined"
                 onChange={(e)=>setPassword(e.target.value)}
-                endAdornment={
+                InputProps={{
+                  startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon /></InputAdornment>,
+                
+                endAdornment:
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -123,23 +148,34 @@ function UserSIgnup(props) {
                       {values.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                }
+                }}
                 labelWidth={70}
               />
-            </FormControl></center>
+            </FormControl>
                
-                
+           </Tooltip>
          
          <Button className='user-signup-card-button' onClick={()=>{
-           AuthService.register(name,email,password)
-         }}  disabled={!validateForm()}>Register</Button><br/>
+           if(validate(email)){
+            AuthService.register(name,email,password).then((e)=> {
+              console.log(e);
+               props.history.push('/Sign in')
+            }
+              )
+           }
+         else{
+           alert('Enter valid Email')
+         }
+         }}  disabled={validateName(),ValidateEmail(),validatepassword()}>Register</Button><br/>
          </form>
+         </center>
          <center>
          
-       <Link to='/Sign in'>Already a User</Link>  
+       <Link to='/Sign in' className="nav-lin">Already a User</Link> 
+       
                </center>
-           
-        </Card>
+               </div>
+        </div>
      
     </div>
        

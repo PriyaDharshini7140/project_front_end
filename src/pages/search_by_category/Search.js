@@ -1,38 +1,26 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux';
 import CardCom from '../../components/card/CardCom';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import AuthService from '../../auth/AuthService';
-import MenuLeft from '../../components/Menubar/MenuLeft';
+import {useHistory} from 'react-router-dom'
 function Search(props) {
-    console.log(props.history.location.state);
-    const [Data,setData] = useState([]);
-    const [Open,setOpen] = useState(1);
-    const user = AuthService.getCurrentUser()
-    useEffect(()=>{
-      axios.post('http://localhost:4000/post/getPostByCategory/',{
-          category:props.history.location.state
-      }).then(
-        (res)=>{setData(res.data)
-         console.log(res.data)
-        }
-       
-       )
-      },[props.history.location.state])
+  const user = useSelector((state)=> state.user.users)
+  console.log(user);
+  const history = useHistory()
+    const search = history.location.state
+    console.log(search);
+   const Data = useSelector((state)=>state.post.posts)
+   console.log(Data);
+   const filteredPost =
+   Data  &&
+   Data.filter((e) => e && e.category.map(a=>a.toLowerCase().replace(/\s/g, '').includes(search.toLowerCase().replace(/\s/g, ''))))
+
+  console.log(filteredPost)
     return (
         <div>
-        <div>
-        {Data.map((e)=> <>
-          {e.posts.length > 0 ? <>{e.posts.map((a)=>
-          <CardCom e={e} a={a}/>
-          )}</>
-           : <>
-           {/* <CameraAltIcon fontSize="large"/>
-           no such post is found */}
-           {console.log("no posts")}
-           </>}
-            </>)}
-           </div>
+   {Data.map(e=>e.category.map(s=>
+     s.toLowerCase().replace(/\s/g,'').includes(search.toLowerCase().replace(/\s/g,'')) ?<CardCom  a={e}/>:<></>
+     
+   ))}
        </div>
        
     )

@@ -10,11 +10,11 @@
    
     justify-content: center;
   
-    background: -webkit-linear-gradient(left top,gray, beige);
+    /* background: -webkit-linear-gradient(left top,gray, beige);
             background: -o-linear-gradient(bottom right,  gray, beige);
             background: -moz-linear-gradient(bottom right,gray, beige);
-            background: linear-gradient(to bottom right,  gray, beige);
-            background-size:cover;
+            background: linear-gradient(to bottom right,  gray, beige); */
+            /* background-size:cover; */
         font-size: 50px;
         flex-direction: column;
       

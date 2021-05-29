@@ -14,14 +14,15 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import { Avatar } from '@material-ui/core';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
-import Services from '../../services/Services';
-import { useSelector } from 'react-redux';
+
+import { useSelector,useDispatch } from 'react-redux';
+import ModalProfile from '../modal/ModalProfile';
 
 const drawerWidth = 240;
 
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
-    backgroundColor:"rgb(243, 220, 220)",
+    backgroundColor:"rgb(90, 168, 241)",
   },
   content: {
     flexGrow: 1,
@@ -89,6 +90,7 @@ const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
    const user = useSelector((state)=> state.user.users)
+   const dispatch = useDispatch()
 console.log(user);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -149,18 +151,33 @@ const remove=()=>{
         <ListItemIcon><HomeRoundedIcon/></ListItemIcon>
         <ListItemIcon><Link to="/home page" className="links">Home page</Link></ListItemIcon>
         </ListItem>
+        <ModalProfile/>
         <ListItem onClick={()=>
         {
           if(window.confirm("Do you want to delete your account")){
-            Services.DeleteAccount(user._id);
-             history.replace("/Sign in")
-             window.location.reload()
+           AuthService.delete();
+           history.replace("/Sign in");
+          window.location.reload();
           }
+         
+         
         }
             
         }>
-        <ListItemIcon><DeleteRoundedIcon/></ListItemIcon>
-        <ListItemIcon>Delete Account</ListItemIcon>
+        <ListItemIcon><DeleteRoundedIcon /></ListItemIcon>
+        <ListItemIcon className="text">Delete Account</ListItemIcon>
+        </ListItem>
+       
+        <ListItem onClick={()=>{
+          AuthService.logout()
+         
+          history.replace("/Sign in")
+             window.location.reload()
+          }}>
+           
+            
+        <ListItemIcon><ExitToAppRoundedIcon /></ListItemIcon>
+        <ListItemIcon className="text">Logout</ListItemIcon>
         </ListItem>
         </List>
        
