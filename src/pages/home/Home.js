@@ -1,41 +1,49 @@
 
-import React, { useEffect, useState } from 'react'
-import Axios from 'axios'
+import React from 'react'
+
 import'../../components/card/PostCard.css'
-import AuthService from "../../auth/AuthService"
+
 import CardCom from '../../components/card/CardCom';
 
-import { useSelector,useDispatch } from 'react-redux';
-import {newFeeds} from '../../redux/postActions'
-import './Home.css'
+import { useSelector} from 'react-redux';
 
-import axios from 'axios';
+import './Home.css'
+import moment from 'moment';
+
 function Home() {
-    const dispatch = useDispatch()
-   const user = useSelector((state)=> state.user.users)
-// console.log(user);
 const Data = useSelector((state)=> state.post.posts)
-// console.log(Data);
-const data = useSelector((state)=> state.post)
-console.log(data);
-    const [Open,setOpen] = useState(1);
-    
-    useEffect(()=>{
-        
-    },[])
-    
+
+const data = useSelector((state)=> state.post.LikeSortedPosts)
     return (
-       <div>
-    <div className='homepage'>
-    
+      <>
+       <div class="wrapper-class">
+         <div className="homepage">
+   
+    <div className="col-5">
      {Data.map((e)=> <>
-          
+         
           <CardCom  a={e}/>
         
             </>)}
+            </div>
+          
+           <div className="col-4">
+    
+           {data.map((e)=> <>
+         {moment(e.createdAt).week() === moment().week() ? 
+         <CardCom  a={e}/>:<></>
+         }
+           </>)}
      
            </div>
-       </div>
+           </div>
+           </div>
+           <footer class="c-footer">
+          <div class="c-inner">
+            Copyright IdeaWrapper. All rights reserved. For internal use only.
+          </div>
+        </footer>
+       </>
     )
 }
 

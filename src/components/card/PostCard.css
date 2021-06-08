@@ -1,10 +1,10 @@
 .homepage__card{
-    /* display: flex; */
-  flex-direction: column;
+    
+  /* flex-direction: column;
   font-family: cursive;
   justify-content: start;
-  width: 550px;
-  /* min-height: 500px; */
+  width: 600px;
+ 
   font-size: medium;
 margin: auto;
 
@@ -13,6 +13,15 @@ box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%);
 align-self: flex-end;
 margin-top: 2%;
 
+text-align: left; */
+display: flex;
+  flex-direction: column;
+  justify-content: start;
+  font-size:1.25rem;
+font-family:Bold;
+/* align-items: justify; */
+
+align-self: flex-end;
 text-align: left;
 
 }
@@ -24,7 +33,7 @@ text-align: left;
 .card{
   border-radius: 20px;
  padding:1rem;
- background-color: rgb(252, 223, 223);
+ background-color: rgb(201, 201, 21);
  margin-bottom: 5%;
  box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%);
  display: flex;
@@ -47,18 +56,18 @@ text-align: left;
   font-family: cursive;
   color: gray;
 }
- .nav-link{
-    color:rgb(251, 252, 253);
-    font-family: cursive;
-    
-    font-size:larger;
-   /* margin-left: -70%; */
+ .n{
+  text-decoration: none; color: white; font-family: cursive;
     
   }
   .image{
     width: 50%;
     display: flex;
     /* height: 150px; */
+  }
+  .icon{
+   
+   margin-left: 20rem;
   }
 .reply{
   padding-left:5% ;
@@ -77,10 +86,16 @@ text-align: left;
  color: rgb(97, 96, 96);
 }
 .homepage__card__header
-  {display: flex;  background-color:rgb(90, 168, 241); height:60px; justify-content: space-between !important; position: relative; margin-left: auto; min-width: 375px; padding: 1rem 2rem;};
+  {display: flex; 
+   
+    justify-content:flex-start ;
+    align-items: center;
+
+    padding: 10px;
+    background-color:rgb(90, 168, 241)};
 
 .homepage__card__header__avatar{
-font-weight: 700;
+/* font-weight: 700; */
   
 }
 .userProfile{
@@ -144,7 +159,34 @@ padding: 3%;
 .commentspost{
   display: flex;
   align-items: center;
-  background-color:  rgb(253, 234, 197);
+  background-color:  rgb(176, 219, 248);
+ 
+  height: 35px;
+  border-radius: 20px;
+  
+}
+.commentspost > .MuiSvgIcon-root{
+  color: rgb(139, 138, 138);
+  align-self: flex-end;
+
+}
+.commentspost > input{
+  border: none;
+  outline-width: 0;
+  margin-left: 10px;
+  background-color: transparent;
+  color:black;
+}
+.com{
+  display: none;
+  align-items: center;
+  background-color: transparent;
+ 
+}
+.commentspost{
+  display: flex;
+  align-items: center;
+  background-color:  rgb(176, 219, 248);
  
   height: 35px;
   border-radius: 20px;
@@ -235,7 +277,7 @@ padding: 3%;
   font-size: medium;
 }
 .text{
-  font-family: cursive;
+  /* font-family: cursive; */
   /* margin-right: 5%; */
   text-overflow: inherit;
     white-space: normal;
@@ -309,6 +351,9 @@ padding: 3%;
     background-color:transparent;
     color:gray
   }
+  .re{
+    display: none;
+  }
   .iconbutton{
     color:rgb(139, 138, 138);
     margin-bottom: 10px;
@@ -322,4 +367,99 @@ padding: 3%;
     display: flex;
     flex-direction: row;
     justify-content:left;
+  }
+ 
+  @media screen and (max-width: 980px){
+    .homepage__card{
+    
+     display: flex;
+     width: 390px;
+   
+    }
+    .homepage__card__header{
+          
+    }
+    .nav-link{
+      color:rgb(251, 252, 253);
+      font-family: cursive;
+      
+      font-size:medium;
+     /* margin-left: -70%; */
+      
+    }
+    .icon{
+         margin-left: 5.5rem;
+    }
+    .footer{
+      display: flex;
+      flex-direction: row;
+      /* padding: 0.5rem; */
+     
+    }
+    .footerrep{
+      /* display: flex;
+      flex-direction: row;
+      justify-content:left; */
+    }
+    .comments{
+      display: none;
+      align-items: center;
+      background-color: transparent;
+     
+    }
+    .com{
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+     justify-content: center;
+    }
+    .comm{
+      display: flex;
+      align-items: center;
+      background-color:  rgb(155, 211, 248);
+     
+      height: 35px;
+      border-radius: 20px;
+      
+    }
+    .comm > .MuiSvgIcon-root{
+      color: rgb(139, 138, 138);
+      align-self: flex-end;
+    
+    }
+    .comm > input{
+      border: none;
+      outline-width: 0;
+      margin-left: 10px;
+      background-color: transparent;
+      color:black;
+    }
+    .reply{
+      display: none;
+      
+    }
+    .re{
+      display: flex;
+      align-items: center;
+      background-color:white;
+      /* width: 100%; */
+      height: 35px;
+      border-radius: 20px;
+     
+      
+    }
+    .r > .MuiSvgIcon-root{
+      color: rgb(139, 138, 138);
+      /* align-self: flex-end; */
+      
+    }
+    .r > input{
+  
+      border: none;
+      outline-width: 0;
+      margin-left: 0px;
+      margin-bottom: 10px;
+      background-color:transparent;
+      color:gray
+    }
   }

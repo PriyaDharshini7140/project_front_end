@@ -1,22 +1,14 @@
-.user{
-  width:350px;
-  /* height: 600px; */
-  box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%);
-  position: fixed;
-  top: 6em;;
-  z-index:1;
-  background-color:#5AA8F1;
-  border-radius: 20px;
-  display: flex;
-}
+
 .user_inner{
   width:330px;
-  /* height: 580px; */
+  display: flex;
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%);
-  margin:auto;
   margin-top: .5rem;
   background-color:whitesmoke;
   border-radius: 20px;
+  position:sticky;
+  top: 0;
+  z-index:1;
 }
 .user_inner_details{display: flex; flex-direction: column;}
 .user_inner_details_avatars{justify-content:space-evenly ;font-size: large;margin:.5rem}
@@ -45,4 +37,9 @@ padding: 3%;
   margin-top: -0.9%;
   /* background-color: rgb(53, 52, 50); */
   /* border-radius: 20px; */
+}
+.posts{
+  display: flex;
+  top:0;
+  flex-direction: column;
 }

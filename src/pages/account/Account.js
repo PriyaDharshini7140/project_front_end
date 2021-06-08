@@ -40,6 +40,7 @@ console.log(Data.map(e=>e.user_id));
 const classes = useStyles()
     return (
       <div>
+      <div>
       <div className='user'>
         <div className='user_inner'>
           <div className='user_inner_details'>
@@ -62,13 +63,20 @@ const classes = useStyles()
             
       </div>
        </div>
-       
+       <div className='posts'>
           {Data.map((e)=> <>{
            user._id === e.user_id ? <CardCom  a={e}/>:
         <></>
           }
            </>)}
+           </div>
      
+        </div>
+        <footer class="c-footer">
+          <div class="c-inner">
+            Copyright IdeaWrapper. All rights reserved. For internal use only.
+          </div>
+        </footer>
         </div>
     )
 }

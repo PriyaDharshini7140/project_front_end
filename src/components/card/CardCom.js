@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
-import { Avatar, Card, IconButton, Input, InputAdornment, TextField, Tooltip, Typography} from '@material-ui/core'
+import { Avatar, Button, Card, IconButton, Input, InputAdornment, Snackbar, TextField, Tooltip, Typography} from '@material-ui/core'
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import Comment from './Comment';
 import {UpVote,DownVote,DeletePost} from "../../redux/postActions"
 import ShowMoreText from 'react-show-more-text';
-import { Link,useHistory} from 'react-router-dom';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { BsFillChatFill} from "react-icons/bs";
+
 import'./PostCard.css'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
@@ -25,6 +27,13 @@ import PersonIcon from '@material-ui/icons/Person';
 import PhoneIcon from '@material-ui/icons/Phone';
 import WorkIcon from '@material-ui/icons/Work';
 import Carousel from 'react-bootstrap/Carousel'
+import MuiAlert from '@material-ui/lab/Alert';
+import ModalReport from '../modal/ModalReport';
+import moment from "moment"
+import LinkIcon from '@material-ui/icons/Link';
+import ModalMvp from '../modal/ModalMvp';
+import MvpCard from './MvpCard';
+// import Link from '@material-ui/core/Link';
 const useStyles = makeStyles((theme,colors) => ({
   
   root: {
@@ -37,6 +46,9 @@ const useStyles = makeStyles((theme,colors) => ({
     marginLeft:"30%",
     marginTop:"1%",
   },
+  like:{
+    color:"#00b0ff"
+  }
  
 }));
 const AvatarUserDetails = withStyles((theme) => ({
@@ -50,26 +62,57 @@ const AvatarUserDetails = withStyles((theme) => ({
 function CardCom({a}) {
   const colors =['#e57373','#f06292','#64b5f6','#4dd0e1','#4db6ac','#dce775','#ffb74d','#fff176','#ff8a65','#90a4ae','#18ffff']
 const history = useHistory()
+const location = useLocation()
   const classes = useStyles();
   console.log(colors);
-  console.log(classes);
+  console.log(a);
+  const [values, setValues] = useState({
+        showPassword: false,
+      });
+      const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+      };
   const user = useSelector((state)=> state.user.users)
 // console.log(user);
 const auth = useSelector((state)=> state.user.authorization)
  console.log("search",a);
-  console.log(auth);
+  console.log(values);
+  const mvp = useSelector((state)=>state.post.mvp)
+  console.log(mvp);
 
-// console.log(post);
+ 
 
 const dispatch = useDispatch();
 const [anchorEl, setAnchorEl] = React.useState(null);
-    const [Open,setOpen] = useState(1);
-    // const [Close,setClose] = useState(true);
-    const [comment,setComment] = useState('');
-   const color = false
    
+    
+    const [comment,setComment] = useState('');
+   
+    const [open, setOpen] = React.useState(false);
+    const [Open, setopen] = React.useState(false);
+    const handleOpen = () => {
+      setopen(true);
+    };
+    const handle = () => {
+      setOpen(true);
+    };
+    const Close = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
   
-
+      setopen(false);
+    };
+    const handleclose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
+    function Alert(props) {
+      return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
   
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -80,19 +123,15 @@ const [anchorEl, setAnchorEl] = React.useState(null);
         setAnchorEl(null);
       };
      
-        const [index, setIndex] = useState(0);
-      
-        const handleSelect = (selectedIndex, e) => {
-          setIndex(selectedIndex);
-        };
+        
     return (
         <div>
-            <Card className='homepage__card' key={a._id}>
+            <Card className='homepage__card' style={{borderRadius:"50px"}} key={a._id}>
               
             <div class='homepage__card__header'>
        <AvatarUserDetails 
        title={
-        // <React.Fragment>
+       
            <div className='userProfile_card'>
             <div className='upper'>
           <Avatar alt={a.user.user_name} src={a.user.profile_picture} className={classes.large}/>
@@ -100,10 +139,10 @@ const [anchorEl, setAnchorEl] = React.useState(null);
           <div className="upperPart">
             <div className='inner'>
             
-            <div><PersonIcon/>{user.user_name}</div><br/>
-            <div><EmailIcon/>{user.email_id}</div><br/>
-            <div><WorkIcon/>{user.work === null ? <>not mentioned</>:user.work}</div><br/>
-            <div><SchoolRoundedIcon/>{user.education === null ? <>not mentioned</>:user.education}</div><br/>
+            <div><PersonIcon/>{a.user.user_name}</div><br/>
+            <div><EmailIcon/>{a.user.email_id}</div><br/>
+            <div><WorkIcon/>{a.user.work === null ? <>not mentioned</>:a.user.work}</div><br/>
+            <div><SchoolRoundedIcon/>{a.user.education === null ? <>not mentioned</>:a.user.education}</div><br/>
            
 
            
@@ -118,18 +157,19 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       }
       placement="left-start">
        
-          
+         
                
                    <Avatar alt={a.user.user_name} src={a.user.profile_picture}/>
                    
                    </AvatarUserDetails>
-                   <h4 class='homepage__card__header__avatar'>
-                    <Link to={{pathname:'/userProfile',state:a.user}} className="nav-link">
+                   <div className="n">
+                    <Link to={{pathname:'/userProfile',state:a.user}}  style={{color:"white"}}>
                    {a.user.user_name}
                    <VerifiedUserRoundedIcon/>
                    </Link> 
-                   </h4>
-                   
+                   {moment(a.createdAt).format("MMMD,YYYY")}
+                   </div>
+                   <div>
                     {auth.status === "Verified" ? <>
                    <IconButton>
                        <MoreVertIcon onClick={handleClick}/>
@@ -142,7 +182,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
         onClose={handleClose}
       >
        {user._id === a.user_id ? <>
-        <ModalEdit post_id={a._id} post_text={a.post_text} onClick={()=> setAnchorEl(null)}/>
+        <ModalEdit post={a} onClick={()=> setAnchorEl(null)}/>
         
         <MenuItem onClick={()=>{ 
            setAnchorEl(null)
@@ -153,10 +193,8 @@ const [anchorEl, setAnchorEl] = React.useState(null);
     }>delete</MenuItem>
        </>
        :
-       <MenuItem onClick={()=>{ alert("post is reported")
-        setAnchorEl(null)
-    }
-    }>report</MenuItem>
+       <ModalReport postId={a._id}/>
+    
       }
       
       </Menu>
@@ -169,13 +207,11 @@ const [anchorEl, setAnchorEl] = React.useState(null);
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}>
-                   <MenuItem onClick={()=>{ alert("post is reported")
-        setAnchorEl(null)
-    }
-    }>report</MenuItem>
+                   <ModalReport postId={a._id}/>
     </Menu>
     </>}
-                  
+    </div>          
+             
                    </div>
                    
               
@@ -196,58 +232,58 @@ const [anchorEl, setAnchorEl] = React.useState(null);
 
                </div>
                <br/>
-                 <div>
-                 <ShowMoreText
-                    className='text'
-                lines={4}
-                more='Show more'
-                less='Show less'
-               
-                expanded={false}
-               
-            >{a.post_text}</ShowMoreText>
-                 </div>
-             <div>
-               
-                 <Carousel controls='false'>
-                 {a.post_url.map(e=>
-                 <Carousel.Item>
 
-                 <img key={e}
-                      className="d-block w-100"
-                      style={{height:'100px'}}
-                       src={e}
-                       alt={a.user.user_name}
-                     />
-                     </Carousel.Item>
-                      )}
-                   </Carousel>
+               <b>IdeaTitle:<Chip size="small" style={{backgroundColor:'lightblue'}} label={a.idea_title}/></b>
+               <br/>
+                 <div>
+                 <div
+                    className='text'><b>Description:</b>{a.post_text}<Link to={{pathname:'/postDetails',state:a}} >...more</Link></div>
+                 </div><br/>
                
-            
-           
-             </div>
-            
+               
               
               
                {auth.status === "Verified" ? <>
                <div className='footer'>
-               <IconButton>
-                   <ThumbUpAltOutlinedIcon onClick={()=>dispatch(UpVote(a._id,user._id))}/>{a.up_vote.length}
-                   </IconButton> 
-                 <IconButton>
-                       <ThumbDownAltOutlinedIcon  onClick={()=>{
+               
+                   <ThumbUpAltIcon 
+                   className={a.up_vote.includes(user._id)? classes.like:""}
+                  onClick={()=>{
+                    
+                     handleOpen({ vertical: 'bottom', horizontal: 'left' })
+                     dispatch(UpVote(a._id,user._id))
+                    
+                     }}/>{a.up_vote.length}
+                     <Snackbar open={Open} anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }} autoHideDuration={1000} onClose={Close}>
+          {a.up_vote.includes(user._id)?<Alert  severity="info">removed</Alert>
+      :<Alert  severity="info">liked</Alert>}
+        </Snackbar>
+                   
+                
+                       <ThumbDownAltIcon 
+                       
+                       className={a.down_vote.includes(user._id)? classes.like:""}onClick={()=>{
+                          handle({ vertical: 'bottom', horizontal: 'left' })
                            dispatch(DownVote(a._id,user._id))
                            }}/>{a.down_vote.length}
-                       </IconButton> 
-                       <IconButton>
-                           <CommentOutlinedIcon  onClick={()=>{
-                          const add = Open+1;
-                           setOpen(add)
-                           
-                       }}/>{a.comments.length}
-                       </IconButton>
+                           <Snackbar open={open} anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }} autoHideDuration={1000} onClose={handleclose}>
+          {a.down_vote.includes(user._id)?<Alert  severity="info">removed</Alert>
+      :<Alert  severity="info">disliked</Alert>}
+        </Snackbar>
                        
-                        <div className="comments">
+                           <BsFillChatFill style={{fontSize:"large"}} onClick={handleClickShowPassword}/>{a.comments.length}
+                           
+                       
+                </div>
+                {values.showPassword === true? 
+                <>
+                <div className="comments">
                     <div className="commentspost">
                         <input placeholder="add comment"   type="text" onChange={(e)=>setComment(e.target.value)}/>
                         <IconButton>
@@ -260,16 +296,16 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                         </IconButton>
                     </div>
                     
-                </div>
-                </div>
-                {Open % 2 === 0 ? 
-                <Comment post={a._id}/>:<></>
+                </div><br/>
+                <Comment post={a._id}/></>
+                :<></>
 }
 </>:<></>}
 
 </div> 
               
-              </Card>
+              </Card><br/>
+              
         </div>
     )
 }

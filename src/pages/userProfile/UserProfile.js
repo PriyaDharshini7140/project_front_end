@@ -25,9 +25,9 @@ function UserProfile(props) {
     const {location:{state}}=history;
     console.log(state);
     console.log(history);
-    const user = useSelector((state)=> state.user.users)
+    // const user = useSelector((state)=> state.user.users)
     const auth = useSelector((state)=> state.user.authorization)
-    console.log(user);
+    // console.log(user);
     
     const Data = useSelector((state)=> state.post.posts)
    console.log(Data.map(e=> e.user_id));

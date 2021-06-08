@@ -69,13 +69,27 @@ class AuthService {
      ).catch((e)=>console.log("err",e))
   }
 
-  setPassword( email_id, password) {
+  setPassword( email_id) {
     return axios.post('http://localhost:4000/user/forgetPassword',{
        
-        email_id:email_id,
-        password:password
+        email_id:email_id
+       
        }).then((res)=>{
         console.log(res.data);
+        alert(res.data.message)
+            
+      }).catch((e)=>console.log(e))
+  }
+
+  setNewPassword(password,token) {
+    return axios.post('http://localhost:4000/user/new-password',{
+       
+        password:password,
+        token:token
+       
+       }).then((res)=>{
+        
+        alert(res.data.message)
             
       }).catch((e)=>console.log(e))
   }

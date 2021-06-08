@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button,FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField, Tooltip } from '@material-ui/core';
-import './UserLogin.css'
+import './Login.css'
 import { Link} from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
       '& > *': {
         margin: theme.spacing(1),
         width: '25ch',
+        
       },
     },
     root1:{
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
              
              
             },
-        
+        width:"100%"
     },
     margin: {
         margin: theme.spacing(1),
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
       },
       textField: {
         width: '25ch',
+      },
+      icon:{
+        color:"#00BAFF"
       },
   }));
 function UserLogin(props) {
@@ -66,27 +70,29 @@ const [password,setPassword] = useState('')
         event.preventDefault();
       };
       
-      return (
+      return (<div>
         
-        <div className='user-login'>
-            <div className='user-login-card'>
+        <div class="login-cont">
+          <div class="login-form form-group">
+           
                
-                    <div className="user-login-cardAction">
-               LOGIN <VpnKeyIcon/>
-       </div>
-       <div className='innerCard'>
-         <center>
+                   
+              <h3>LOGIN <VpnKeyIcon/></h3> 
+      
+       <div className="login-inputs">
+         
            <form className={classes.root}  autoComplete="on">
-                
+             
            <Tooltip title='Enter valid Email' arrow>
                  <TextField id="outlined-basic"
+                className="login-inputs"
                   InputProps={{
-                    startAdornment: <InputAdornment position="start"><EmailIcon/></InputAdornment>,
+                    startAdornment: <InputAdornment position="start"><EmailIcon  className={classes.icon}/></InputAdornment>,
                   }}
                   placeholder='email'
                  type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/>
                 </Tooltip>
-     
+                <br/>
                 <Tooltip title='From 8 to 15 characters' arrow>
            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
           
@@ -97,8 +103,9 @@ const [password,setPassword] = useState('')
             value={values.password}
             onChange={(e)=>setPassword(e.target.value)}
             variant="outlined"
+            
             InputProps={{
-              startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon /></InputAdornment>,
+              startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon className={classes.icon}/></InputAdornment>,
             
             endAdornment:
               <InputAdornment position="end">
@@ -108,7 +115,7 @@ const [password,setPassword] = useState('')
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  {values.showPassword ? <Visibility className={classes.icon} /> : <VisibilityOff className={classes.icon}/>}
                 </IconButton>
               </InputAdornment>
             }}
@@ -116,23 +123,34 @@ const [password,setPassword] = useState('')
           />
         </FormControl>
         </Tooltip>
-           
+         
              </form>
-             </center>
+            
+            
             <div className={classes.root1}>
+              <center>
              <Button className='user-login-card-button' onClick={()=>{ 
                dispatch(fetchUsers(email,password))
             }
             
-            }>login</Button><br/>
+            }>login</Button>
+            </center>
+            <br/>
                 </div>
               <center>
-       <Link to='/Sign up' className='nav-lin'>Create a Account</Link>
+       <Link to='/Sign up' className='nav-lin'>Do you have a account ?</Link>
        <Link to='/forgot password' className='nav-lin'>Forgot password</Link> 
                </center>
                </div>
             </div>
          
+       
+        </div>
+        <footer class="c-footer">
+          <div class="c-inner">
+            Copyright IdeaWrapper. All rights reserved. For internal use only.
+          </div>
+        </footer>
         </div>
     )
 }

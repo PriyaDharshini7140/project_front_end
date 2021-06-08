@@ -11,11 +11,11 @@ function InitialPage() {
         <div>
         <div>
           <div class="content">
-            <Carousel fade pause='hover' >
+            <Carousel  pause='hover' >
 <Carousel.Item interval={1000}>
-  <a href="#idea"><img
+  <a href="#idea" ><img
     className="d-block w-100"
-    style={{height:'600px'}}
+    style={{height:'400px',opacity:0.5}}
     src={'assets/initialpageblack.jpg'}
     alt="First slide"
   /></a>
@@ -26,7 +26,7 @@ function InitialPage() {
 </Carousel.Item>
 <Carousel.Item interval={1000}>
   <a href="#contact"><img
-  style={{height:'600px'}}
+  style={{height:'400px',opacity:0.5}}
     className="d-block w-100"
     src={'assets/creativity.jpg'}
     alt="Second slide"
@@ -39,7 +39,7 @@ function InitialPage() {
 </Carousel.Item>
 <Carousel.Item interval={1000}>
   <a href="#about"><img
-  style={{height:'600px'}}
+  style={{height:'400px',opacity:0.5}}
     className="d-block w-100"
     src={'assets/laplap.jpg'}
     alt="Third slide"

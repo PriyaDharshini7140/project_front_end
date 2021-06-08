@@ -1,5 +1,5 @@
 import {
-   
+   REPORT,
     STATUS
   } from './Types'
   
@@ -7,6 +7,7 @@ import {
     
  
   status:[],
+  reports:null
 
     
   }
@@ -20,7 +21,13 @@ import {
          status:action.payload
           
         }
-       
+        case REPORT:
+          return {
+           ...state,
+           reports:action.payload
+            
+          }
+         
       default: return state
     }
   }

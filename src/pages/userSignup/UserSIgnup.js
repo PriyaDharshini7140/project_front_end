@@ -98,6 +98,7 @@ function UserSIgnup(props) {
     
       const classes = useStyles();
     return (
+      <div>
         <div className='user-signup'>
         <div className='user-signup-card'>
         <div className="user-login-cardAction">
@@ -166,7 +167,7 @@ function UserSIgnup(props) {
          else{
            alert('Enter valid Email')
          }
-         }}  disabled={validateName(),ValidateEmail(),validatepassword()}>Register</Button><br/>
+         }}disabled={validateName(),ValidateEmail(),validatepassword()}>Register</Button><br/>
          </form>
          </center>
          <center>
@@ -175,10 +176,16 @@ function UserSIgnup(props) {
        
                </center>
                </div>
+               
         </div>
-     
+        
     </div>
-       
+    <footer class="c-footer">
+          <div class="c-inner">
+            Copyright IdeaWrapper. All rights reserved. For internal use only.
+          </div>
+        </footer>
+    </div>
     )
 }
 

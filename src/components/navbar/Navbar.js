@@ -9,12 +9,24 @@ import SimpleModal from '../modal/Modal';
 import PersistentDrawerRight from '../Menubar/MenuBar';
 import { useHistory,useLocation } from "react-router-dom";
 import AuthService from '../../auth/AuthService';
-import { IconButton, Tooltip } from '@material-ui/core';
+import { Badge, IconButton, Menu, MenuItem, Tooltip } from '@material-ui/core';
 import MenuLeft from '../Menubar/MenuLeft';
 import {useSelector} from "react-redux"
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
+import ListIcon from '@material-ui/icons/List';
+
+import SearchAppBar from '../Search/SearchBar';
 function Navbar() {
-  const [click, setClick] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const [category, setCategory] = useState('');
   const auth = useSelector((state)=> state.user.authorization)
  
@@ -23,23 +35,14 @@ function Navbar() {
 let history = useHistory();
 let location = useLocation()
 console.log(location); 
-const logo=<>
-<Link to='/' className='navbar-logo' >
-         IDEA WRAPPER
-          <i class='fab fa-firstdraft' />
-        </Link>
-</>
-// useEffect(() => {
- 
-//   return () => user
- 
-// }, [])
-
+const report = useSelector((state)=>state.verification.reports)
+const len = report ? report.length : ""
+console.log(len);
 const search =<>
   <div className="sidebar__search">
                 <div className="sidebar__searchContainer">
                     
-                    <input placeholder="search by Category" onChange={(e)=>setCategory(e.target.value)}  type="text"/>
+                    <input placeholder="search by Category" onChange={(e)=>setCategory(e.target.value)}  type="search"/>
                    <IconButton>
                    <SearchOutlinedIcon color="gray" onClick={()=>{
                      history.push("/search_by_category",category)
@@ -51,23 +54,54 @@ const search =<>
 </>
   return (
     <>
-   
+   {/* <div class="wrapper-class"> */}
+        {/* <div class="wrap"> */}
       
         {user === null || location.pathname === "/" || location.pathname === "/Sign up" || location.pathname === "/forgot password" ||location.pathname === "/Sign in" ? <>
          
        
             <div class="topbar-class">
               <div class="contain">
-                <h5 className="app-name"> IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
-                <div class="topbar-items">
-                <Tooltip title='contact us' arrow>
-       <Link to='/contact us' className='topbar-links'>
-              Contact us 
+             
+                <h5 className="app-name"> 
+                <div class="navlist">
+                <ListIcon onClick={handleClick}/>
+                <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          {user === null || location.pathname === "/" || location.pathname === "/forgot password" ||location.pathname === "/Sign up" ? 
+          location.pathname === "/Sign in"? <Link
+          to='/Sign up'
+         
+          
+        >
+         Register
+        </Link>:<Link
+              to='/Sign in'
+             
+              
+            >
+             Sign in
+            </Link>:<Link
+              to='/Sign in'
+              
+              
+            >
+             Sign in
             </Link>
-            </Tooltip>
-            <Tooltip title='About us' arrow>
-          <Link to='/About us' className='topbar-links'>About us</Link>
-            </Tooltip>
+        }
+       
+        </MenuItem>
+        </Menu>
+                </div>
+                IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
+                <div class="topbar-items">
+                
               
      {location.pathname === "/Sign in" ?
          <Tooltip title='Register' arrow>
@@ -104,21 +138,21 @@ const search =<>
             </div>
             </div>
            
-        </>: user.role === 'user' && (location.pathname === "/home page" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
+        </>: user.role === 'user' && (location.pathname === "/home page" ||location.pathname === "/postDetails" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
         
         <>
          <div class="topbar-class">
          <div class="containHome">
-           {location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""}
+           {location.pathname === "/Account" ||location.pathname === "/postDetails"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""}
            <h5 className="app-name"> {user.user_name}
          {auth.status === "Verified" ? 
          <VerifiedUserRoundedIcon/>:<></>}
           </h5>
          <div class="topbar-items">
-        
-          
-       {search}
-          
+         <div className='topbar-links'>
+         <SearchAppBar/>
+       
+          </div>
          
           {location.pathname === "/home page" ? <PersistentDrawerRight user={user}/>:<></>}
           
@@ -141,17 +175,33 @@ const search =<>
         <h5 className="app-name">{user.user_name}{user.role}</h5>
         <div class="topbar-items">
         <div className='topbar-links'>
-          {location.pathname === "/verification"  ?  <Link
+          {location.pathname === "/verification"  ? <> 
+         
+          <Link
               to='/verified Users'
               className='nav-links'>
+                 
              user list
-            </Link>:<Link
+            
+            </Link>
+           
+             <Link
+             to='/reports'
+             className='nav-links'>
+               <Badge badgeContent={len} max={999} color="error">
+            Reports
+            </Badge>
+           </Link></>
+            :<Link
               to='/verification'
               className='nav-links'
               
             >
              Home page
             </Link>}
+            </div>
+         <div className='topbar-links'>
+         
             </div>
          
             <div className='topbar-links'>
@@ -168,9 +218,9 @@ const search =<>
 
         </>}
         
-        
+        {/* </div> */}
 
-     
+        {/* </div> */}
        
     </>
   );

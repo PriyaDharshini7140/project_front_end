@@ -8,16 +8,14 @@ function Search(props) {
   const history = useHistory()
     const search = history.location.state
     console.log(search);
-   const Data = useSelector((state)=>state.post.posts)
-   console.log(Data);
-   const filteredPost =
-   Data  &&
-   Data.filter((e) => e && e.category.map(a=>a.toLowerCase().replace(/\s/g, '').includes(search.toLowerCase().replace(/\s/g, ''))))
+;
+   const data = useSelector((state)=> state.post.LikeSortedPosts)
+   
+  
 
-  console.log(filteredPost)
     return (
         <div>
-   {Data.map(e=>e.category.map(s=>
+   {data.map(e=>e.category.map(s=>
      s.toLowerCase().replace(/\s/g,'').includes(search.toLowerCase().replace(/\s/g,'')) ?<CardCom  a={e}/>:<></>
      
    ))}

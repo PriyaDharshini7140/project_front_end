@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,TextField } from '@material-ui/core';
+import { Avatar,IconButton,InputAdornment,TextField } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import {useDispatch} from 'react-redux'
 import {Post} from '../../redux/postActions'
@@ -19,7 +19,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import LinkIcon from '@material-ui/icons/Link';
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -46,16 +49,12 @@ const MenuProps = {
 };
 
 const names = [
- 'FrontEnd Developer',
- 'BackEnd Developer',
- 'FullStack Developer',
-'Mobile Developer',
- 'Game Developer',
- 'DataScientist Developer',
- 'Devops Developer',
- 'Software Developer',
- 'Web Developer',
- 'Security Developer',
+ 
+ 'Game Development',
+ 
+ 'Software Development',
+ 'Web Development',
+ 
  'JavaScript',
  'Html',
  'css',
@@ -84,6 +83,42 @@ const names = [
 'Swift'
 
 ];
+const front = [
+  'JavaScript',
+  'Html',
+  'css',
+  'xml',
+  'jsx',
+  'bootStrap',
+  'React',
+  'Angular',
+  'Asp.net',
+'TypeScript',
+ 'React Native',
+ 
+ 
+ ];
+ const back = [
+  'Java',
+  'JavaScript',
+  'python',
+  'php',
+"c#",
+'express js',
+'node js',
+'ruby',
+"c++"
+
+ 
+ ];
+ const datab = [
+ 'oracle',
+ 'mysql',
+ 'postgreSql',
+ 'mongoDB',
+ "ibm DB2"
+ 
+ ];
 
 function getStyles(name, personName, theme) {
   return {
@@ -93,18 +128,45 @@ function getStyles(name, personName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+function getfront(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+function getback(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+function getdb(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
-    width: 600,
-    height:500,
+overflowY:"scroll",
+    position: 'relative',
+    display:"flex",
+    flexDirection:'column',
+    width: 800,
+   height:500,
     backgroundColor: theme.palette.background.paper,
-    borderRadius:"20px",
+    // borderRadius:"10px",
     padding: theme.spacing(2, 4, 3),
-    borderColor:"rgb(243, 220, 220)",
+    borderColor:"transparent",
   },
   text:{
-      width:340
+      width:"100%"
   },
   camera:{
     color:"rgb(97, 96, 96)",
@@ -129,9 +191,13 @@ chips: {
 chip: {
   margin: 2,
 },
+select:{width:"100%"},
 noLabel: {
   marginTop: theme.spacing(3),
 },
+in:{
+  width:"50%"
+}
  
 }));
 
@@ -146,7 +212,14 @@ console.log(personName);
   const [postText,setPostText] = useState("");
   const [image,setImage]=useState([]);
   const [postUrl,setPostUrl]=useState([]);
-   const [category,setCategory]=useState('');
+  const [title,setTitle]=useState('')
+  const [scope,setScope]=useState('')
+  const [enhancement,setEnhancement]=useState('')
+  const [frontEnd, setfrontEnd] = React.useState([]);
+  const [backEnd, setbackEnd] = React.useState([]);
+  const [db, setDb] = React.useState([]);
+  const [link,setLink]=useState("")
+  // const[progress,setProgress] = useState(0);
    const user = useSelector((state)=> state.user.users)
   console.log(user);
   const dispatch = useDispatch()
@@ -157,7 +230,15 @@ console.log(personName);
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
-
+  const handleFrontend = (event) => {
+    setfrontEnd(event.target.value);
+  };
+  const handleBackend = (event) => {
+    setbackEnd(event.target.value);
+  };
+  const handledb = (event) => {
+    setDb(event.target.value);
+  };
   const handleChangeMultiple = async(event) => {
     const { files } = event.target;
      console.log("files",files);
@@ -185,6 +266,8 @@ console.log(personName);
       )
       .then(res=>res.json())
       .then(data=>{
+        console.log("progress",data)
+        
         setPostUrl((e)=>[...e,data.url])
         
         
@@ -194,10 +277,10 @@ console.log(personName);
       })
     
     }
-    // console.log(value);
+    
     setImage(value);
   };
-  // console.log(image);
+ 
   const handleClose = () => {
     setOpen(false);
   };
@@ -205,29 +288,38 @@ console.log(personName);
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <div className="modal__header">
-      <Avatar className="modal__header__avatar" alt={user.user_name} src={user.profile_picture}/>
-                <div className="modal__header__body">
-                {user.user_name}
-                <VerifiedUserRoundedIcon className='verify'/>
-               
-                </div>
-      </div>
-     {/* <div> */}
+      
+      <TextField className={classes.in}
+          id="standard-multiline-flexible"
+          label="Title"
+          multiline
+          rowsMax={2}
+          onChange={(e)=>setTitle(e.target.value)}
+          variant='outlined'
+          />
       <TextField className={classes.text}
           id="standard-multiline-flexible"
           label="Type a Message"
           multiline
           rowsMax={4}
           onChange={(e)=>setPostText(e.target.value)}
-          />
-       
-        <input multiple accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={handleChangeMultiple} />
+          InputProps={{
+          
+          
+          endAdornment:
+            <InputAdornment position="end">
+               <input multiple accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={handleChangeMultiple} />
       <label htmlFor="icon-button-file">
         <IconButton className={classes.camera}  aria-label="upload picture" component="span">
         <AttachFileRoundedIcon  className='modal__input__item1' />
         </IconButton>
       </label>
+      
+            </InputAdornment>
+          }}
+          />
+       
+       
       <br/>
      
        
@@ -235,7 +327,7 @@ console.log(personName);
            <FormControl className={classes.formControl}>
         <InputLabel id="demo-mutiple-chip-label" >Select Category</InputLabel>
         <Select
-         
+         className={classes.select}
           labelId="demo-mutiple-chip-label"
           id="demo-mutiple-chip"
           multiple
@@ -257,8 +349,135 @@ console.log(personName);
             </MenuItem>
           ))}
         </Select>
+      </FormControl><br/>
+      <TextField className={classes.text}
+          id="standard-multiline-flexible"
+          label="Scope of this idea"
+          multiline
+          rowsMax={4}
+          onChange={(e)=>setScope(e.target.value)}
+          variant="outlined"
+          />
+          <br/>
+          <TextField className={classes.text}
+          
+          label="What enhancement should be done"
+          multiline
+          rowsMax={4}
+          onChange={(e)=>setEnhancement(e.target.value)}
+          variant="outlined"
+          />
+   <br/>
+     <div>
+     Requirements :<br/>
+     <FormControl className={classes.formControl}>
+        <InputLabel id="demo-mutiple-chip-label" >Front End</InputLabel>
+        <Select
+         className={classes.select}
+          labelId="demo-mutiple-chip-label"
+          id="demo-mutiple-chip"
+          multiple
+          value={frontEnd}
+          onChange={handleFrontend}
+          input={<Input id="select-multiple-chip"/>}
+          renderValue={(selected) => (
+            <div className={classes.chips}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} className={classes.chip} />
+              ))}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {front.map((name) => (
+            <MenuItem key={name} value={name} style={getfront(name,frontEnd, theme)}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
       </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-mutiple-chip-label" >BackEnd</InputLabel>
+        <Select
+         className={classes.select}
+          labelId="demo-mutiple-chip-label"
+          id="demo-mutiple-chip"
+          multiple
+          value={backEnd}
+          onChange={handleBackend}
+          input={<Input id="select-multiple-chip"/>}
+          renderValue={(selected) => (
+            <div className={classes.chips}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} className={classes.chip} />
+              ))}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {back.map((name) => (
+            <MenuItem key={name} value={name} style={getback(name,backEnd, theme)}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-mutiple-chip-label" >Database</InputLabel>
+        <Select
+         className={classes.select}
+          labelId="demo-mutiple-chip-label"
+          id="demo-mutiple-chip"
+          multiple
+          value={db}
+          onChange={handledb}
+          input={<Input id="select-multiple-chip"/>}
+          renderValue={(selected) => (
+            <div className={classes.chips}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} className={classes.chip} />
+              ))}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {datab.map((name) => (
+            <MenuItem key={name} value={name} style={getdb(name, db, theme)}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <div>
+      <TextField className={classes.text}
+          id="standard-multiline-flexible"
+          label="insert link(optional)"
+         type="url"
+         variant="outlined"
+          onChange={(e)=>setLink(e.target.value)}
+          InputProps={{
+          
+          
+          startAdornment:
+            <InputAdornment position="start">
+              <IconButton>
+            
+        <LinkIcon/>
+        </IconButton>
       
+            </InputAdornment>
+          }}
+          />
+        
+       
+      </div>
+     </div>
+     
+     
+     
+           <div>
+        {!postUrl ? <></>:postUrl.map(e=><img src={e} style={{height:"50px"}} alt='img'/>)}
+      </div>
        
          <div className="modal___button">
                 <div className="modal___button_Container">
@@ -268,7 +487,8 @@ console.log(personName);
                        alert("please select category")
                      }
                      else{
-                      dispatch(Post(user._id,postText,postUrl,personName))
+                       console.log(enhancement);
+                      dispatch(Post(user._id,postText,postUrl,personName,title,scope,link,enhancement,frontEnd,backEnd,db))
                       setOpen(false)
                      }
                      

@@ -1,0 +1,30 @@
+.login-cont{
+    min-height: calc(100vh - calc(4.5rem + 2.5rem));
+    padding:5rem
+  }
+  .login-cont h3{text-align: center;color:#00BAFF}
+  .login-form{
+    width: 30rem;
+    justify-content: center;
+    margin:2rem 20rem;
+    padding:2rem;
+    box-shadow: 0 0 0.5rem rgb(0 0 0 / 16%);
+  }
+  .login-inputs{ margin-bottom: 1rem;align-items: center;}
+  
+  .btn{margin: 0 8rem;}
+    .btn:hover{
+        background:linear-gradient(
+            90deg,
+          rgba(40, 12, 199, 0.678)0%,
+          rgb(172, 5, 5)100%
+      
+        );
+    }
+  .alreadyuser{
+  padding:20px;
+  margin-left:20px;
+  width:200px;
+  color:black;
+  }
+  

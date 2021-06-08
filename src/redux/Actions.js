@@ -7,7 +7,7 @@ import {
   AUTH
 } from './Types'
 import { createBrowserHistory } from "history";
-import {Comments, newFeeds} from './postActions';
+import {Comments, mvpCommentDisplay, mvpDisplay, MvpReplyDisplay, newFeeds, newFeedsLike} from './postActions';
 import {reqVerification} from './verficationAction';
 import axios from 'axios';
 
@@ -32,7 +32,11 @@ export const fetchUsers = (email,password) => {
                         if(users.role === "user"){
                           console.log(users._id);
                            dispatch(auth())
-                          dispatch(newFeeds(),Comments())
+                          dispatch(newFeeds())
+                          dispatch(mvpDisplay())
+                          dispatch(mvpCommentDisplay())
+                          dispatch(MvpReplyDisplay())
+                          dispatch(newFeedsLike())
                         }
                         else{
                           dispatch(reqVerification())
@@ -69,6 +73,7 @@ export const updateUser = (id,name,phone,profile,work,edu,des) => {
          console.log("user",res.data);
          dispatch(fetchUsersSuccess(res.data))
          dispatch(newFeeds())
+        
         
        }
        )
