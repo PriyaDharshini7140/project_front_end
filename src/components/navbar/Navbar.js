@@ -9,13 +9,14 @@ import SimpleModal from '../modal/Modal';
 import PersistentDrawerRight from '../Menubar/MenuBar';
 import { useHistory,useLocation } from "react-router-dom";
 import AuthService from '../../auth/AuthService';
-import { Badge, IconButton, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import { Badge, IconButton, Menu, MenuItem, Tooltip,Button } from '@material-ui/core';
 import MenuLeft from '../Menubar/MenuLeft';
 import {useSelector} from "react-redux"
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import ListIcon from '@material-ui/icons/List';
-
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchAppBar from '../Search/SearchBar';
+import ModalNotification from '../modal/ModalNotification';
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -38,20 +39,18 @@ console.log(location);
 const report = useSelector((state)=>state.verification.reports)
 const len = report ? report.length : ""
 console.log(len);
-const search =<>
-  <div className="sidebar__search">
-                <div className="sidebar__searchContainer">
-                    
-                    <input placeholder="search by Category" onChange={(e)=>setCategory(e.target.value)}  type="search"/>
-                   <IconButton>
-                   <SearchOutlinedIcon color="gray" onClick={()=>{
-                     history.push("/search_by_category",category)
-                   }
-                  }/>
-                   </IconButton>
-                    </div>
-            </div>
-</>
+const [show, handleShow] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 100) {
+        handleShow(true);
+      } else {
+        handleShow(false);
+      }
+    });
+   
+  }, []);
+
   return (
     <>
    {/* <div class="wrapper-class"> */}
@@ -60,8 +59,8 @@ const search =<>
         {user === null || location.pathname === "/" || location.pathname === "/Sign up" || location.pathname === "/forgot password" ||location.pathname === "/Sign in" ? <>
          
        
-            <div class="topbar-class">
-              <div class="contain">
+        <nav className={show ? "topbar-class active":"topbar-class"}>
+              <div  className="containHome">
              
                 <h5 className="app-name"> 
                 <div class="navlist">
@@ -136,39 +135,51 @@ const search =<>
             
             </div>
             </div>
-            </div>
+            </nav>
            
-        </>: user.role === 'user' && (location.pathname === "/home page" ||location.pathname === "/postDetails" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
+        </>: user.role === 'user' && (location.pathname === "/home page" ||location.pathname === "/notifications" ||location.pathname === "/Weekly Top Picks" ||location.pathname === "/AllPosts" ||location.pathname === "/postDetails" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
         
         <>
-         <div class="topbar-class">
+         <nav className={show ? "topbar-class active":"topbar-class"}>
          <div class="containHome">
-           {location.pathname === "/Account" ||location.pathname === "/postDetails"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""}
-           <h5 className="app-name"> {user.user_name}
-         {auth.status === "Verified" ? 
-         <VerifiedUserRoundedIcon/>:<></>}
-          </h5>
+           {/* {location.pathname === "/Account" ||location.pathname === "/postDetails" ||location.pathname === "/Weekly Top Picks" ||location.pathname === "/AllPosts"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""} */}
+           <h5 className="app-name">IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
+           
+         
          <div class="topbar-items">
+           
+         
          <div className='topbar-links'>
          <SearchAppBar/>
        
           </div>
-         
-          {location.pathname === "/home page" ? <PersistentDrawerRight user={user}/>:<></>}
-          
+          {/* <div className='topbar-links'>
+          <ModalNotification/>
+    
+      </div> */}
+          {location.pathname === "/home page" ? <></>:<div  className='topbar-links'>
+         <Link to="/home page" className="nl">Home page</Link>
+       
+          </div>}
+          <div style={{marginTop:"-.5rem"}} className='topbar-links'>
+          <SimpleModal user={user}/>
+          </div>
+          <div style={{marginTop:"-.5rem"}} className='topbar-links'>
+           <PersistentDrawerRight  user={user}/>
+           </div>
         
          
-          <SimpleModal user={user}/>
+         
            
       </div>
-      </div></div>
+      </div></nav>
         
         </>
         
         :
         
         <>
-        <div class="topbar-class">
+        <nav className={show ? "topbar-class active":"topbar-class"}>
          <div class="containHome">
        
         { user.role === 'admin'&& location.pathname === "/verification"  ? "":""}
@@ -179,7 +190,7 @@ const search =<>
          
           <Link
               to='/verified Users'
-              className='nav-links'>
+              className='topbar-links'>
                  
              user list
             
@@ -187,34 +198,31 @@ const search =<>
            
              <Link
              to='/reports'
-             className='nav-links'>
+             className='topbar-links'>
                <Badge badgeContent={len} max={999} color="error">
             Reports
             </Badge>
            </Link></>
             :<Link
               to='/verification'
-              className='nav-links'
-              
+              className='topbar-links'
+             
             >
              Home page
             </Link>}
             </div>
-         <div className='topbar-links'>
-         
-            </div>
          
             <div className='topbar-links'>
            
-       <button className='navbar_button' onClick={()=>{
+       <Button variant="contained" color="primary" style={{borderRadius:"40px"}} onClick={()=>{
           AuthService.logout()
           history.replace("/Sign in")
           window.location.reload()
-          }}>logout</button>
+          }}>logout</Button>
     </div>
         </div>
         </div>
-        </div>
+        </nav>
 
         </>}
         

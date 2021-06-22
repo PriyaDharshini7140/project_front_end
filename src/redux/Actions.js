@@ -6,11 +6,13 @@ import {
   FETCH_USERS_FAILURE,
   AUTH
 } from './Types'
+
 import { createBrowserHistory } from "history";
 import {Comments, mvpCommentDisplay, mvpDisplay, MvpReplyDisplay, newFeeds, newFeedsLike} from './postActions';
 import {reqVerification} from './verficationAction';
 import axios from 'axios';
 
+require("dotenv").config()
 
 const history = createBrowserHistory();
 
@@ -53,13 +55,13 @@ export const fetchUsers = (email,password) => {
       })
   }
 }
-export const updateUser = (id,name,phone,profile,work,edu,des) => {
+export const updateUser = (id,name,phone,profile,work,edu,des,cover) => {
   
    
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.patch(`http://localhost:4000/user/updateUser/${id}`,{
+    return  axios.patch(`${process.env.REACT_APP_PORT}/user/updateUser/${id}`,{
      user_name:name,
      phone_number:phone,
      profile_picture:profile,
@@ -73,7 +75,7 @@ export const updateUser = (id,name,phone,profile,work,edu,des) => {
          console.log("user",res.data);
          dispatch(fetchUsersSuccess(res.data))
          dispatch(newFeeds())
-        
+         dispatch(auth())
         
        }
        )
@@ -87,7 +89,7 @@ export const auth = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.post(`http://localhost:4000/verification/status`,{},
+    return  axios.post(`${process.env.REACT_APP_PORT}/verification/status`,{},
       {
        headers:{authorization:`Bearer ${Token()}`}
       }
@@ -102,6 +104,28 @@ export const auth = (id) => {
     
   }
 }
+export const userRequest = (id) => {
+               
+  return (dispatch) => {
+    const Token = () => localStorage.getItem("user");
+     return axios.post(`${process.env.REACT_APP_PORT}/verification/verification`,{
+      user_id:id
+      
+     },{
+         headers:{authorization:`Bearer ${Token()}`}
+      })
+     .then(
+         (res)=> {
+           
+            console.log(res.data)
+            
+            dispatch(auth())
+           
+         })
+.catch((e)=>console.log(e))
+    
+    }
+  }
 
 export const fetchUsersRequest = () => {
   return {

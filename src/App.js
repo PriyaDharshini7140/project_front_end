@@ -21,6 +21,9 @@ import AuthService from './auth/AuthService';
 import Reports from './pages/admin/Reports';
 import ResetPassword from './pages/userLogin/ResetPassword';
 import Post from './components/card/PostDetails';
+import AllPost from './pages/allPost/AllPost';
+import WeeklyPost from './pages/WeekPost/WeeklyPost';
+import Notification from './pages/notification/Notification';
 function App() {
  const user = useSelector((state)=> state.user.users)
  const history = createBrowserHistory();
@@ -57,7 +60,10 @@ if(token){
     <ProtectedRoute path='/verification' component={ActionAlerts} user={user}/>
      <Redirect to="/verification"/> </>:
      user && user.role === "user" ? <>
+     <ProtectedRoute path='/notifications' component={Notification} user={user}/>
     <ProtectedRoute path='/postDetails' component={Post} user={user}/>
+    <ProtectedRoute path='/Weekly Top Picks' component={WeeklyPost} user={user}/>
+    <ProtectedRoute path='/AllPosts' component={AllPost} user={user}/>
      <ProtectedRoute path='/search_by_category' component={Search} user={user}/>
    <ProtectedRoute path='/Account' component={Account} user={user}/>
      <ProtectedRoute path='/userProfile' component={UserProfile} user={user}/>

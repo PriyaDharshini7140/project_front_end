@@ -1,97 +1,135 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
-import { useSelector,useDispatch } from 'react-redux';
-import { Verification } from '../../redux/verficationAction';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const useStyles = makeStyles((theme) => ({
+import React, { useState } from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { useSelector,useDispatch } from 'react-redux';
+import { Button } from '@material-ui/core';
+import { Deleteverification, Verification } from '../../redux/verficationAction';
+import { ToastContainer, toast } from 'material-react-toastify';
+import 'material-react-toastify/dist/ReactToastify.css';
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#303F9F",
+    color:"white",
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
   root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
     },
   },
-  spaces:{
-    paddingRight:"5%"
-  }
-}));
+}))(TableRow);
 
-export default function ActionAlerts() {
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+
+
+const useStyles = makeStyles({
+  table: {
+    width:"900px",
+    margin:"1rem"
+    
+  },
+});
+
+export default function CustomizedTables() {
   const classes = useStyles();
   const dispatch = useDispatch()
-  const user = useSelector((state)=> state.user.users)
-
-  console.log(user);
-
-  const request = useSelector((state)=>state.verification.status)
-  console.log(request);
-  const [values, setValues] = useState({
-    showPassword: false,
-  });
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
+    const user = useSelector((state)=> state.user.users)
+  
+    console.log(user);
+  
+    const request = useSelector((state)=>state.verification.status)
+    console.log(request);
   return (
-    <>
-    {request.map(e=> e.status === "notVerified" ?<div className={classes.root}>
-   
-   <Alert
-     action={
-       <>
-       <IconButton>
-     <ExpandMoreIcon onClick={handleClickShowPassword}/>
-       </IconButton>
-       <IconButton
-         aria-label="close"
-         color="inherit"
-         size="small"
-
-         
-         
-         onClick={() => 
+    <TableContainer>
+      <center>
+      <Table className={classes.table} aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>EmailID</StyledTableCell>
+            <StyledTableCell align="center">UserName</StyledTableCell>
+            <StyledTableCell align="center">Accept</StyledTableCell>
+            <StyledTableCell align="center">Reject</StyledTableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {request.map(e=> e.status === "notVerified" ?
+          
+            <StyledTableRow key={e._id}>
+              <StyledTableCell component="th" scope="row">
+                {e.user_id.email_id}
+              </StyledTableCell>
+              <StyledTableCell align="center">{e.user_id.user_name}</StyledTableCell>
+              <StyledTableCell align="center"><Button variant="contained" color="primary" style={{borderRadius:"40px"}}  onClick={() => 
           {console.log("click")
-            dispatch(Verification(e._id,e.user_id._id,user._id,"Rejected"))
-           
-          }
-          }
-       >
-         <CloseIcon fontSize="inherit" className={classes.spaces} />
-       
-       </IconButton>
-        <IconButton
-        // aria-label="close"
-        // color="inherit"
-        // size="small"
-        
-        onClick={() => 
-          {console.log("click")
+          
             dispatch(Verification(e._id,e.user_id._id,user._id,"Verified"))
+            toast.success("Verified",{
+              position: "top-center",
+              autoClose: 2000,
+              
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+             
+              })
             
           }
-          }
-      >
-        <CheckRoundedIcon fontSize="inherit"/>
-      </IconButton>
-      </>
-     }
-   >
-     id:{e.user_id._id}<br/>
-    userName: {e.user_id.user_name} <br/>
-    {values.showPassword === true? <>
-      emailId:{e.user_id.email_id}<br/>
-      phoneNumber:{e.user_id.phone_number}<br/>
-      Gender:{e.user_id.gender}<br/>
-      Age:{e.user_id.age}<br/>
-    </>:<></>
+          }>Accept</Button> <ToastContainer position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover/></StyledTableCell>
+              <StyledTableCell align="center"><Button variant="contained" color="primary" style={{borderRadius:"40px"}} onClick={()=>{
+        
+        dispatch(Deleteverification(e.user_id._id))
+        toast.error("Rejected",{
+          position: "top-center",
+          autoClose: 2000,
+          
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+         
+          })
+      }}>Reject</Button> <ToastContainer position="top-center"
+      autoClose={2000}
+      hideProgressBar
       
-  }
- </Alert>
-</div>:<></>)}
-    
-  </>
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover/></StyledTableCell>
+              
+            </StyledTableRow>:<></>
+          )}
+        </TableBody>
+      </Table>
+      </center>
+    </TableContainer>
   );
 }

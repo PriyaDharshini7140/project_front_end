@@ -2,41 +2,25 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,InputAdornment,ListItem,ListItemIcon,TextField } from '@material-ui/core';
+import { Avatar,InputAdornment,TextField } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
 import PhoneIcon from '@material-ui/icons/Phone';
 
 import WorkIcon from '@material-ui/icons/Work';
-import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
+
 import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
 import {useDispatch} from 'react-redux'
-import {Post} from '../../redux/postActions'
-import AuthService from '../../auth/AuthService';
-import { useSelector } from 'react-redux';
 
-import clsx from 'clsx';
-import { useTheme } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
+
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import SettingsIcon from '@material-ui/icons/Settings';
+import Badge from '@material-ui/core/Badge';
 import { updateUser } from '../../redux/Actions';
 
-import { Button } from 'bootstrap';
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     margin:'auto',
     width: 700,
     height:500,
+   
     backgroundColor: theme.palette.background.paper,
     borderRadius:"20px",
     padding: theme.spacing(2, 4, 3),
@@ -67,7 +52,11 @@ const useStyles = makeStyles((theme) => ({
     //     }
     //  }
   },
-  camera:{color:"#5AA8F1",},
+  pink: {
+    color: theme.palette.getContrastText("#f06292"),
+    backgroundColor: "#f06292",
+  },
+  camera:{color:"blue",},
 //   input: {
 //     display: 'none',
     
@@ -102,7 +91,7 @@ noLabel: {
   const user = useSelector((state)=> state.user.users)
   console.log(user);
   const [work, setWork] = useState(user.work);
-    
+    // const [img,setImge] =useState("");
     const [image, setImage] =useState('');
     const [education, setEducation] =useState(user.education);
     const [name, setName] =useState(user.user_name);
@@ -139,9 +128,9 @@ const handleSubmit = async(name,phone,work,education,description)=>{
  
 }
 
-  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   
+ 
    
   const dispatch = useDispatch()
   const  handleOpen = () => {
@@ -158,19 +147,27 @@ const handleSubmit = async(name,phone,work,education,description)=>{
 
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div  className={classes.paper}>
         
-        <Avatar  alt={user.user_name} src={user.profile_picture} className={classes.large}/>
-           <div className='ava'> 
-        <input accept="image/*" className='d' onChange={(e)=>setImage(e.target.files[0])} id="icon-button-file" type="file" />
-      <label htmlFor="icon-button-file">
-       
-          <PhotoCamera fontSize='large' className={classes.camera} />
-        
-      </label>
-      </div> 
-     
-     <div className="texts">
+          <h5>Update Profile</h5>
+      
+     {/* <div > */}
+     <Badge
+        overlap="circle"
+        style={{alignSelf:"center"}}
+        badgeContent={<>
+          <input accept="image/*" className='d' onChange={(e)=>setImage(e.target.files[0])} id="icon-button-file" type="file" />
+        <label htmlFor="icon-button-file">
+         
+            <PhotoCamera className={classes.camera} />
+          
+        </label>
+        </>
+        }
+      >
+        <Avatar alt={user.user_name} src={user.profile_picture} className={classes.large}/>
+      </Badge>
+        <div className="texts" style={{padding:"1rem"}}>
      <TextField id="outlined-basic" value={name} type="text" variant="outlined" 
      onChange={(e)=>setName(e.target.value)}
              InputProps={{
@@ -196,6 +193,7 @@ const handleSubmit = async(name,phone,work,education,description)=>{
              InputProps={{
               startAdornment: <InputAdornment position="start"><DescriptionRoundedIcon/></InputAdornment>,
             }}/>
+            {/* <center> */}
             <div className='alignbut'>
                 <button type="button" className="but" onClick={handleClose}>Back</button>
                    <button type="button" className="but" onClick={()=> {
@@ -204,21 +202,24 @@ const handleSubmit = async(name,phone,work,education,description)=>{
                   setOpen(false)}
                   }>Update</button>
                </div>
+               {/* </center> */}
             </div>
-            
-     </div>
+            </div>
+    //  </div>
 
     
   );
 
   return (
     <div> 
-     <ListItem  onClick={handleOpen}>
-        <ListItemIcon><SettingsIcon/></ListItemIcon>
-        <ListItemIcon className="text">Settings</ListItemIcon>
-        </ListItem>
+     <Avatar className={classes.pink}>
+      <EditRoundedIcon  onClick={handleOpen}/>
+      </Avatar>
       
       <Modal
+      style={{display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',}}
         open={open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

@@ -2,41 +2,22 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,InputAdornment,TextField } from '@material-ui/core';
+import { IconButton,InputAdornment,TextField,Button } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import {useDispatch} from 'react-redux'
 import {Post} from '../../redux/postActions'
-import AuthService from '../../auth/AuthService';
+
 import { useSelector } from 'react-redux';
-import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
-import clsx from 'clsx';
+
 import { useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+
 import LinkIcon from '@material-ui/icons/Link';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -50,38 +31,21 @@ const MenuProps = {
 
 const names = [
  
- 'Game Development',
- 
- 'Software Development',
- 'Web Development',
- 
- 'JavaScript',
- 'Html',
- 'css',
- 'xml',
- 'jsx',
- 'bootStrap',
- 'React',
- 'Angular',
- 'Asp.net',
- 'C#',
- 'C',
- 'C++',
- 'Java',
- 'Python',
- 'R',
- 'Ruby',
- 'TypeScript',
-'React Native',
-'Node js',
-'Scala',
-'Bash/Shell/PowerShell',
-'PHP',
-'Kotlin',
-'Assembly',
-'VBA',
-'Swift'
-
+ 'Education Apps',
+ 'Rating and Review Application',
+ 'OTT(Over-the-top) Platform Application',
+ 'Real-Time Communication Application',
+ 'Question and Answer Platform',
+ 'social Media',
+ 'E-Commerce',
+ 'Fantasy Sports',
+ 'Expense/Account Management',
+ 'Content Management System',
+ 'Algorithm Visualizer Application',
+ 'Project Management Application',
+ 'Note-taking Application',
+ 'Matchmaking Application',
+ 'Blog Application'
 ];
 const front = [
   'JavaScript',
@@ -120,50 +84,25 @@ const front = [
  
  ];
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getfront(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getback(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getdb(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+
 const useStyles = makeStyles((theme) => ({
   paper: {
-overflowY:"scroll",
+// overflowY:"scroll",
     position: 'relative',
     display:"flex",
     flexDirection:'column',
+ 
     width: 800,
-   height:500,
+  //  height:500,
     backgroundColor: theme.palette.background.paper,
-    // borderRadius:"10px",
+    borderRadius:"10px",
     padding: theme.spacing(2, 4, 3),
     borderColor:"transparent",
+  
+  // marginLeft:"6rem",
+  // marginTop:"-4rem",
+   
+    
   },
   text:{
       width:"100%"
@@ -201,13 +140,14 @@ in:{
  
 }));
 
+const filter = createFilterOptions()
 export default function SimpleModal() {
   const classes = useStyles();
   const auth = useSelector((state)=> state.user.authorization)
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-console.log(personName);
-  const [modalStyle] = React.useState(getModalStyle);
+  
+
+  // const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [postText,setPostText] = useState("");
   const [image,setImage]=useState([]);
@@ -215,10 +155,11 @@ console.log(personName);
   const [title,setTitle]=useState('')
   const [scope,setScope]=useState('')
   const [enhancement,setEnhancement]=useState('')
-  const [frontEnd, setfrontEnd] = React.useState([]);
-  const [backEnd, setbackEnd] = React.useState([]);
-  const [db, setDb] = React.useState([]);
+  const [frontEnd, setfrontEnd] = React.useState(null);
+  const [backEnd, setbackEnd] = React.useState(null);
+  const [db, setDb] = React.useState(null);
   const [link,setLink]=useState("")
+  const [value, setValue] = React.useState(null);
   // const[progress,setProgress] = useState(0);
    const user = useSelector((state)=> state.user.users)
   console.log(user);
@@ -227,18 +168,8 @@ console.log(personName);
     setOpen(true);
     console.log("clicked");
   };
-  const handleChange = (event) => {
-    setPersonName(event.target.value);
-  };
-  const handleFrontend = (event) => {
-    setfrontEnd(event.target.value);
-  };
-  const handleBackend = (event) => {
-    setbackEnd(event.target.value);
-  };
-  const handledb = (event) => {
-    setDb(event.target.value);
-  };
+ 
+  
   const handleChangeMultiple = async(event) => {
     const { files } = event.target;
      console.log("files",files);
@@ -285,10 +216,29 @@ console.log(personName);
     setOpen(false);
   };
  console.log(postUrl);
-
+ function validateTitle() {
+  if(!title)
+  return("Title Required")
+}
+function validateDescription() {
+  if(!postText)
+  return("Field required")
+}
+function validateCategory() {
+  if(!value)
+  return("Category not selected ")
+}
+function validateScope() {
+  if(!scope)
+  return("Field required")
+}
+function validateEnhance() {
+  if(!enhancement)
+  return("Field required")
+}
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      
+    <div className={classes.paper}>
+      <h5>Add idea</h5>
       <TextField className={classes.in}
           id="standard-multiline-flexible"
           label="Title"
@@ -296,12 +246,14 @@ console.log(personName);
           rowsMax={2}
           onChange={(e)=>setTitle(e.target.value)}
           variant='outlined'
+          helperText={validateTitle()}
           />
       <TextField className={classes.text}
           id="standard-multiline-flexible"
           label="Type a Message"
           multiline
           rowsMax={4}
+          helperText={validateDescription()}
           onChange={(e)=>setPostText(e.target.value)}
           InputProps={{
           
@@ -324,130 +276,279 @@ console.log(personName);
      
        
            
-           <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Select Category</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl><br/>
-      <TextField className={classes.text}
+          
+
+       <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={names}
+        
+        filterSelectedOptions
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setValue(newValue
+            );
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setValue( newValue.inputValue
+            );
+          } else {
+            setValue(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          // Suggest the creation of a new value
+          if (params.inputValue !== '') {
+            filtered.push(
+           params.inputValue,
+              //  `Add "${params.inputValue}"`,
+            );
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+       
+      
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option;
+        }}
+        renderOption={(option) => option}
+        
+        renderInput={(params) => (
+          <TextField
+          helperText={validateCategory()}
+            {...params}
+            variant="outlined"
+            label="Select Category"
+            // placeholder="Favorites"
+          />
+        )}
+      />
+
+     {console.log("value",value)}
+      <div>
+      <TextField 
+      style={{margin:"1rem"}}
           id="standard-multiline-flexible"
           label="Scope of this idea"
           multiline
           rowsMax={4}
+          helperText={validateScope()}
           onChange={(e)=>setScope(e.target.value)}
           variant="outlined"
           />
-          <br/>
-          <TextField className={classes.text}
-          
+          {/* <br/> */}
+          <TextField  
+           helperText={validateEnhance()}
+          style={{margin:"1rem",width:"50%"}}
           label="What enhancement should be done"
           multiline
           rowsMax={4}
           onChange={(e)=>setEnhancement(e.target.value)}
           variant="outlined"
           />
-   <br/>
+          </div>
+   {/* <br/> */}
      <div>
      Requirements :<br/>
-     <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Front End</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={frontEnd}
-          onChange={handleFrontend}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {front.map((name) => (
-            <MenuItem key={name} value={name} style={getfront(name,frontEnd, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >BackEnd</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={backEnd}
-          onChange={handleBackend}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {back.map((name) => (
-            <MenuItem key={name} value={name} style={getback(name,backEnd, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Database</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={db}
-          onChange={handledb}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {datab.map((name) => (
-            <MenuItem key={name} value={name} style={getdb(name, db, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+     <div style={{display:'flex',justifyContent:"space-evenly"}}>
+    
+     <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={front}
+        
+        filterSelectedOptions
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setfrontEnd(newValue
+            );
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setfrontEnd( newValue.inputValue
+            );
+          } else {
+            setfrontEnd(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          // Suggest the creation of a new value
+          if (params.inputValue !== '') {
+            filtered.push(
+           params.inputValue,
+              //  `Add "${params.inputValue}"`,
+            );
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+       
+      
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option;
+        }}
+        renderOption={(option) => option}
+        style={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Select Category"
+            // placeholder="Favorites"
+          />
+        )}
+      /> 
+     
+       <Autocomplete
+      multiple
+      id="tags-outlined"
+      options={back}
+      
+      filterSelectedOptions
+      onChange={(event, newValue) => {
+        if (typeof newValue === 'string') {
+          setbackEnd(newValue
+          );
+        } else if (newValue && newValue.inputValue) {
+          // Create a new value from the user input
+          setbackEnd( newValue.inputValue
+          );
+        } else {
+          setbackEnd(newValue);
+        }
+      }}
+      filterOptions={(options, params) => {
+        const filtered = filter(options, params);
+
+        // Suggest the creation of a new value
+        if (params.inputValue !== '') {
+          filtered.push(
+         params.inputValue,
+            //  `Add "${params.inputValue}"`,
+          );
+        }
+
+        return filtered;
+      }}
+      selectOnFocus
+      clearOnBlur
+      handleHomeEndKeys
+     
+    
+      getOptionLabel={(option) => {
+        // Value selected with enter, right from the input
+        if (typeof option === 'string') {
+          return option;
+        }
+        // Add "xxx" option created dynamically
+        if (option.inputValue) {
+          return option.inputValue;
+        }
+        // Regular option
+        return option;
+      }}
+      renderOption={(option) => option}
+      style={{ width: 300 }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          label="BackEnd"
+          // placeholder="Favorites"
+        />
+      )}
+    /> 
+   
+     <Autocomplete
+    multiple
+    id="tags-outlined"
+    options={datab}
+    
+    filterSelectedOptions
+    onChange={(event, newValue) => {
+      if (typeof newValue === 'string') {
+        setDb(newValue
+        );
+      } else if (newValue && newValue.inputValue) {
+        // Create a new value from the user input
+        setDb( newValue.inputValue
+        );
+      } else {
+        setDb(newValue);
+      }
+    }}
+    filterOptions={(options, params) => {
+      const filtered = filter(options, params);
+
+      // Suggest the creation of a new value
+      if (params.inputValue !== '') {
+        filtered.push(
+       params.inputValue,
+          //  `Add "${params.inputValue}"`,
+        );
+      }
+
+      return filtered;
+    }}
+    selectOnFocus
+    clearOnBlur
+    handleHomeEndKeys
+   
+  
+    getOptionLabel={(option) => {
+      // Value selected with enter, right from the input
+      if (typeof option === 'string') {
+        return option;
+      }
+      // Add "xxx" option created dynamically
+      if (option.inputValue) {
+        return option.inputValue;
+      }
+      // Regular option
+      return option;
+    }}
+    renderOption={(option) => option}
+    style={{ width: 300 }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="outlined"
+        label="DataBase"
+        // placeholder="Favorites"
+      />
+    )}
+  />
+      
+      </div>
+      <br/> 
       <div>
       <TextField className={classes.text}
           id="standard-multiline-flexible"
@@ -478,42 +579,42 @@ console.log(personName);
            <div>
         {!postUrl ? <></>:postUrl.map(e=><img src={e} style={{height:"50px"}} alt='img'/>)}
       </div>
-       
-         <div className="modal___button">
-                <div className="modal___button_Container">
-                <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button"  onClick={()=> {
-                     if(!personName.length){
+      <center>
+      <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
+       <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=> {
+                     if(!value.length){
                        alert("please select category")
                      }
                      else{
                        console.log(enhancement);
-                      dispatch(Post(user._id,postText,postUrl,personName,title,scope,link,enhancement,frontEnd,backEnd,db))
+                      dispatch(Post(user._id,postText,postUrl,value,title,scope,link,enhancement,frontEnd,backEnd,db))
                       setOpen(false)
                      }
                      
                     
                     }
-                  } >Post</button>
-                </div>
-            </div>
-
+                  }>post</Button>
+       </center>
+        
      
     </div>
   );
 
   return (
     <div>
-      {auth.status === 'Verified' ? <div className="sidebar__search">
-                <div className="sidebar__searchContainer"> 
-              <button 
-                   className="NavBar_Button" 
-                onClick={handleOpen}>Add Idea</button>
+      {auth.status === 'Verified' ? <div>
+                <div> 
+              <div className="nl" style={{marginTop:".5rem",cursor:"pointer"}}
+                  //  className="NavBar_Button" 
+                onClick={handleOpen}>Add Idea</div>
               
                 </div>
             </div>:<></> }
       
       <Modal
+      style={{display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',}}
         open={open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

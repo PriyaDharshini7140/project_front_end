@@ -1,15 +1,16 @@
 import axios from 'axios'
+import { auth } from './Actions';
 import {
   REPORT,
   STATUS
 } from './Types'
 
-
+require("dotenv").config()
 
 export const reqVerification = () => {
     return (dispatch) => {
       const Token = () => localStorage.getItem("user");
-       return axios.post('http://localhost:4000/verification/getReq/',{},{
+       return axios.post(`${process.env.REACT_APP_PORT}/verification/getReq/`,{},{
            headers:{authorization:`Bearer ${Token()}`}
         })
        .then(
@@ -22,12 +23,27 @@ export const reqVerification = () => {
       
       }
     }
-
+    export const Deleteverification = (id) => {
+          
+      return (dispatch) => {
+        const Token = () => localStorage.getItem("user");
+         return axios.delete(`${process.env.REACT_APP_PORT}/verification/statusDelete/${id}`,{
+             headers:{authorization:`Bearer ${Token()}`}
+          })
+         .then(
+             (res)=> {
+              
+              dispatch(reqVerification())
+             })
+    .catch((e)=>console.log(e))
+        
+        }
+      }
     export const Verification = (id,user_id,admin_id,status) => {
         console.log(id,user_id,admin_id,status);
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
-           return axios.post('http://localhost:4000/verification/adminVerification/',{
+           return axios.post(`${process.env.REACT_APP_PORT}/verification/adminVerification/`,{
             _id:id,
             user_id:user_id,
             admin_id:admin_id,
@@ -49,7 +65,7 @@ export const reqVerification = () => {
           
           return (dispatch) => {
             const Token = () => localStorage.getItem("user");
-             return axios.post('http://localhost:4000/reports/reported/',{
+             return axios.post(`${process.env.REACT_APP_PORT}/reports/reported/`,{
               
               user_id:user_id,
               post_id:Post_id,
@@ -70,7 +86,7 @@ export const reqVerification = () => {
         export const reqReports = () => {
           return (dispatch) => {
             const Token = () => localStorage.getItem("user");
-             return axios.post('http://localhost:4000/reports/reports/',{},{
+             return axios.post(`${process.env.REACT_APP_PORT}/reports/reports/`,{},{
                  headers:{authorization:`Bearer ${Token()}`}
               })
              .then(
@@ -86,7 +102,7 @@ export const reqVerification = () => {
           
             return (dispatch) => {
               const Token = () => localStorage.getItem("user");
-               return axios.delete(`http://localhost:4000/reports/deleteReport/${id}`,{
+               return axios.delete(`${process.env.REACT_APP_PORT}/reports/deleteReport/${id}`,{
                    headers:{authorization:`Bearer ${Token()}`}
                 })
                .then(
@@ -99,12 +115,12 @@ export const reqVerification = () => {
               
               }
             }
-
+           
             export const DeletereportsPost = (id,post_id) => {
           
               return (dispatch) => {
                 const Token = () => localStorage.getItem("user");
-                 return axios.delete(`http://localhost:4000/reports/deleteReportedPost/${id}/${post_id}`,{
+                 return axios.delete(`${process.env.REACT_APP_PORT}/reports/deleteReportedPost/${id}/${post_id}`,{
                      headers:{authorization:`Bearer ${Token()}`}
                   })
                  .then(
@@ -117,6 +133,7 @@ export const reqVerification = () => {
                 
                 }
               }
+            
     export const StatusSuccess = status => {
 
       return {

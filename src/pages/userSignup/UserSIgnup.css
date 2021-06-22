@@ -7,191 +7,20 @@
 .user-signup{
   display: flex;
   height: 90.9vh;
-  background-image:url('../../images/loginhd.jpg');
-  background-position: initial;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-origin: border-box;
+  background:transparent;
+  flex-direction: row;
+ 
 }
-.f{
-  
-}
-.user-signup-card{
+.inner-reg{
   display: flex;
-  /* flex-direction: row; */
   flex-direction: column;
-  font-family: cursive;
-  justify-content: start;
-  width: 370px;
-  min-height: 245px;
-  background-color:lightgrey; 
- margin-bottom: 120px;
-margin-left: 5%;
-border-radius: 10px;
-padding-bottom: 32px;
-align-self: flex-end;
-margin-top: 5rem;
-padding-left: 3%;
-padding-top: 2%;
-text-align: left;
-margin-bottom: 5%;
-}
-.button{
-  align-self: center;
-}
-.user-signup-card-input{
-  padding: 14px 32px 14px 16px;
-border-radius: 4px 0 0 4px;
-border: 2px solid rgb(109, 105, 105);
-outline: none;
-width: 320px;
-background: transparent;
-color: #fff;
-flex-direction:row;
-align-self: center;
-}
-.user-signup-cardAction{
-font-family: cursive;
-color:whitesmoke;
-background-color: rgb(19, 18, 18);
-margin-left: -12.5%;
-margin-top: -9%;
-border-radius: 10px;
-height: 10vh;
-text-align: center;
-/* text-align: justify; */
-padding-top: 4%;
-}
-.user-signup-card-button{
-  padding: 16px;
-   border-radius: 20px;
-border:thick white;
-border-radius: 0 4px 4px 0 ;
-cursor: pointer;
-outline: none;
-background:  linear-gradient(22deg, rgb(189, 186, 186) 0%, rgb(131, 130, 130) 100%);
-color: #fff;
-box-sizing:border-box;
-width: 120px;
-text-transform: capitalize;
- align-self: center;
- margin-top: 14%;
-}
-.buttonAlign{
-  display: grid;
-  align-self: center;
-  margin-top: 5%;
-}
-.innerCard{
-  align-items: center;
-  box-shadow: -1px 4px 20px -6px rgba(0, 0,0,0.75);
-  border-radius: 20px;
-  align-self: center;
-  background-color:transparent ;
-  width:320px;
-  margin-right: 13%;
-  margin-top: 3%;
-}
-.nav-lin{
-  color:lightslategray;
-  font-family: cursive;
-  text-decoration: whitesmoke;
-  padding: 0.5rem 1rem;
-  /* margin-left: -5%; */
-  margin-bottom: 5%;
-}
-@media screen and (max-width:960px) {
-  .user-signup{
-    display: flex;
-  
-    background-image:none;
-   
-  }
-  
-  .user-signup-card{
-    display: flex;
-  
-    flex-direction: column;
-    font-family: cursive;
-    justify-content:flex-start;
-    /* width: 370px; */
-    /* min-height: 245px; */
-    /* background-color:lightgrey; 
-   margin-bottom: 120px;
-  margin-left: 5%;
-  border-radius: 10px;
-  padding-bottom: 32px;
-  align-self: flex-end;
+  justify-content:stretch;
+  /* border-style:dashed; */
+  /* align-content: flex-end; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  margin-left: 50rem;
   margin-top: 5rem;
-  padding-left: 3%;
-  padding-top: 2%;
-  text-align: left;
-  margin-bottom: 5%; */
-  }
-  .button{
-    align-self: center;
-  }
-  .user-signup-card-input{
-    /* padding: 14px 32px 14px 16px;
-  border-radius: 4px 0 0 4px;
-  border: 2px solid rgb(109, 105, 105);
-  outline: none;
-  width: 320px;
-  background: transparent;
-  color: #fff;
-  flex-direction:row;
-  align-self: center; */
-  margin-left: -1rem;
-  }
-  .user-signup-cardAction{
-    display: none;
-  font-family: cursive;
-  color:whitesmoke;
-  background-color: rgb(19, 18, 18);
-  margin-left: -10.5%;
-  margin-top: -9%;
-  border-radius: 10px;
-  height: 10vh;
-  text-align: center;
-  /* text-align: justify; */
-  padding-top: 4%;
-  }
-  .user-signup-card-button{
-    padding: 16px;
-     border-radius: 20px;
-  border:thick white;
-  border-radius: 0 4px 4px 0 ;
-  cursor: pointer;
-  outline: none;
-  background:  linear-gradient(22deg, rgb(189, 186, 186) 0%, rgb(131, 130, 130) 100%);
-  color: #fff;
-  box-sizing:border-box;
-  width: 120px;
-  text-transform: capitalize;
-   align-self: center;
-   margin-top: 14%;
-  }
-  .buttonAlign{
-    display: grid;
-    align-self: center;
-    margin-top: 5%;
-  }
-  .innerCard{
-    align-items: center;
-    box-shadow: -1px 4px 20px -6px rgba(0, 0,0,0.75);
-    border-radius: 20px;
-    align-self: center;
-    background-color:transparent ;
-    width:320px;
-    margin-right: 13%;
-    margin-top: 3%;
-  }
-  .nav-lin{
-    color:lightslategray;
-    font-family: cursive;
-    text-decoration: whitesmoke;
-    padding: 0.5rem 1rem;
-    /* margin-left: -5%; */
-    margin-bottom: 5%;
-  }
+  width:500px;
+  height: fit-content;
 }

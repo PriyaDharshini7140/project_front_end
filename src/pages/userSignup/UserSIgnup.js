@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import {Button, Card, Tooltip } from '@material-ui/core';
+import React, {  useState } from 'react'
+import {Button, Tooltip } from '@material-ui/core';
 import './UserSIgnup.css'
 import { Link } from 'react-router-dom';
-import Axios from 'axios';
-import {ButtonGroup,FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
+// import Axios from 'axios';
+import {FormControl, IconButton, InputAdornment,makeStyles,  TextField } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
@@ -12,8 +12,13 @@ import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import validator from 'validator'
+import { ToastContainer, toast } from 'material-react-toastify';
+import 'material-react-toastify/dist/ReactToastify.css';
+
+// import validator from 'validator'
 import { validate } from 'react-email-validator';
+import axios from 'axios';
+require("dotenv").config()
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -23,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     root1:{
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         padding:'10px',
         marginLeft:'70px',
@@ -43,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
       },
       textField: {
         width: '25ch',
+      },
+      icon:{
+        // color:"gray"
       },
   }));
 function UserSIgnup(props) {
@@ -84,7 +92,42 @@ function UserSIgnup(props) {
           return("Invalid Email")
       }
     }
-    
+   function register(user_name, email_id, password) {
+      return axios.post(`${process.env.REACT_APP_PORT}/user/addUser`,{
+          user_name:user_name,
+          email_id:email_id,
+          password:password
+         }).then((res)=>{
+           if(res.data.message === "Registered successfully  please login in "){
+            toast.success(res.data.message,{
+              position: "top-center",
+              autoClose: 2000,
+              
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+             
+              })
+           }
+           else{
+            toast.error(res.data.message,{
+              position: "top-center",
+              autoClose: 2000,
+              
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+             
+              })
+           }
+          
+          console.log(res.data.data._id);
+       
+        }).catch((e)=>console.log(e))
+    }
+  
     function validatepassword(){
         if(!password){
             return("Password Required")
@@ -100,34 +143,37 @@ function UserSIgnup(props) {
     return (
       <div>
         <div className='user-signup'>
-        <div className='user-signup-card'>
-        <div className="user-login-cardAction">
-              REGISTER<EmojiObjectsIcon/>
-       </div>
-       <div className='innerCard'>
+        
+       
+       <div className='inner-reg'>
+         <center><h5 style={{marginLeft:"7rem"}}>Register</h5></center>
+        
          <center>
    <form className={classes.root}  autoComplete="on" onSubmit={handleSubmit}>
-   <Tooltip title='From 4 to 20 letters' arrow>
-    <TextField id="outlined-basic" helperText={validateName()}
+   <div >
+    <TextField id="outlined-basic" 
+    
+    style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}}
     InputProps={{
-      startAdornment: <InputAdornment position="start"><PersonIcon/></InputAdornment>,
+      startAdornment: <InputAdornment position="start"><PersonIcon className={classes.icon}/></InputAdornment>,
     }}
-   placeholder="userName" type="text" variant="outlined"  onChange={(e)=>setName(e.target.value)} />
+   placeholder="userName" type="text" variant="outlined"  onChange={(e)=>setName(e.target.value)} helperText={validateName()}/>
                
-          </Tooltip>
-          <Tooltip title='Enter valid Email' arrow>
-           <TextField id="outlined-basic" placeholder='email' type="email" variant="outlined" helperText={ValidateEmail()}
+          </div>
+          <div>
+           <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",color:"white"}} type="email" variant="outlined" helperText={ValidateEmail()}
              InputProps={{
-              startAdornment: <InputAdornment position="start"><EmailIcon/></InputAdornment>,
+              startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
             }}
           
             onChange={(e)=>setEmail(e.target.value)} />
-               </Tooltip>
-               <Tooltip title='From 8 to 15 characters' arrow>
+               </div>
+               <div>
                 
           <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
               
               <TextField
+              style={{width:"40ch",marginLeft:"-.5rem",backgroundColor:"rgba(0, 0,0,0.03)"}}
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
                 value={values.password}
@@ -136,7 +182,7 @@ function UserSIgnup(props) {
                 variant="outlined"
                 onChange={(e)=>setPassword(e.target.value)}
                 InputProps={{
-                  startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon /></InputAdornment>,
+                  startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon className={classes.icon}/></InputAdornment>,
                 
                 endAdornment:
                   <InputAdornment position="end">
@@ -146,7 +192,7 @@ function UserSIgnup(props) {
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      {values.showPassword ? <Visibility className={classes.icon} /> : <VisibilityOff className={classes.icon}/>}
                     </IconButton>
                   </InputAdornment>
                 }}
@@ -154,25 +200,37 @@ function UserSIgnup(props) {
               />
             </FormControl>
                
-           </Tooltip>
-         
-         <Button className='user-signup-card-button' onClick={()=>{
+           </div>
+         <center>
+         <Button  variant="contained" color="primary"style={{borderRadius:"40px",marginLeft:"8rem"}} onClick={()=>{
            if(validate(email)){
-            AuthService.register(name,email,password).then((e)=> {
+          register(name,email,password).then((e)=> {
               console.log(e);
-               props.history.push('/Sign in')
+              //  props.history.push('/Sign in')
             }
               )
            }
          else{
            alert('Enter valid Email')
          }
-         }}disabled={validateName(),ValidateEmail(),validatepassword()}>Register</Button><br/>
+         }}disabled={validateName(),ValidateEmail(),validatepassword()}>Register</Button>
+         <ToastContainer position="top-center"
+         autoClose={2000}
+         hideProgressBar
+         
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover/>
+         </center><br/>
          </form>
+         {/* </center> */}
          </center>
          <center>
-         
-       <Link to='/Sign in' className="nav-lin">Already a User</Link> 
+         <div style={{marginLeft:"8rem"}}>
+         Already a User <Link to='/Sign in'>Login?</Link> </div>
        
                </center>
                </div>
@@ -180,12 +238,8 @@ function UserSIgnup(props) {
         </div>
         
     </div>
-    <footer class="c-footer">
-          <div class="c-inner">
-            Copyright IdeaWrapper. All rights reserved. For internal use only.
-          </div>
-        </footer>
-    </div>
+   
+    
     )
 }
 

@@ -54,6 +54,21 @@
    margin-left: -15%;
   color:gray;
   }
+  .nl{
+    color: white;
+    /* border-radius:30px;
+    text-decoration: whitesmoke;
+    padding: 0.5rem 1rem; */
+    /* font-family: cursive; */
+  }
+  .nl:hover{
+    background-color:transparent;
+    text-decoration:none;
+    color: white;
+  }
+  .nav_black {
+    background-color: #111;
+  }
   .nav-links {
     /* background-color:whitesmoke; */
     color: whitesmoke;

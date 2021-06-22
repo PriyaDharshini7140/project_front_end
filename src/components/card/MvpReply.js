@@ -10,6 +10,8 @@ import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import { BsReplyFill} from "react-icons/bs";
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import {DeleteMvpReply, MvpReplyUpVote, MvpReplyDownVote} from '../../redux/postActions';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+// import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 function MvpReplys({Mvp}) {
     const user = useSelector((state)=> state.user.users)
     const dispatch = useDispatch()
@@ -21,41 +23,45 @@ function MvpReplys({Mvp}) {
     return (
         <div>
            {replys.map((e)=><>
-           {e.comment_id === Mvp ?<>
-           <div className="header">
-           <div className="nav-link">
-            <Avatar alt={e.user.user_name} src={e.user.profile_picture}/> 
-            <Link to={{pathname:'/userProfile',state:e.user}} >
-                   {e.user.user_name}<VerifiedUserRoundedIcon/></Link> 
-                   {moment(e.createdAt).format("MMMD,YYYY")}
-                   </div>
-                   {user._id === e.user._id ? <div>
+           {e.comment_id === Mvp ?<div className="mvp-comments-card">
+            <div className="head-mvp">
+           
+           <Avatar style={{marginTop:".2rem"}} src={e.user.user_profile}/>
+   <div className="user-name">
+           <Link to={{pathname:'/userProfile',state:e.user}}  className="user-name-link">
+                      {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
+                      <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
+                      </div>
+                   {user._id === e.user._id ? <div style={{marginLeft:"7rem"}}>
         
-            <HighlightOffIcon onClick={()=>dispatch( DeleteMvpReply(e._id))}/>
+            <DeleteRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch( DeleteMvpReply(e._id))}/>
             
              </div>
              
              :<></>}
              </div>
+             <div style={{marginLeft:".5rem"}}>
              {e.reply_text}
-             <div>
-    <ThumbUpAltIcon 
-               onClick={()=>dispatch(MvpReplyUpVote(e._id,e.user_id))}
+             </div>
+             <div className="footer">
+                 <div style={{marginLeft:".5rem"}}>
+    <ThumbUpAltIcon style={{cursor:"pointer"}} className={e.up_vote.includes(user._id)? "l":""}
+               onClick={()=>dispatch(MvpReplyUpVote(e._id,user._id))}
                   />
                   {e.up_vote.length > 0?e.up_vote.length:""}
                      
-                   
-                
-                       <ThumbDownAltIcon 
-                          onClick={()=>dispatch(MvpReplyDownVote(e._id,e.user_id))}
+                  </div>
+                <div style={{marginLeft:".5rem"}}>
+                       <ThumbDownAltIcon style={{cursor:"pointer"}} className={e.down_vote.includes(user._id)? "l":""}
+                          onClick={()=>dispatch(MvpReplyDownVote(e._id,user._id))}
                       />
                       {e.down_vote.length > 0?e.down_vote.length:""}
                           
-                       
+                      </div>
                           
                     </div>       
                 
-           </>:<></>}
+           </div>:<></>}
            </>)}
         </div>
     )

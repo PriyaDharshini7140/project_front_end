@@ -6,7 +6,8 @@ import {
     ADD_MVP_SUCCESS,
    ADD_MVP_COMMENT_SUCCESS,
    ADD_MVP_REPLY_SUCCESS ,
-   ADD_LIKE_SORTED_SUCCESS
+   ADD_LIKE_SORTED_SUCCESS,
+   ADD_CATEGORY_SUCCESS
   } from './Types'
   
   const initialState = {
@@ -17,7 +18,8 @@ import {
   mvp:[],
   mvpComments:[],
   mvpReplys:[],
- LikeSortedPosts:[]
+ LikeSortedPosts:[],
+ category:[]
     
   }
   
@@ -71,6 +73,12 @@ import {
            LikeSortedPosts:action.payload
             
           }
+          case ADD_CATEGORY_SUCCESS:
+            return {
+             ...state,
+             category:action.payload
+              
+            }
       default: return state
     }
   }

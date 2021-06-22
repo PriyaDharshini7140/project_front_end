@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useAutocomplete from '@material-ui/lab/useAutocomplete'
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { useHistory,useLocation } from "react-router-dom";
 import SearchIcon from '@material-ui/icons/Search';
 import { List, ListItem } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar() {
     const history = useHistory()
   const classes = useStyles();
+  const category = [];
+  const [open,setOpen] = useState(false)
+  const Data = useSelector((state)=>state.post.posts)
+  Data.map(e=>e.category.map(a=>category.includes(a) === true ? <></>:category.push(a)))
+  console.log(category);
   const {
     getRootProps,
     getInputLabelProps,
@@ -91,6 +97,7 @@ export default function SearchAppBar() {
     options: category,
     getOptionLabel: (option) => option,
   });
+  
   return (
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -102,14 +109,16 @@ export default function SearchAppBar() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              onClick={()=>setOpen(false)}
               inputProps={{ 'aria-label': 'search' }}
               {...getInputProps()}
             />
-             {groupedOptions.length > 0 ? (
+          {open === false ? groupedOptions.length > 0 ? (
         <List className={classes.listbox} {...getListboxProps()}>
           {groupedOptions.map((option, index) => (
             <ListItem button style={{color:"black"}} {...getOptionProps( option, index )}
             onClick={()=>{
+              setOpen(true)
                 console.log("option")
                 history.push("/search_by_category",option)
               }
@@ -117,37 +126,8 @@ export default function SearchAppBar() {
             >{option}</ListItem>
           ))}
         </List>
-      ) : null}
+      ) : null:<></> }
+            
           </div>
      );
 }
-const category = [
-    
-    'JavaScript',
-    'Html',
-    'css',
-    'xml',
-    'jsx',
-    'bootStrap',
-    'React',
-    'Angular',
-    'Asp.net',
-    'C#',
-    'C',
-    'C++',
-    'Java',
-    'Python',
-    'R',
-    'Ruby',
-    'TypeScript',
-   'React Native',
-   'Node js',
-   'Scala',
-   'Bash/Shell/PowerShell',
-   'PHP',
-   'Kotlin',
-   'Assembly',
-   'VBA',
-   'Swift'
-  ];
-  

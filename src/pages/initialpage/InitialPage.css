@@ -13,15 +13,20 @@
   flex: 1 1 auto;
 }
 .topbar-class{
-  background-color: transparent linear-gradient(270deg, #4e0202 0%, #00030a04 100%) 0% 0% no-repeat padding-box;;
+ background: rgba(0, 0,0,0.03);
   position:sticky;
   top:0;
   width:100%;
   z-index:999;
+  height:60px;
+}
+.topbar-class.active{
+background:linear-gradient(315deg, #47c1faa1 0%, #05bfeeea 74%);/* background:linear-gradient(,) */
+ 
 }
 .topbar-class .contain{
-  height:4rem;
-  background:transparent linear-gradient(270deg, #00BAFF 0%, #004DFF 100%) 0% 0% no-repeat padding-box;
+  height:3.5rem;
+  /* background: rgba(10, 10,10,0.15); */
   display:flex !important;
   flex-wrap: wrap!important;
   padding-left:1rem;
@@ -29,7 +34,10 @@
 }
 .topbar-class .containHome{
   height:3.5rem;
-  background: transparent linear-gradient(270deg, #00BAFF 0%, #004DFF 100%) 0% 0% no-repeat padding-box;
+  background: transparent;
+  /* background: #ffc6ab; */
+  /* box-shadow: 0 1px 10px #474747; */
+
   display:flex !important;
   flex-wrap: wrap!important;
   padding-left:1rem;
@@ -49,8 +57,10 @@
 .topbar-class .app-name{font-size: 2rem; font-weight: 500; font-family: cursive; padding:.5rem 0; margin-left: 1rem; color:#fff; align-items: center; display: flex !important; padding-right: .5rem 0;}
 
 a{text-decoration: none;}
-.topbar-items{display: flex; justify-content: flex-end !important; position: relative; margin-left: auto; min-width: 375px; padding: 1rem 1rem;}
-.topbar-links{text-decoration: none; color: #fff; font-family: cursive; font-size: 1.125rem; margin-left: 1rem;}
+/* .topbar-items-home{display: flex; margin: auto; padding: 0rem 1rem; } */
+
+.topbar-items{display: flex; justify-content: flex-end !important; color: #fff; position: relative; margin-left: auto; min-width: 375px; padding: 1rem 1rem;}
+.topbar-links{text-decoration: none; color: #fff; padding:0rem 1rem; font-size: 1.125rem; margin-left: 1rem;}
 .topbar-links:hover{
   background-color: none;
   color:white;

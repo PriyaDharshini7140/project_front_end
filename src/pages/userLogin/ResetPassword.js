@@ -79,19 +79,23 @@ const [pas,setPas] = useState('')
       
       return (
         <div>
-        <div className='user-login'>
-            <div className='user-login-cardf'>
-            <div className="user-login-cardAction">
-               RESET PASSWORD<LockOpenOutlinedIcon/>
-       </div>
-       <div className='innerCardf'>
+        <div className='user-signup'>
+        
+       
+        <div className='inner-reg'>
+        <center><h5>
+               RESET PASSWORD
+       </h5></center>
+            
+      
          <center>
            <form className={classes.root}  autoComplete="on">
-           <Tooltip title='From 8 to 15 characters' arrow>
+           <div>
             
            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
           
           <TextField 
+          style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}}
           placeholder='Password'
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
@@ -117,11 +121,12 @@ const [pas,setPas] = useState('')
             labelWidth={70}
           />
         </FormControl>
-        </Tooltip>
-        <Tooltip title='From 8 to 15 characters' arrow>
+        </div>
+        <div>
               <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
          
           <TextField
+          style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}}
             id="outlined-adornment-password"
             placeholder='confirm Password'
             type={values.showPassword ? 'text' : 'password'}
@@ -147,11 +152,11 @@ const [pas,setPas] = useState('')
             labelWidth={70}
           />
         </FormControl>
-        </Tooltip>
+        </div>
              </form>
              </center>
-            <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>
+            <center>
+             <Button variant="contained" color="primary"style={{borderRadius:"40px",marginLeft:"8rem"}} onClick={()=>
            {
             if(password === pas){
                 AuthService.setNewPassword(password,token)
@@ -164,17 +169,13 @@ const [pas,setPas] = useState('')
             disabled={validatepassword()}
             >set</Button><br/>
               
-                </div>
+                </center>
               </div>
             </div>
          
         </div>
-        <footer class="c-footer">
-          <div class="c-inner">
-            Copyright IdeaWrapper. All rights reserved. For internal use only.
-          </div>
-        </footer>
-        </div>
+        
+      
     )
 }
 

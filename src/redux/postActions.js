@@ -1,3 +1,4 @@
+// import env from "react-dotenv";
 import axios from 'axios'
 import {
   ADD_POST_SUCCESS,
@@ -7,17 +8,18 @@ import {
   ADD_MVP_SUCCESS,
   ADD_MVP_COMMENT_SUCCESS,
    ADD_MVP_REPLY_SUCCESS,
-   ADD_LIKE_SORTED_SUCCESS
+   ADD_LIKE_SORTED_SUCCESS,
+   ADD_CATEGORY_SUCCESS
 
 } from './Types'
-
+require("dotenv").config()
 export const Post = (user_id,post_text,postUrl,category,title,scope,link,enhancement,frontEnd,backEnd,db) => {
   
   
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       console.log(category);
-    return  axios.post('http://localhost:4000/post/addPost',{
+    return  axios.post(`${process.env.REACT_APP_PORT}/post/addPost`,{
         user_id:user_id,
         idea_title:title,
         post_text:post_text,
@@ -38,16 +40,8 @@ export const Post = (user_id,post_text,postUrl,category,title,scope,link,enhance
       }).then(
         (res)=>{
          console.log("post",res.data);
-         const Token = () => localStorage.getItem("user");
-         return axios.post('http://localhost:4000/user/newFeed/',{},{
-             headers:{authorization:`Bearer ${Token()}`}
-          })
-         .then(
-             (res)=> {
-                console.log(res.data)
-                dispatch(PostSuccess(res.data))
-             })
-    .catch((e)=>console.log(e))
+         dispatch(newFeeds())
+         dispatch(newFeedsLike())
        }
        )
     
@@ -60,7 +54,7 @@ export const AddComment = (user_id,post_id,comment) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.post('http://localhost:4000/comment/addComment',{
+    return  axios.post(`${process.env.REACT_APP_PORT}/comment/addComment`,{
          user_id:user_id,
     post_id:post_id,
     comment_text:comment,
@@ -70,7 +64,7 @@ export const AddComment = (user_id,post_id,comment) => {
         (res)=>{
          console.log("post",res.data);
          const Token = () => localStorage.getItem("user");
-         return axios.post('http://localhost:4000/comment/getComment',{
+         return axios.post(`${process.env.REACT_APP_PORT}/comment/getComment`,{
           
          },{
              headers:{authorization:`Bearer ${Token()}`}
@@ -90,15 +84,17 @@ export const AddComment = (user_id,post_id,comment) => {
 export const newFeeds = () => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-     return axios.post('http://localhost:4000/user/newFeed/',{},{
+     return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
          headers:{authorization:`Bearer ${Token()}`}
       })
      .then(
+       
          (res)=> {
             console.log(res.data)
             dispatch(PostSuccess(res.data))
             dispatch(Comments())
-         
+            
+        //  dispatch(CategorySuccess(cat))
          })
 .catch((e)=>console.log(e))
     
@@ -107,7 +103,7 @@ export const newFeeds = () => {
   export const newFeedsLike = () => {
     return (dispatch) => {
       const Token = () => localStorage.getItem("user");
-       return axios.post('http://localhost:4000/user/newFeed/',{},{
+       return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
            headers:{authorization:`Bearer ${Token()}`}
         })
        .then(
@@ -133,7 +129,7 @@ export const newFeeds = () => {
     export const Comments = () => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-          axios.post('http://localhost:4000/comment/getComment/',{
+          axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{
        
           },{
             headers:{authorization:`Bearer ${Token()}`}
@@ -153,7 +149,7 @@ export const newFeeds = () => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return  axios.post('http://localhost:4000/reply/addReply',{
+          return  axios.post(`${process.env.REACT_APP_PORT}/reply/addReply`,{
                user_id:user_id,
     comment_id:comment_id,
     reply_text:reply
@@ -163,7 +159,7 @@ export const newFeeds = () => {
               (res)=>{
                console.log("post",res.data);
                const Token = () => localStorage.getItem("user");
-               return axios.post('http://localhost:4000/reply/getReply',{
+               return axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{
                 
                },{
                    headers:{authorization:`Bearer ${Token()}`}
@@ -184,7 +180,7 @@ export const newFeeds = () => {
       export const replys = () => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
-            axios.post('http://localhost:4000/reply/getReply',{
+            axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{
          
             },{
               headers:{authorization:`Bearer ${Token()}`}
@@ -211,6 +207,13 @@ export const LikePostSuccess = LikeSortedPosts => {
   return {
     type: ADD_LIKE_SORTED_SUCCESS,
     payload: LikeSortedPosts
+  }
+}
+export const CategorySuccess = category => {
+
+  return {
+    type: ADD_CATEGORY_SUCCESS,
+    payload: category
   }
 }
 export const CommentSuccess = comments => {
@@ -241,7 +244,7 @@ export const UpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/post/like`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/post/like`,{
   _id:id,
   user_id:user_id
   },{
@@ -249,7 +252,7 @@ export const UpVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
      dispatch(newFeeds())
-   
+     dispatch(newFeedsLike())
    },
    ).catch((e)=>console.log(e))
 
@@ -263,23 +266,15 @@ export const DownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/post/dislike`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/post/dislike`,{
   _id:id,
   user_id:user_id
   },{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{console.log(res.data)
-      const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/user/newFeed/',{},{
-        headers:{authorization:`Bearer ${Token()}`}
-       }).then(
-         (res)=>{
-          console.log(res.data)
-          dispatch(PostSuccess(res.data))
-         }
-        
-        )
+      dispatch(newFeeds())
+      dispatch(newFeedsLike())
    
    },
    ).catch((e)=>console.log(e))
@@ -294,21 +289,15 @@ export const DeletePost = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       console.log(Token());
-    return axios.delete(`http://localhost:4000/post/deletePost/${id}`,{
+    return axios.delete(`${process.env.REACT_APP_PORT}/post/deletePost/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{
-     
-      const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/user/newFeed/',{},{
-        headers:{authorization:`Bearer ${Token()}`}
-       }).then(
-         (res)=>{
-          console.log(res.data)
-          dispatch(PostSuccess(res.data))
-         }
-        
-        )
+      console.log(Token());
+      
+      dispatch(newFeeds())
+      dispatch(newFeedsLike())
+      dispatch(mvpDisplay())
    },
    ).catch((e)=>console.log(e))
 
@@ -316,34 +305,27 @@ export const DeletePost = (id) => {
     
   }
 }
-export const EditPost = (id,postId,postText,postUrl,personName,title,scope,link,enhancement,frontEnd,backEnd,db) => {
+export const EditPost = (id,postId,postText,title,scope,enhancement,category) => {
   
    
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.patch(`http://localhost:4000/post/updatePost/${id}/${postId}`,{
+    return  axios.patch(`${process.env.REACT_APP_PORT}/post/updatePost/${id}/${postId}`,{
     
       idea_title:title,
       post_text:postText,
       scope:scope,
-      post_url:postUrl,
-      category:personName,
-      link:link,
+      category:category,
       enhancement:enhancement,
-      requirements:{
-        frontend:frontEnd,
-        backend:backEnd,
-        database:db
-
-      }
+      
       },{
        headers:{authorization:`Bearer ${Token()}`}
       }).then(
         (res)=>{
          console.log("post",res.data);
          const Token = () => localStorage.getItem("user");
-         return axios.post('http://localhost:4000/user/newFeed/',{},{
+         return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
              headers:{authorization:`Bearer ${Token()}`}
           })
          .then(
@@ -363,7 +345,7 @@ export const comUpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/comment/like`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/comment/like`,{
   _id:id,
   user_id:user_id
   },{
@@ -371,7 +353,7 @@ export const comUpVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/comment/getComment/',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -394,7 +376,7 @@ export const comDownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/comment/dislike`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/comment/dislike`,{
   _id:id,
   user_id:user_id
   },{
@@ -402,7 +384,7 @@ export const comDownVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/comment/getComment/',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -425,12 +407,12 @@ export const comDelete = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.delete(`http://localhost:4000/comment/deleteComment/${id}`,{
+    return axios.delete(`${process.env.REACT_APP_PORT}/comment/deleteComment/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/comment/getComment/',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -454,12 +436,12 @@ export const repDelete = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.delete(`http://localhost:4000/reply/deleteReply/${id}`,{
+    return axios.delete(`${process.env.REACT_APP_PORT}/reply/deleteReply/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/reply/getReply',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -483,7 +465,7 @@ export const repUpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/reply/like`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/reply/like`,{
   _id:id,
   user_id:user_id
   },{
@@ -491,7 +473,7 @@ export const repUpVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/reply/getReply/',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -514,7 +496,7 @@ export const repDownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`http://localhost:4000/reply/dislike`,{
+    return axios.post(`${process.env.REACT_APP_PORT}/reply/dislike`,{
   _id:id,
   user_id:user_id
   },{
@@ -522,7 +504,7 @@ export const repDownVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post('http://localhost:4000/reply/getReply/',{},{
+      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
@@ -543,7 +525,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-     return axios.post('http://localhost:4000/solution/addSolution',{
+     return axios.post(`${process.env.REACT_APP_PORT}/solution/addSolution`,{
       
       user_id:user_id,
       post_id:Post_id,
@@ -568,7 +550,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           
     return (dispatch) => {
       const Token = () => localStorage.getItem("user");
-       return axios.post('http://localhost:4000/solution/getMvp',{},{
+       return axios.post(`${process.env.REACT_APP_PORT}/solution/getMvp`,{},{
            headers:{authorization:`Bearer ${Token()}`}
         })
        .then(
@@ -577,12 +559,35 @@ export const mvp = (user_id,Post_id,title,link) => {
               console.log(res.data)
               dispatch(mvpSuccess(res.data))
               dispatch(mvpCommentDisplay())
+             dispatch(newFeeds())
            })
   .catch((e)=>console.log(e))
       
       }
     }
-
+    export const mvpEdit = (id,Post_id,title,link) => {
+          
+      return (dispatch) => {
+        const Token = () => localStorage.getItem("user");
+         return axios.patch(`${process.env.REACT_APP_PORT}/solution/updateSolution/${id}/${Post_id}`,{
+          
+         
+         solution_title:title,
+         link:link
+         },{
+             headers:{authorization:`Bearer ${Token()}`}
+          })
+         .then(
+             (res)=> {
+              //  alert(res.data.status)
+                console.log("mvp",res.data)
+                dispatch(mvpDisplay())
+                
+             })
+    .catch((e)=>console.log(e))
+        
+        }
+      }
 
   export const mvpSuccess = mvp => {
     console.log("success",mvp);
@@ -597,7 +602,7 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return axios.post(`http://localhost:4000/solution/like`,{
+        return axios.post(`${process.env.REACT_APP_PORT}/solution/like`,{
       _id:id,
       user_id:user_id
       },{
@@ -619,7 +624,7 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return axios.post(`http://localhost:4000/solution/dislike`,{
+        return axios.post(`${process.env.REACT_APP_PORT}/solution/dislike`,{
       _id:id,
       user_id:user_id
       },{
@@ -641,7 +646,7 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           console.log(Token());
-        return axios.delete(`http://localhost:4000/solution/deleteMvp/${id}`,{
+        return axios.delete(`${process.env.REACT_APP_PORT}/solution/deleteMvp/${id}`,{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
         (res)=>{
@@ -658,7 +663,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-         return axios.post('http://localhost:4000/mvpComment/getComment',{},{
+         return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/getComment`,{},{
              headers:{authorization:`Bearer ${Token()}`}
           })
          .then(
@@ -678,7 +683,7 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return  axios.post('http://localhost:4000/mvpComment/addMvpComment',{
+        return  axios.post(`${process.env.REACT_APP_PORT}/mvpComment/addMvpComment`,{
              user_id:user_id,
        solution_id:solution_id,
         comment_text:comment,
@@ -707,7 +712,7 @@ export const mvp = (user_id,Post_id,title,link) => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return axios.post(`http://localhost:4000/mvpComment/like`,{
+          return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/like`,{
         _id:id,
         user_id:user_id
         },{
@@ -729,7 +734,7 @@ export const mvp = (user_id,Post_id,title,link) => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return axios.post(`http://localhost:4000/mvpComment/dislike`,{
+          return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/dislike`,{
         _id:id,
         user_id:user_id
         },{
@@ -750,12 +755,13 @@ export const mvp = (user_id,Post_id,title,link) => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             console.log(Token());
-          return axios.delete(`http://localhost:4000/mvpComment/deleteComment/${id}`,{
+          return axios.delete(`${process.env.REACT_APP_PORT}/mvpComment/deleteComment/${id}`,{
           headers:{authorization:`Bearer ${Token()}`}
          }).then(
           (res)=>{
            
             dispatch(mvpCommentDisplay())
+             dispatch(mvpDisplay())
          },
          ).catch((e)=>console.log(e))
       
@@ -776,7 +782,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           return (dispatch) => {
             const Token = () => localStorage.getItem("user");
               
-            return  axios.post('http://localhost:4000/mvpReply/addReply',{
+            return  axios.post(`${process.env.REACT_APP_PORT}/mvpReply/addReply`,{
                  user_id:user_id,
       comment_id:comment_id,
       reply_text:reply
@@ -798,7 +804,7 @@ export const mvp = (user_id,Post_id,title,link) => {
               
          
                  
-                 return axios.post('http://localhost:4000/mvpReply/getReply',{
+                 return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/getReply`,{
                   
                  },{
                      headers:{authorization:`Bearer ${Token()}`}
@@ -818,7 +824,7 @@ export const mvp = (user_id,Post_id,title,link) => {
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
                     
-                  return axios.post(`http://localhost:4000/mvpReply/like`,{
+                  return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/like`,{
                 _id:id,
                 user_id:user_id
                 },{
@@ -840,7 +846,7 @@ export const mvp = (user_id,Post_id,title,link) => {
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
                     
-                  return axios.post(`http://localhost:4000/mvpReply/dislike`,{
+                  return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/dislike`,{
                 _id:id,
                 user_id:user_id
                 },{
@@ -861,7 +867,7 @@ export const mvp = (user_id,Post_id,title,link) => {
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
                     console.log(Token());
-                  return axios.delete(`http://localhost:4000/mvpReply/deleteReply/${id}`,{
+                  return axios.delete(`${process.env.REACT_APP_PORT}/mvpReply/deleteReply/${id}`,{
                   headers:{authorization:`Bearer ${Token()}`}
                  }).then(
                   (res)=>{

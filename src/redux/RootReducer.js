@@ -2,12 +2,12 @@ import { combineReducers, applyMiddleware, createStore } from "redux";
 import UserReducer from "./UserReducer";
 import thunk from "redux-thunk";
 import PostReducer from './PostReducer'
-import CommentReducer from './CommentReducer'
+
 import verificationReducer from './verificationReducer'
 const RootReducer = combineReducers({
   user: UserReducer,
   post:PostReducer,
-  comment:CommentReducer,
+  
   verification : verificationReducer
 });
 

@@ -12,10 +12,10 @@ import { useHistory ,useLocation} from 'react-router';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AuthService from '../../auth/AuthService';
-import { Avatar } from '@material-ui/core';
+import { Avatar ,Badge} from '@material-ui/core';
 import {useDispatch } from 'react-redux';
 import { userRequest } from '../../redux/Actions';
-
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import { ToastContainer, toast } from 'material-react-toastify';
   import 'material-react-toastify/dist/ReactToastify.css';
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight() {
+export default function ModalNotification() {
   const auth = useSelector((state)=> state.user.authorization)
  
   const location = useLocation();
@@ -73,15 +73,16 @@ export default function PersistentDrawerRight() {
     <div className={classes.root}>
       
       <div>
-      <Avatar
-      style={{cursor:"pointer"}}
-             alt={user.user_name} 
-            src={user.profile_picture}
-            ref={anchorRef}
+      <Badge badgeContent={1} 
+      
+      color="secondary">
+        <NotificationsIcon style={{color:"white",cursor:"pointer"}} ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
-            onClick={handleToggle}
-            />
+            onClick={handleToggle}/>
+ 
+      </Badge>
+     
         
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
@@ -89,63 +90,13 @@ export default function PersistentDrawerRight() {
               {...TransitionProps}
               style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
             >
-              <Paper style={{width:"130px"}}>
+              <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  {location.pathname === "/home page" ?<MenuList autoFocusItem={open}  id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  <MenuItem onClick={handleClose}><b style={{fontSize:"small"}}>{user.user_name}</b></MenuItem>
-                  <MenuItem onClick={handleClose}><Link to={{pathname:'/Account',state:user}} style={{color:'black',textDecoration:"none"}}>My Account</Link></MenuItem>
-          <MenuItem onClick={()=>{
-          
-          AuthService.logout()
-          history.replace("/Sign in")
-          window.location.reload()
-          }}>Logout</MenuItem>
-                  </MenuList>:<MenuList autoFocusItem={open} id="menu-list-grow"  onKeyDown={handleListKeyDown}>
-                  <MenuItem onClick={handleClose}><b style={{fontSize:"small"}}>{user.user_name}</b></MenuItem>
-                  <ModalPassword onClick={handleClose}/>
-             {!auth || auth.status  === "Rejected"  ?<MenuItem onClick={()=>{
-               toast.success("Requested", { position: "top-center",
-               autoClose: 2000,
-               
-               hideProgressBar: true,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,})
-         dispatch(userRequest(user._id))
-         
-          }}>request verification</MenuItem>:<></>}
-           <ToastContainer position="top-center"
-         autoClose={2000}
-         hideProgressBar
-         
-         newestOnTop={false}
-         closeOnClick
-         rtl={false}
-         pauseOnFocusLoss
-         draggable
-         pauseOnHover/>
-
-<MenuItem onClick={()=>
-
-        {
-          
-          if(window.confirm("Do you want to delete your account")){
-           AuthService.delete();
-           history.replace("/Sign in");
-          window.location.reload();
-          }
-         
-         
-        }
-      }>Delete Account</MenuItem>
-          <MenuItem onClick={()=>{
-             
-          AuthService.logout()
-          history.replace("/Sign in")
-          window.location.reload()
-          }}>Logout</MenuItem>
-          
-                  </MenuList>}
+                  <MenuList autoFocusItem={open}  id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                      {user.education === "" && user.work === "" && user.description === "" && user.phone_number === "" ?<MenuItem onClick={handleClose}>hi update your profile</MenuItem>:<></>}
+                  {auth ? <MenuItem onClick={handleClose}>Your Account has been verified</MenuItem>:<MenuItem onClick={handleClose}>Request for Verification </MenuItem>}
+                 
+                  </MenuList>
                   
                 </ClickAwayListener>
               </Paper>

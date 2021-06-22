@@ -1,5 +1,5 @@
-import { Avatar,Button,IconButton, Snackbar } from '@material-ui/core'
-import { BsReply } from "react-icons/bs";
+import { Avatar,Button,IconButton, Snackbar,InputAdornment,Tooltip,TextField } from '@material-ui/core'
+import { BsReplyFill } from "react-icons/bs";
 import React, { useEffect, useState } from 'react'
 import'./PostCard.css'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -16,6 +16,7 @@ import Reply from './Reply';
 import moment from "moment"
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -24,8 +25,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   like:{
-    color:"#00b0ff"
-  }
+    color:"blue"
+  },
+  unlike:{
+    color:"rgb(39, 39, 38)"
+  },
 }));
 function Comment({post}) {
   const user = useSelector((state)=> state.user.users)
@@ -76,29 +80,32 @@ function Alert(props) {
        <>
        {Data.map((e)=>
         <>
-         {post === e.post_id? <div className="card" key={e._id}>
+         {post === e.post_id? <div className="comments-card" key={e._id}>
          
-          <h5 className='cardheader'>
+         
             
-            <Avatar alt={e.user.user_name} src={e.user.profile_picture}/> 
-            <Link to={{pathname:'/userProfile',state:e.user}} className="nav-link">
-                   {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/></Link> 
-                   {moment(e.createdAt).format("MMMD,YYYY")}
+         <div className="head">
+        <Avatar style={{marginTop:".2rem"}} src={e.user.user_profile}/>
+<div className="user-name">
+        <Link to={{pathname:'/userProfile',state:e.user}} style={{fontFamily: "lucida Sans"}} className="user-name-link">
+                   {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
+                   <div style={{color:"white",fontSize:"small",fontFamily: "lucida Sans"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
+                   </div>
            
           
           
-         {user._id === e.user._id ? <div>
+         {user._id === e.user._id ? <div style={{marginTop:"-.5rem",marginLeft:"23rem"}}> 
         <IconButton>
-            <HighlightOffIcon onClick={()=>dispatch(comDelete(e._id))}/>
+            <DeleteRoundedIcon onClick={()=>dispatch(comDelete(e._id))}/>
              </IconButton>
              </div> :<></>}
         
-          </h5>
-          <br/>
-          <div className="text">
+         </div>
+          {/* <br/> */}
+          <div className="text" style={{color:"black",fontFamily: "lucida Sans",marginLeft:"1rem"}}>
           <ShowMoreText
                
-               lines={3}
+               lines={2}
                more='Show more'
                less='Show less'
               
@@ -111,11 +118,11 @@ function Alert(props) {
      
       
      
-           <div className='footer'>
+           <div className="footer" style={{color:"black"}}>
              
-           <IconButton>
-             <ThumbUpAltIcon 
-              className={e.up_vote.includes(user._id)? classes.like:""}
+           <div  style={{marginLeft:"1rem"}}>
+             <ThumbUpAltIcon style={{cursor:"pointer"}}
+              className={e.up_vote.includes(user._id)? classes.like:classes.unlike}
              onClick={()=>{
                       handleClick({ vertical: 'bottom', horizontal: 'left' })
                       dispatch(comUpVote(e._id,user._id))
@@ -128,14 +135,14 @@ function Alert(props) {
       :<Alert  severity="info">liked</Alert>}
         </Snackbar>
   
-             </IconButton>
+        </div>
              
         
      
-            <IconButton>
-            
-                 <ThumbDownAltIcon
-                  className={e.down_vote.includes(user._id)? classes.like:""}
+           
+            <div  style={{marginLeft:"1rem"}}>
+                 <ThumbDownAltIcon style={{cursor:"pointer"}}
+                  className={e.down_vote.includes(user._id)? classes.like:classes.unlike}
                  onClick={()=>{
                        handle({ vertical: 'bottom', horizontal: 'left' })
                       dispatch(comDownVote(e._id,user._id))
@@ -147,31 +154,38 @@ function Alert(props) {
           {e.down_vote.includes(user._id)?<Alert  severity="info">removed</Alert>
       :<Alert  severity="info">disliked</Alert>}
         </Snackbar>
-                 </IconButton>
-            
-                 <IconButton>
-                 <BsReply  onClick={handleClickShowPassword}/>{e.replys.length}
-                 </IconButton>
-                 <div className="replys">
-              <div className="reply">
-                  <input placeholder="add reply"   type="text" onChange={(e)=>setReply(e.target.value)}/>
-                  <IconButton >
-                  <SendRoundedIcon className='iconbutton' onClick={()=>
-                 dispatch(AddReply(user._id,e._id,reply))} />
-                  </IconButton>
-              </div>
-              </div>
+        </div>
+        <Tooltip title="Add Reply" arrow>
+        <div  style={{marginLeft:"1rem"}}>
+                 <BsReplyFill className={classes.unlike} style={{fontSize:"30px",cursor:"pointer"}}  onClick={handleClickShowPassword}/>{e.replys.length}
+                 </div>
+                 </Tooltip>
+                 
               </div>
               {values.showPassword ? 
-              <><div className="re">
-              <div className="r">
-                  <input placeholder="add reply"   type="text" onChange={(e)=>setReply(e.target.value)}/>
-                  <IconButton >
-                  <SendRoundedIcon className='iconbutton' onClick={()=>
-                 dispatch(AddReply(user._id,e._id,reply))} />
-                  </IconButton>
-              </div>
-              </div><br/>
+              <>
+              <TextField
+              style={{width:"100%"}}
+                type="text"
+             className={classes.input}
+                placeholder="add reply"
+                
+                // variant="outlined"
+                onChange={(e)=>setReply(e.target.value)}
+                InputProps={{
+                
+                endAdornment:
+                  <InputAdornment position="end">
+                    
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddReply(user._id,e._id,reply))
+                    setReply(" ")}
+                      }/>
+                    
+                  </InputAdornment>
+                }}
+               
+              />
+             
               <Reply comment={e._id}/></>
            :<></>}
 

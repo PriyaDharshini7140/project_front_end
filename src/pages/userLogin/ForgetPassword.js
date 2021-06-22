@@ -52,44 +52,41 @@ const [email, setEmail] = useState('')
 
       return (
         <div>
-        <div className='user-login'>
-            <div className='user-login-cardf'>
-            <div className="user-login-cardAction">
-               RESET PASSWORD<LockOpenOutlinedIcon/>
-       </div>
-       <div className='innerCardf'>
-         <center>
-           <form className={classes.root}  autoComplete="on">
-                
-           <Tooltip title='Enter valid Email' arrow>
-           <TextField id="outlined-basic" 
-            InputProps={{
-              startAdornment: <InputAdornment position="start"><EmailIcon/></InputAdornment>,
-            }}
-            placeholder='email'
-           type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/>
-           </Tooltip>
+      <div className='user-signup'>
+        
+       
+        <div className='inner-reg'>
+        <center><h5 style={{marginLeft:"7rem"}}>RESET PASSWORD</h5></center>
+          <center>
+    <form className={classes.root}  autoComplete="on" >
+    
+           <div>
+            <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}} type="email" variant="outlined"
+              InputProps={{
+               startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
+             }}
            
-             </form>
+             onChange={(e)=>setEmail(e.target.value)} />
+                </div>
+                
+           
+          </form>
+         
              </center>
-            <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>
+            <center>
+             <Button variant="contained" color="primary"style={{borderRadius:"40px",marginLeft:"8rem"}} onClick={()=>
             AuthService.setPassword(email).then(()=>alert("check your mail"))
             }
             // disabled={validatepassword()}
             >set</Button><br/>
               
-                </div>
+                </center>
               </div>
             </div>
          
         </div>
-        <footer class="c-footer">
-          <div class="c-inner">
-            Copyright IdeaWrapper. All rights reserved. For internal use only.
-          </div>
-        </footer>
-        </div>
+        
+       
     )
 }
 

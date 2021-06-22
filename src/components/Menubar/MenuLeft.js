@@ -14,15 +14,18 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-
-import { Avatar } from '@material-ui/core';
+import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
+import { Avatar, Snackbar } from '@material-ui/core';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import AuthService from "../../auth/AuthService"
-import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+
 
 import { useSelector,useDispatch } from 'react-redux';
 import ModalProfile from '../modal/ModalProfile';
+import axios from 'axios';
+import Alert from '@material-ui/lab/Alert';
+import { userRequest } from '../../redux/Actions';
 
 const drawerWidth = 240;
 
@@ -95,11 +98,21 @@ console.log(user);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+  const Close = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
+    setopen(false);
+  };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const [Open, setopen] = React.useState(false);
+  const handleOpen = () => {
+    setopen(true);
+  };
+  const auth = useSelector((state)=> state.user.authorization)
 const remove=()=>{
  
          
@@ -149,9 +162,21 @@ const remove=()=>{
         <List>
         <ListItem >
         <ListItemIcon><HomeRoundedIcon/></ListItemIcon>
-        <ListItemIcon><Link to="/home page" className="links">Home page</Link></ListItemIcon>
+        <ListItemIcon></ListItemIcon>
         </ListItem>
-        <ModalProfile/>
+        
+       
+        <Snackbar open={Open} anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+
+      }} 
+      message ='Verification request has been sent'
+      autoHideDuration={1000} onClose={Close}/>
+        
+        
+     
+        
         <ListItem onClick={()=>
         {
           if(window.confirm("Do you want to delete your account")){
@@ -164,7 +189,7 @@ const remove=()=>{
         }
             
         }>
-        <ListItemIcon><DeleteRoundedIcon /></ListItemIcon>
+        <ListItemIcon></ListItemIcon>
         <ListItemIcon className="text">Delete Account</ListItemIcon>
         </ListItem>
        

@@ -18,19 +18,13 @@ import { useSelector,useDispatch } from 'react-redux';
 import {AddComment} from '../../redux/postActions'
 import Chip from '@material-ui/core/Chip';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
-import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
-import EmailIcon from '@material-ui/icons/Email';
-import PersonIcon from '@material-ui/icons/Person';
-import PhoneIcon from '@material-ui/icons/Phone';
-import WorkIcon from '@material-ui/icons/Work';
 import Carousel from 'react-bootstrap/Carousel'
 import MuiAlert from '@material-ui/lab/Alert';
 import ModalReport from '../modal/ModalReport';
 import LinkIcon from '@material-ui/icons/Link';
 import MvpCard from './MvpCard';
 import ModalMvp from '../modal/ModalMvp';
-import ModalMvpEdit from '../modal/ModalMvpEdit';
+
 import moment from "moment"
 // import Link from '@material-ui/core/Link';
 const useStyles = makeStyles((theme,colors) => ({
@@ -46,7 +40,10 @@ const useStyles = makeStyles((theme,colors) => ({
     marginTop:"1%",
   },
   like:{
-    color:"#00b0ff"
+    color:"blue"
+  },
+  menu:{
+    backgroundColor:"rgba(10, 10,10,0.15)"
   }
  
 }));
@@ -62,9 +59,10 @@ function Post(props) {
   const colors =['#e57373','#f06292','#64b5f6','#4dd0e1','#4db6ac','#dce775','#ffb74d','#fff176','#ff8a65','#90a4ae','#18ffff']
 const history = useHistory()
   const classes = useStyles();
+  const user = useSelector((state)=> state.user.users)
   const state = history.location.state
-  
-  console.log(props);
+  console.log(state._id);
+ 
   console.log(classes);
   const [values, setValues] = useState({
         showPassword: false,
@@ -72,18 +70,21 @@ const history = useHistory()
       const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
       };
-  const user = useSelector((state)=> state.user.users)
+  
 // console.log(user);
 const auth = useSelector((state)=> state.user.authorization)
 const Data = useSelector((state)=> state.post.posts)
   console.log(values);
-  const mvp = useSelector((state)=> state.post.mvp)
- 
-
+  const MVP = useSelector((state)=> state.post.mvp)
+ console.log(MVP);
+const filter = MVP && MVP.filter((e)=>e && e.user_id === user._id)
+console.log(filter);
+const presence =filter && filter.filter((e)=>e && e.post_id === state._id)
+console.log(presence);
 const dispatch = useDispatch();
 const [anchorEl, setAnchorEl] = React.useState(null);
    
-    
+     
     const [comment,setComment] = useState('');
    
     const [open, setOpen] = React.useState(false);
@@ -126,25 +127,25 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       <div className="boddy">
         {Data.map(a=>
         <>
-        {a._id ===state._id ?<div className='col-xl-6 col-lg-6 col-6'>
-          <Card className='homepage__card' key={a._id}>
+        {a._id ===state._id ?<div className='col-xl-7 col-lg-7 col-7'  >
+          <div className='homepage__card' key={a._id}>
             
-          <div class='homepage__card__header'>
+          <div className="head">
      
      
        
              
-                 <Avatar alt={a.user.user_name} src={a.user.profile_picture}/>
+                 <Avatar style={{marginTop:".2rem"}} alt={a.user.user_name} src={a.user.profile_picture}/>
                  
                 
-                 <div className="n">
-                  <Link to={{pathname:'/userProfile',state:a.user}}  style={{color:"white"}}>
-                 {a.user.user_name}
-                 <VerifiedUserRoundedIcon/>
+                 <div className="user-name">
+                  <Link to={{pathname:'/userProfile',state:a.user}}  style={{fontFamily: "lucida Sans"}} className="user-name-link">
+                <h5>{a.user.user_name} 
+                 <VerifiedUserRoundedIcon className="verify"/></h5>
                  </Link> 
-                 {moment(a.createdAt).format("MMMD,YYYY")}
+                 <div style={{color:"white",fontSize:"small",fontFamily: "lucida Sans"}}> {moment(a.createdAt).format("MMMD,YYYY")}</div>
                  </div>
-                 <div className='icon'>
+                 <div style={{marginLeft:"25rem"}}>
                   {auth.status === "Verified" ? <>
                  <IconButton>
                      <MoreVertIcon onClick={handleClick}/>
@@ -153,6 +154,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       id="simple-menu"
       anchorEl={anchorEl}
       keepMounted
+      className={classes.menu}
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
@@ -163,6 +165,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
          setAnchorEl(null)
          if(window.confirm("Do you want to delete this post")){
          dispatch(DeletePost(a._id));
+         history.push("/home page")
          }
          }
   }>delete</MenuItem>
@@ -192,7 +195,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
             
              
              
-             <div class="post" key={a._id}>
+             <div class="post" style={{color:'black',fontFamily: "lucida Sans"}} key={a._id}>
                <div>
               {
               
@@ -208,38 +211,37 @@ const [anchorEl, setAnchorEl] = React.useState(null);
              </div>
              <br/>
 
-             <b>IdeaTitle:<Chip size="small" style={{backgroundColor:'lightblue'}} label={a.idea_title}/></b>
+             <b>IdeaTitle:<Chip size="small" style={{backgroundColor:'lightblue',fontFamily: "lucida Sans"}} label={a.idea_title}/></b>
              <br/>
                <div>
                <div
-                  className='text'><b>Description:</b>{a.post_text}</div>
+                 style={{textAlign:"justify",fontFamily: "lucida Sans"}} ><b>Description:</b>{a.post_text}</div>
                </div><br/>
                <div>
                {a.scope?<><b>Scope:</b>{a.scope}</>:<></>}</div>
                <div><br/>
-               {a.enhancement?<><b>Enhancement to be done:</b>{a.enhancement}</>:<></>}
+               {a.enhancement?<><b >Enhancement to be done:</b>{a.enhancement}</>:<></>}
                </div><br/>
               
-            <b>Requirements</b>
+            {/* <b>Requirements</b> */}
             {a.requirements.frontend ?<div>FrontEnd:{a.requirements.frontend.map(e=><Chip label={e} size="small" 
             style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
             onClick={()=>history.push("/search_by_category",e)}
             />)}</div>:<></>}
-            <br/>
+            
             {a.requirements.backend ?<div>BackEnd:{a.requirements.backend.map(e=><Chip label={e} size="small" 
             style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
             onClick={()=>history.push("/search_by_category",e)}
-            />)}</div>:<></>}<br/>
+            />)}</div>:<></>}
             {a.requirements.database ?<div>DataBase:{a.requirements.database.map(e=><Chip label={e} size="small" 
             style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
             onClick={()=>history.push("/search_by_category",e)}
-            />)}</div>:<></>}<br/>
-             <div>
-            {a.link?<><LinkIcon/> <a href={a.link} target="_blank" rel="noopener noreferrer">{a.link}</a></>:<></>} 
+            />)}</div>:<></>}
+             <div className="text">
+            {a.link?<><LinkIcon/> <a href={a.link} className="li" style={{color:"lightblue"}} target="_blank" rel="noopener noreferrer">{a.link}</a></>:<></>} 
              </div>
            <div>
-             
-               <Carousel controls='false'>
+             {a.post_url.length > 0 ?<Carousel controls='false'>
                {a.post_url.map(e=>
                <Carousel.Item>
 
@@ -251,7 +253,8 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                    />
                    </Carousel.Item>
                     )}
-                 </Carousel>
+                 </Carousel>:<></>}
+               
              
           
          
@@ -293,30 +296,41 @@ const [anchorEl, setAnchorEl] = React.useState(null);
     :<Alert  severity="info">disliked</Alert>}
       </Snackbar>
                      </IconButton> 
+                     <Tooltip title="Add Comment" arrow>
                      <IconButton>
+                     
                          <CommentOutlinedIcon onClick={handleClickShowPassword}/>{a.comments.length}
+                        
                      </IconButton>
+                     </Tooltip>
+                     <div style={{marginTop:".8rem"}}>{presence.length > 0 ?<></>:<ModalMvp post={a}/>}</div>
+                    
                      
-                     <ModalMvp post={a}/>
-                     
-                      
               </div>
               {values.showPassword === true? 
               <>
-              <div className="comments">
-                  <div className="commentspost">
-                      <input placeholder="add comment"   type="text" onChange={(e)=>setComment(e.target.value)}/>
-                      <IconButton>
-                      <SendRoundedIcon onClick={()=>{
-                        
-                      dispatch(AddComment(user._id,a._id,comment));
-                      setComment(" ");
-                      }
+               <TextField
+                
+                type="text"
+             className={classes.input}
+                placeholder="add comments"
+                
+                // variant="outlined"
+                onChange={(e)=>setComment(e.target.value)}
+                InputProps={{
+                
+                endAdornment:
+                  <InputAdornment position="end">
+                    
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddComment(user._id,a._id,comment))
+                    setComment("")}
                       }/>
-                      </IconButton>
-                  </div>
-                  
-              </div><br/>
+                    
+                  </InputAdornment>
+                }}
+               
+              />
+             
               <Comment post={a._id}/></>
               :<></>
 }
@@ -325,17 +339,27 @@ const [anchorEl, setAnchorEl] = React.useState(null);
 
 </div> 
             
-            </Card><br/>
+            </div><br/>
             
       </div>:<></> }
           
       </>
           )}
         
-        
-        <div className="col-3">
+        {presence.length > 0 ?
+        <div className="col-xl-4 col-lg-4 col-4" 
+      
+        style={{ direction: "ltr",
+       background: "rgba(0, 0,0,0.15)",
+       margin:"1rem",
+      //  padding:"-10rem",
+    overflow:"auto",
+    borderRadius:"40px",
+    height: "500px",
+    width: "50px"
+    }}>
         <MvpCard Mvp={state._id}/>
-        </div>
+        </div>:<></>}
         </div>
     )
 }

@@ -2,42 +2,30 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import {TextField } from '@material-ui/core';
+import {Button,TextField } from '@material-ui/core';
 
 import {useDispatch} from 'react-redux'
-import {Post} from '../../redux/postActions'
-import AuthService from '../../auth/AuthService';
+
 import { useSelector } from 'react-redux';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import { reports } from '../../redux/verficationAction';
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     display:"flex",
     flexDirection:'column',
-    width: 600,
+    width: 400,
+    marginLeft:"2rem",
     // height:500,
     backgroundColor: theme.palette.background.paper,
     borderRadius:"20px",
     padding: theme.spacing(2, 4, 3),
     borderColor:"rgb(243, 220, 220)",
+   
   },
   text:{
       width:"100%"
@@ -76,7 +64,7 @@ export default function ModalReport({postId}) {
   const classes = useStyles();
 
 
-  const [modalStyle] = React.useState(getModalStyle);
+
   const [open, setOpen] = React.useState(false);
   const [postText,setPostText] = useState("");
 
@@ -94,8 +82,8 @@ export default function ModalReport({postId}) {
  
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      
+    <div  className={classes.paper}>
+      <h5>Add Report</h5>
      {/* <div> */}
       <TextField className={classes.text}
           id="standard-multiline-flexible"
@@ -110,20 +98,18 @@ export default function ModalReport({postId}) {
       <br/>
      
        
-           
-           
-     
-       
-         <div className="modal___button">
-                <div className="modal___button_Container">
-                <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button" onClick={()=>{
+      <center>
+      <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
+       <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=>{
                       dispatch(reports(user._id,postId,postText))
                        setPostText("")
                        setOpen(false)
-                   }}>Post</button>
-                </div>
-            </div>
+                   }}>post</Button>
+       </center> 
+           
+     
+       
+         
 
      
     </div>

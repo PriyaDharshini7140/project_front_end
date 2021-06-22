@@ -1,19 +1,25 @@
-import { Avatar, Card, InputAdornment, TextField } from '@material-ui/core'
+import { Avatar,  IconButton, InputAdornment, Menu, MenuItem, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import {useDispatch} from 'react-redux'
-import {mvpDisplay, mvpUpVote,mvpDownVote, DeleteMvp, AddMvpComment} from '../../redux/postActions'
+import { mvpUpVote,mvpDownVote, DeleteMvp, AddMvpComment} from '../../redux/postActions'
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import { BsFillChatFill} from "react-icons/bs";
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import moment from "moment"
 import MvpComments from './MvpComments';
-import LinkIcon from '@material-ui/icons/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles} from '@material-ui/core/styles';
+import ModalMvpEdit from '../modal/ModalMvpEdit';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles((theme,colors) => ({
   
     root: {
@@ -25,18 +31,29 @@ const useStyles = makeStyles((theme,colors) => ({
     //   marginLeft:"30%",
     //   marginTop:"1%",
     // },
-    // like:{
-    //   color:"#00b0ff"
-    // }
+    like:{
+      color:"blue"
+    },
+    unlike:{
+      color:"rgb(39, 39, 38)"
+    },
    input:{
-    borderRadius:"20px",
-    border:"black"
-   }
+    // borderRadius:"20px",
+    border:"black",
+    width:"100%"
+   },pink: {
+    color: theme.palette.getContrastText("#1769aa"),
+    backgroundColor: "#1769aa",
+    marginLeft:".5rem",
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+  },
   }));
 function MvpCard({Mvp}) {
     const classes = useStyles();
     const Data = useSelector((state)=> state.post.mvp)
     const user = useSelector((state)=> state.user.users)
+    const auth = useSelector((state)=> state.user.authorization)
     const dispatch = useDispatch()
     console.log(Mvp);
     console.log(Data);
@@ -47,50 +64,138 @@ function MvpCard({Mvp}) {
         setValues({ ...values, showPassword: !values.showPassword });
       };
       const [comment,setComment] = useState("")
+      const [anchorEl, setAnchorEl] = React.useState(null);
+   
+     
+   
+   
+    const [open, setOpen] = React.useState(false);
+    const [Open, setopen] = React.useState(false);
+    const handleOpen = () => {
+      setopen(true);
+    };
+    const handle = () => {
+      setOpen(true);
+    };
+    const Close = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setopen(false);
+    };
+    const handleclose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+     
+    };
+ 
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+   
     return (
 
 <div>
-{Data.map((e)=><div >
-{Mvp === e.post_id ? <div className="card">
-    <div className="header">
-        <Avatar src={e.user.user_profile}/>
-<div className="nav-link">
-        <Link to={{pathname:'/userProfile',state:e.user}} >
+{Data.map((e)=><div>
+{Mvp === e.post_id ? <div className="mvp-card"  >
+    <div className="head-mvp">
+        <Avatar style={{marginTop:".2rem"}} src={e.user.profile_picture}/>
+<div className="user-name">
+        <Link to={{pathname:'/userProfile',state:e.user}}  className="user-name-link">
                    {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
-                   {moment(e.createdAt).format("MMMD,YYYY")}
+                   <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                    </div>
-                   {user._id === e.user._id ? 
+                   {user._id === e.user_id ? 
                    
-                   <div>
-                     
-            <HighlightOffIcon onClick={()=>dispatch(DeleteMvp(e._id))}/>
+                  
+                        <div style={{marginLeft:"10rem"}}>
+                  {auth.status === "Verified" ? <>
+                 <IconButton>
+                     <MoreVertIcon onClick={handleClick}/>
+                 </IconButton>
+                 <Menu
+      id="simple-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+    >
+     {user._id === e.user_id ? <>
+      <ModalMvpEdit post={e} onClick={()=> setAnchorEl(null)}/>
+      
+      <MenuItem onClick={()=>dispatch(DeleteMvp(e._id))}>delete</MenuItem>
+     </>
+     :
+     <></>
+  
+    }
+    
+    </Menu>
+                 </>:<> 
+                 <IconButton>
+                     <MoreVertIcon onClick={handleClick}/>
+                 </IconButton>
+                 <Menu  id="simple-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}>
+                 <></>
+  </Menu>
+  </>}
+  </div>     
+       
             
-             </div> :<></>}
+             :<></>}
     </div>
-    <h2>{e.solution_title}</h2>
-    <div>
-    <LinkIcon/><a href={e.link} target="_blank" rel="noopener noreferrer">{e.link}</a>
+    <div style={{display:'flex',flexDirection:"row"}}>
+    <h5 style={{color:"rgb(37, 37, 36)",marginTop:".5rem"}}>{e.solution_title}
+     </h5>
+     <a href={e.link}>
+     <Tooltip title="Download Zip File" arrow>
+     <Avatar className={classes.pink} size='small'>
+    <GetAppRoundedIcon variant="contained"/>
+      </Avatar>
+</Tooltip> </a>     
     </div>
+    
    
-    <div >
-    <ThumbUpAltIcon 
-               onClick={()=>dispatch(mvpUpVote(e._id,e.user_id))}
-                  />{e.up_vote.length > 0?e.up_vote.length:""}
-                     
+   
+    {auth.status === "Verified" ? <> 
+    <div className="footer">
+    <div><ThumbUpAltIcon className={e.up_vote.includes(user._id)? classes.like:classes.unlike}
+             style={{cursor:"pointer"}}  onClick={()=>dispatch(mvpUpVote(e._id,user._id))}
+                  />
+                     {e.up_vote.length > 0?e.up_vote.length:""}
                    
-                
-                       <ThumbDownAltIcon 
-                          onClick={()=>dispatch(mvpDownVote(e._id,e.user_id))}
-                      />{e.down_vote.length > 0?e.down_vote.length:""}
-                          
-                       
-                           <BsFillChatFill style={{fontSize:"large"}} 
+                     </div>
+                     <div  style={{marginLeft:"1rem"}}>
+                       <ThumbDownAltIcon className={e.down_vote.includes(user._id)? classes.like:classes.unlike}
+                         style={{cursor:"pointer"}} onClick={()=>dispatch(mvpDownVote(e._id,user._id))}
+                      />{e.down_vote.length> 0?e.down_vote.length:""}
+                          </div>
+                          <Tooltip title="Add Comment" arrow>
+                       <div  style={{marginLeft:"1rem"}}>
+                      
+                           <BsFillChatFill key={e._id} style={{fontSize:"large",cursor:"pointer"}} 
                            onClick={handleClickShowPassword}
-                           
+                           className={classes.unlike}
                            />{e.comments.length > 0?e.comments.length:""}
+                           
+                           </div>
+                           </Tooltip>
+                           </div>
+                          <br/>
                            {values.showPassword === true? 
                 <>
-                <div>
+                
                     <div>
                     <TextField
                 
@@ -105,7 +210,7 @@ function MvpCard({Mvp}) {
                 endAdornment:
                   <InputAdornment position="end">
                     
-                    <SendRoundedIcon onClick={()=>dispatch(AddMvpComment(user._id,e._id,comment))}/>
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch(AddMvpComment(user._id,e._id,comment))}/>
                     
                   </InputAdornment>
                 }}
@@ -114,13 +219,15 @@ function MvpCard({Mvp}) {
                        
                         
                     </div>
+                    <div>
                     <MvpComments Mvp={e._id}/>
                 </div><br/>
                 
                 </>
-                :<></>
-}
-                           </div>     
+                :''
+}</>:<></>}
+   
+                         
                        
 </div>:<></>}
 </div>)}

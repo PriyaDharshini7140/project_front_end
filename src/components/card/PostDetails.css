@@ -14,3 +14,26 @@
    justify-content: left;
    
   }
+  ::-webkit-scrollbar {
+    width: 10px;
+  margin-top: 1rem;
+  background:transparent;
+ 
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+   border-radius:50px;
+    background:transparent;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background:transparent;
+    border-radius:20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }

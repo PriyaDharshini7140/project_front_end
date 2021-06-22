@@ -11,6 +11,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import { fetchUsers } from '../../redux/Actions';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import { validate } from 'react-email-validator';
+import { ToastContainer, toast } from 'material-react-toastify';
+  import 'material-react-toastify/dist/ReactToastify.css';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -42,9 +45,11 @@ const useStyles = makeStyles((theme) => ({
       textField: {
         width: '25ch',
       },
-      icon:{
-        color:"#00BAFF"
-      },
+      
+        icon:{
+          // color:"gray"
+        },
+     
   }));
 function UserLogin(props) {
 const dispatch = useDispatch();
@@ -72,85 +77,88 @@ const [password,setPassword] = useState('')
       
       return (<div>
         
-        <div class="login-cont">
-          <div class="login-form form-group">
-           
-               
-                   
-              <h3>LOGIN <VpnKeyIcon/></h3> 
-      
-       <div className="login-inputs">
-         
-           <form className={classes.root}  autoComplete="on">
-             
-           <Tooltip title='Enter valid Email' arrow>
-                 <TextField id="outlined-basic"
-                className="login-inputs"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start"><EmailIcon  className={classes.icon}/></InputAdornment>,
-                  }}
-                  placeholder='email'
-                 type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/>
-                </Tooltip>
-                <br/>
-                <Tooltip title='From 8 to 15 characters' arrow>
-           <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-          
-          <TextField 
-          placeholder='Password'
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={(e)=>setPassword(e.target.value)}
-            variant="outlined"
-            
-            InputProps={{
-              startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon className={classes.icon}/></InputAdornment>,
-            
-            endAdornment:
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <Visibility className={classes.icon} /> : <VisibilityOff className={classes.icon}/>}
-                </IconButton>
-              </InputAdornment>
+        <div className='user-signup'>
+        
+       
+       <div className='inner-reg'>
+       <center><h5 style={{marginLeft:"7rem"}}>Login</h5></center>
+         <center>
+   <form className={classes.root}  autoComplete="on" >
+   
+          <div>
+           <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}} type="email" variant="outlined"
+             InputProps={{
+              startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
             }}
-            labelWidth={70}
-          />
-        </FormControl>
-        </Tooltip>
-         
-             </form>
-            
-            
-            <div className={classes.root1}>
-              <center>
-             <Button className='user-login-card-button' onClick={()=>{ 
+          
+            onChange={(e)=>setEmail(e.target.value)} />
+               </div>
+               <div>
+                
+          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+              
+              <TextField
+              style={{width:"40ch",marginLeft:"-.5rem",backgroundColor:"rgba(0, 0,0,0.03)"}}
+                id="outlined-adornment-password"
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                placeholder="password"
+                
+                variant="outlined"
+                onChange={(e)=>setPassword(e.target.value)}
+                InputProps={{
+                  startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon className={classes.icon}/></InputAdornment>,
+                
+                endAdornment:
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility className={classes.icon} /> : <VisibilityOff className={classes.icon}/>}
+                    </IconButton>
+                  </InputAdornment>
+                }}
+                labelWidth={70}
+              />
+            </FormControl>
+               
+           </div>
+         <center>
+         <Button  variant="contained" color="primary"style={{borderRadius:"40px",marginLeft:"8rem"}} onClick={()=>{ 
                dispatch(fetchUsers(email,password))
+
             }
             
-            }>login</Button>
-            </center>
-            <br/>
-                </div>
-              <center>
-       <Link to='/Sign up' className='nav-lin'>Do you have a account ?</Link>
-       <Link to='/forgot password' className='nav-lin'>Forgot password</Link> 
+            }>Login</Button>
+             <ToastContainer position="top-center"
+         autoClose={2000}
+         hideProgressBar
+         
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover/>
+            </center><br/>
+         </form>
+         {/* </center> */}
+         </center>
+         <center>
+         <div style={{marginLeft:"8rem"}}>
+         Do you have an account create one <Link to='/Sign up'>Sign up?</Link> </div>
+         <div style={{marginLeft:"8rem"}}>
+         Forget password <Link to='/forgot password'>Reset</Link> </div>
+       
                </center>
                </div>
-            </div>
-         
-       
+               
         </div>
-        <footer class="c-footer">
-          <div class="c-inner">
-            Copyright IdeaWrapper. All rights reserved. For internal use only.
-          </div>
-        </footer>
+        
+        
         </div>
     )
 }

@@ -2,169 +2,54 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,InputAdornment,TextField } from '@material-ui/core';
+import { IconButton,InputAdornment,TextField,Button } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import {useDispatch} from 'react-redux'
-import {Post} from '../../redux/postActions'
-import AuthService from '../../auth/AuthService';
+
 import { useSelector } from 'react-redux';
-import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
-import clsx from 'clsx';
+
 import { useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+
 import {EditPost} from '../../redux/postActions'
-import LinkIcon from '@material-ui/icons/Link';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 const names = [
  
- 'Game Development',
- 
- 'Software Development',
- 'Web Development',
- 
- 'JavaScript',
- 'Html',
- 'css',
- 'xml',
- 'jsx',
- 'bootStrap',
- 'React',
- 'Angular',
- 'Asp.net',
- 'C#',
- 'C',
- 'C++',
- 'Java',
- 'Python',
- 'R',
- 'Ruby',
- 'TypeScript',
-'React Native',
-'Node js',
-'Scala',
-'Bash/Shell/PowerShell',
-'PHP',
-'Kotlin',
-'Assembly',
-'VBA',
-'Swift'
-
-];
-const front = [
-  'JavaScript',
-  'Html',
-  'css',
-  'xml',
-  'jsx',
-  'bootStrap',
-  'React',
-  'Angular',
-  'Asp.net',
-'TypeScript',
- 'React Native',
- 
- 
- ];
- const back = [
-  'Java',
-  'JavaScript',
-  'python',
-  'php',
-"c#",
-'express js',
-'node js',
-'ruby',
-"c++"
-
- 
- ];
- const datab = [
- 'oracle',
- 'mysql',
- 'postgreSql',
- 'mongoDB',
- "ibm DB2"
- 
+  'Education Apps',
+  'Rating and Review Application',
+  'OTT(Over-the-top) Platform Application',
+  'Real-Time Communication Application',
+  'Question and Answer Platform',
+  'social Media',
+  'E-Commerce',
+  'Fantasy Sports',
+  'Expense/Account Management',
+  'Content Management System',
+  'Algorithm Visualizer Application',
+  'Project Management Application',
+  'Note-taking Application',
+  'Matchmaking Application',
+  'Blog Application'
  ];
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getfront(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getback(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-function getdb(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 const useStyles = makeStyles((theme) => ({
   paper: {
-overflowY:"scroll",
+// overflowY:"scroll",
     position: 'relative',
     display:"flex",
     flexDirection:'column',
     width: 800,
-   height:500,
+  //  height:500,
     backgroundColor: theme.palette.background.paper,
-    // borderRadius:"10px",
+    borderRadius:"20px",
     padding: theme.spacing(2, 4, 3),
     borderColor:"transparent",
+  
   },
   text:{
       width:"100%"
@@ -201,15 +86,11 @@ in:{
 }
  
 }));
-
+const filter = createFilterOptions()
 export default function ModalEdit({post}) {
   const classes = useStyles();
   console.log(post);
-  const auth = useSelector((state)=> state.user.authorization)
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-console.log(personName);
-  const [modalStyle] = React.useState(getModalStyle);
+
   const [open, setOpen] = React.useState(false);
   const [postText,setPostText] = useState(post.post_text);
   const [image,setImage]=useState([]);
@@ -217,9 +98,7 @@ console.log(personName);
   const [title,setTitle]=useState(post.idea_title)
   const [scope,setScope]=useState(post.scope)
   const [enhancement,setEnhancement]=useState(post.enhancement)
-  const [frontEnd, setfrontEnd] = React.useState([]);
-  const [backEnd, setbackEnd] = React.useState([]);
-  const [db, setDb] = React.useState([]);
+  const [value, setValue] = React.useState(null);
   const [link,setLink]=useState(post.link)
   // const[progress,setProgress] = useState(0);
    const user = useSelector((state)=> state.user.users)
@@ -229,18 +108,7 @@ console.log(personName);
     setOpen(true);
     console.log("clicked");
   };
-  const handleChange = (event) => {
-    setPersonName(event.target.value);
-  };
-  const handleFrontend = (event) => {
-    setfrontEnd(event.target.value);
-  };
-  const handleBackend = (event) => {
-    setbackEnd(event.target.value);
-  };
-  const handledb = (event) => {
-    setDb(event.target.value);
-  };
+ 
   const handleChangeMultiple = async(event) => {
     const { files } = event.target;
      console.log("files",files);
@@ -287,10 +155,13 @@ console.log(personName);
     setOpen(false);
   };
  console.log(postUrl);
-
+ function validateCategory() {
+  if(!value)
+  return("Category not selected ")
+}
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      
+    <div className={classes.paper}>
+       <h5>Edit idea</h5>
       <TextField className={classes.in}
           id="standard-multiline-flexible"
           label="Title"
@@ -326,34 +197,69 @@ console.log(personName);
        
       <br/>
      
+      <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={names}
+        
+        filterSelectedOptions
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setValue(newValue
+            );
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setValue( newValue.inputValue
+            );
+          } else {
+            setValue(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          // Suggest the creation of a new value
+          if (params.inputValue !== '') {
+            filtered.push(
+           params.inputValue,
+              //  `Add "${params.inputValue}"`,
+            );
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
        
+      
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option;
+        }}
+        renderOption={(option) => option}
+        
+        renderInput={(params) => (
+          <TextField
+          helperText={validateCategory()}
+            {...params}
+            variant="outlined"
+            label="Select Category"
+            // placeholder="Favorites"
+          />
+        )}
+      />
+
            
-           <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Select Category</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl><br/>
+     <br/>
       <TextField className={classes.text}
           id="standard-multiline-flexible"
           label="Scope of this idea"
@@ -374,136 +280,19 @@ console.log(personName);
           variant="outlined"
           />
    <br/>
-     <div>
-     Requirements :<br/>
-     <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Front End</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={frontEnd}
-          onChange={handleFrontend}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {front.map((name) => (
-            <MenuItem key={name} value={name} style={getfront(name,frontEnd, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >BackEnd</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={backEnd}
-          onChange={handleBackend}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {back.map((name) => (
-            <MenuItem key={name} value={name} style={getback(name,backEnd, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label" >Database</InputLabel>
-        <Select
-         className={classes.select}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={db}
-          onChange={handledb}
-          input={<Input id="select-multiple-chip"/>}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {datab.map((name) => (
-            <MenuItem key={name} value={name} style={getdb(name, db, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <div>
-      <TextField className={classes.text}
-          id="standard-multiline-flexible"
-          label="insert link(optional)"
-         type="url"
-         variant="outlined"
-         value={link}
-          onChange={(e)=>setLink(e.target.value)}
-          InputProps={{
+    
           
-          
-          startAdornment:
-            <InputAdornment position="start">
-              <IconButton>
-            
-        <LinkIcon/>
-        </IconButton>
-      
-            </InputAdornment>
-          }}
-          />
-        
-       
-      </div>
-     </div>
-     
-     
-     
-           <div>
-        {!postUrl ? <></>:postUrl.map(e=><img src={e} style={{height:"50px"}} alt='img'/>)}
-      </div>
-       
-         <div className="modal___button">
-                <div className="modal___button_Container">
-                <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button"  onClick={()=> {
-                     if(!personName.length){
-                       alert("please select category")
-                     }
-                     else{
-                       console.log(enhancement);
-                      dispatch(EditPost(user._id,post._id,postText,postUrl,personName,title,scope,link,enhancement,frontEnd,backEnd,db))
-                      setOpen(false)
-                     }
+      <center>
+      <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
+       <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=> {
+                    dispatch(EditPost(user._id,post._id,postText,title,scope,enhancement,value))
+                    setOpen(false)
                      
                     
                     }
-                  } >Post</button>
-                </div>
-            </div>
+                  }>post</Button>
+       </center>
+         
 
      
     </div>
@@ -514,6 +303,9 @@ console.log(personName);
      <MenuItem onClick={handleOpen}>edit</MenuItem>
       
       <Modal
+      style={{display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',}}
         open={open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

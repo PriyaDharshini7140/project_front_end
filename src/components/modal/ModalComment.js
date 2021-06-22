@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
 import {Button, TextField } from '@material-ui/core';
-import {storage} from '../../FireBase'
+
 import {useDispatch} from 'react-redux'
 import { mvpEdit} from '../../redux/postActions'
 
@@ -12,7 +12,20 @@ import { useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
 
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,15 +73,14 @@ noLabel: {
  
 }));
 
-export default function ModalMvpEdit({post}) {
+export default function ModalComment({post}) {
   const classes = useStyles();
 
 
-  const [Progress, setProgress]= useState(0);
+  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [title,setTitle] = useState(post.solution_title);
   const [link,setLink] = useState(post.link);
-  const [image,setImage] =useState(post.link)
    const user = useSelector((state)=> state.user.users)
   console.log(post);
   const dispatch = useDispatch()
@@ -81,42 +93,9 @@ export default function ModalMvpEdit({post}) {
     setOpen(false);
   };
  
-  const handleUpload = () => {
-    const uploadTask = storage.ref(`zip/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // progress function ...
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(progress);
-      },
-      (error) => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        storage
-          .ref("zip")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-           
-console.log(url);
 
-            dispatch(mvpEdit(user,post,title,url))
-
-            setProgress(0);
-            
-            setImage(null);
-          });
-      }
-    );
-  };
   const body = (
-    <div  className={classes.paper}>
+    <div style={modalStyle} className={classes.paper}>
        <h5>Edit solution</h5>
      {/* <div> */}
       <TextField className={classes.text}
@@ -131,27 +110,11 @@ console.log(url);
        
       <br/>
      
-      <input
-      accept=".zip"
-        className={classes.input}
-        id="contained-button-file"
-        // multiple
-        type="file"
-        onChange={(e)=>setImage(e.target.files[0])}
-
-      />
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" style={{borderRadius:"20px"}} component="span">
-          Upload
-        </Button>
-      </label>
-       
            
-      <progress className="imageupload__progress" value={Progress} max="100" />     
       <center>
       <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
        <Button variant="contained" color="primary" style={{borderRadius:"20px"}}onClick={()=>{
-                     handleUpload()
+                      dispatch(mvpEdit(user._id,post._id,title,link))
                        setTitle("")
                        setLink("")
                        setOpen(false)
@@ -170,9 +133,6 @@ console.log(url);
      
      <MenuItem onClick={handleOpen}>edit</MenuItem>
       <Modal
-      style={{display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',}}
         open={open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
