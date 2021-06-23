@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme,colors) => ({
     //   marginTop:"1%",
     // },
     like:{
-      color:"blue"
+      color:"#0d47a1"
     },
     unlike:{
       color:"rgb(39, 39, 38)"
@@ -103,7 +103,7 @@ function MvpCard({Mvp}) {
     return (
 
 <div>
-{Data.map((e)=><div>
+{Data.map((e)=><>
 {Mvp === e.post_id ? <div className="mvp-card"  >
     <div className="head-mvp">
         <Avatar style={{marginTop:".2rem"}} src={e.user.profile_picture}/>
@@ -156,14 +156,15 @@ function MvpCard({Mvp}) {
              :<></>}
     </div>
     <div style={{display:'flex',flexDirection:"row"}}>
-    <h5 style={{color:"rgb(37, 37, 36)",marginTop:".5rem"}}>{e.solution_title}
-     </h5>
-     <a href={e.link}>
+    <h6 style={{color:"rgb(37, 37, 36)",marginTop:".5rem"}}>{e.solution_title}
+    <a href={e.link}>
      <Tooltip title="Download Zip File" arrow>
      <Avatar className={classes.pink} size='small'>
     <GetAppRoundedIcon variant="contained"/>
       </Avatar>
-</Tooltip> </a>     
+</Tooltip> </a>  
+     </h6>
+        
     </div>
     
    
@@ -230,7 +231,7 @@ function MvpCard({Mvp}) {
                          
                        
 </div>:<></>}
-</div>)}
+</>)}
 </div>
     )
 }

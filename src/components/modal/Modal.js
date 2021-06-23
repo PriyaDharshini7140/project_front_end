@@ -130,7 +130,7 @@ chips: {
 chip: {
   margin: 2,
 },
-select:{width:"100%"},
+select:{width:"50%"},
 noLabel: {
   marginTop: theme.spacing(3),
 },
@@ -421,7 +421,7 @@ function validateEnhance() {
           <TextField
             {...params}
             variant="outlined"
-            label="Select Category"
+            label="Front-end"
             // placeholder="Favorites"
           />
         )}
@@ -481,7 +481,7 @@ function validateEnhance() {
         <TextField
           {...params}
           variant="outlined"
-          label="BackEnd"
+          label="Back-end"
           // placeholder="Favorites"
         />
       )}
@@ -593,7 +593,7 @@ function validateEnhance() {
                      
                     
                     }
-                  }>post</Button>
+                  }disabled={validateCategory(),validateDescription(),validateEnhance(),validateScope(),validateTitle()}>post</Button>
        </center>
         
      

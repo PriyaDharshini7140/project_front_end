@@ -75,9 +75,10 @@ if(token){
     <Route path='/contact us' component={ContactUs}/>
    
     <Route path='/forgot password' component={ForgetPassword}/>
-          <Route path='/Sign in' exact component={UserLogin}/>
+          
      <Route path='/Sign up' exact component={UserSIgnup}/>
-     <Route path='/' exact component={InitialPage} />   
+     <Route path='/' exact component={UserLogin}/>
+     
      </>
      }
         

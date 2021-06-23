@@ -17,7 +17,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 const useStyles = makeStyles((theme) => ({
   like:{
-    color:"blue"
+    color:"#0d47a1"
   },
   unlike:{
     color:"rgb(39, 39, 38)"

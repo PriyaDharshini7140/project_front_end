@@ -83,7 +83,7 @@ export default function PersistentDrawerRight() {
             onClick={handleToggle}
             />
         
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+        <Popper open={open} style={{marginTop:".3rem"}} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
@@ -97,7 +97,7 @@ export default function PersistentDrawerRight() {
           <MenuItem onClick={()=>{
           
           AuthService.logout()
-          history.replace("/Sign in")
+          history.replace("/")
           window.location.reload()
           }}>Logout</MenuItem>
                   </MenuList>:<MenuList autoFocusItem={open} id="menu-list-grow"  onKeyDown={handleListKeyDown}>
@@ -131,7 +131,7 @@ export default function PersistentDrawerRight() {
           
           if(window.confirm("Do you want to delete your account")){
            AuthService.delete();
-           history.replace("/Sign in");
+           history.replace("/");
           window.location.reload();
           }
          
@@ -141,7 +141,7 @@ export default function PersistentDrawerRight() {
           <MenuItem onClick={()=>{
              
           AuthService.logout()
-          history.replace("/Sign in")
+          history.replace("/")
           window.location.reload()
           }}>Logout</MenuItem>
           

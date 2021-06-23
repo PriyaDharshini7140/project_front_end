@@ -33,17 +33,17 @@ function CardCom({a}) {
     return (
         <div>
          <br/>
-         {d.length >0 ?<Chip label="Mvp" variant="outlined" size="small" style={{color:"white",borderColor:'lightgrey',fontFamily: "lucida Sans"}}/>:""}
+         {d.length >0 ?<Chip label="Mvp" variant="outlined" size="small" style={{color:"white",borderColor:'lightgrey'}}/>:""}
          
             {/* <center style={{fontSize:"large",color:"whitesmoke",fontFamily: "lucida Sans"}}></center>   */}
             <div className={d.length >0 ?"card-mvp-top":""}>{d.map(e=><div className="head">
               <Avatar style={{marginTop:".2rem"}} alt={e.user.user_name} src={e.user.profile_picture}/>
               <div className="user-name">
-                    <Link to={{pathname:'/userProfile',state:e.user}} className="user-name-link" style={{fontFamily: "lucida Sans"}}>
+                    <Link to={{pathname:'/userProfile',state:e.user}} className="user-name-link">
                    {e.user.user_name}
                    
                    </Link> 
-                <b> <div style={{fontSize:"large",textDecoration:"none",color:"whitesmoke",fontFamily: "lucida Sans"}}>{e.solution_title}</div></b>
+                <b> <div style={{fontSize:"large",textDecoration:"none",color:"whitesmoke"}}>{e.solution_title}</div></b>
                     </div>
                    
             </div>)}

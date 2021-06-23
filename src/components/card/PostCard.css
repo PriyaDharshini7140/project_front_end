@@ -32,7 +32,7 @@
  background: rgba(10, 10,10,0.15);
 border-radius: 40px;
 border:1px solid rgba(10, 10,10,0.001);
-   
+
 margin: 1rem;
 }
 .lin{
@@ -49,14 +49,14 @@ margin: 1rem;
 
 }
 .l{
-  color:blue;
+  color:#0d47a1;
 }
 .mvp-card{
   min-height: 100px;
   border-radius: 20px;
   padding: .5rem;
   padding-left: .5rem;
- 
+ margin-top:.5rem
   /* background: rgba(10, 10,10,0.15); */
 }
 .comments-card{
@@ -280,8 +280,8 @@ padding: 3%;
 }
 
 .verify{
-  color:#0d47a1
-  ;
+  color:#0d47a1;
+  margin-left:.3rem
  
  
 }

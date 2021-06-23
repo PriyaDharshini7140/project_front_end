@@ -12,6 +12,12 @@
   
  justify-content: center;
 }
+.s{
+  display:flex;
+  color:white;
+ max-width:300px;
+ align-self: center;
+}
 .home-link-sub{
   display: flex;
   grid-template-columns:99% 1%;

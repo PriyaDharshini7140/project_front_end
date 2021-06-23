@@ -74,20 +74,20 @@ const [show, handleShow] = useState(false);
       >
         <MenuItem onClick={handleClose}>
           {user === null || location.pathname === "/" || location.pathname === "/forgot password" ||location.pathname === "/Sign up" ? 
-          location.pathname === "/Sign in"? <Link
+          location.pathname === "/"? <Link
           to='/Sign up'
          
           
         >
          Register
         </Link>:<Link
-              to='/Sign in'
+              to='/'
              
               
             >
              Sign in
             </Link>:<Link
-              to='/Sign in'
+              to='/'
               
               
             >
@@ -102,7 +102,7 @@ const [show, handleShow] = useState(false);
                 <div class="topbar-items">
                 
               
-     {location.pathname === "/Sign in" ?
+     {location.pathname === "/" ?
          <Tooltip title='Register' arrow>
          <Link
               to='/Sign up'
@@ -112,10 +112,10 @@ const [show, handleShow] = useState(false);
              Register
             </Link>
             </Tooltip>
-            :location.pathname === "/Sign up" ? 
+            :location.pathname === "/" ? 
             <Tooltip title='Login' arrow>
             <Link
-              to='/Sign in'
+              to='/'
               className='topbar-links'
               
             >
@@ -124,7 +124,7 @@ const [show, handleShow] = useState(false);
             </Tooltip>
             :<Tooltip title='Login' arrow>
             <Link
-              to='/Sign in'
+              to='/'
               className='topbar-links'
               
             >
@@ -149,14 +149,11 @@ const [show, handleShow] = useState(false);
          <div class="topbar-items">
            
          
-         <div className='topbar-links'>
+         <div className='topbar-links' style={{marginTop:"-.2rem"}}>
          <SearchAppBar/>
        
           </div>
-          {/* <div className='topbar-links'>
-          <ModalNotification/>
-    
-      </div> */}
+         
           {location.pathname === "/home page" ? <></>:<div  className='topbar-links'>
          <Link to="/home page" className="nl">Home page</Link>
        
@@ -216,7 +213,7 @@ const [show, handleShow] = useState(false);
            
        <Button variant="contained" color="primary" style={{borderRadius:"40px"}} onClick={()=>{
           AuthService.logout()
-          history.replace("/Sign in")
+          history.replace("/")
           window.location.reload()
           }}>logout</Button>
     </div>

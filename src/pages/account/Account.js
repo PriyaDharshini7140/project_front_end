@@ -57,33 +57,41 @@ console.log(Data.map(e=>e.user_id));
 const classes = useStyles()
     return (
       <div>
-      <div className='showcase'>
-      <div className='showcase-overlay'>
-      <Badge
+      <div className='wrapper-Acc' style={{color:"white"}}>
+      <div>
+      {/* <Badge
         overlap="circle"
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
         }}
-        badgeContent={<ModalProfile/>}
-      >
-        <Avatar style={{marginTop:".2rem"}} alt={user.user_name} src={user.profile_picture} className={classes.large}/>
-      </Badge>
+        badgeContent={}
+      > */}
+      <center>
+        <Avatar style={{marginTop:"1rem"}} alt={user.user_name} src={user.profile_picture} className={classes.large}/>
+        </center>
+      {/* </Badge> */}
       
-        <h1> 
+        
+       </div>
+       <div style={{marginTop:"1.5rem",marginLeft:"-4rem"}}>
+       <h3> 
           <div><PersonIcon/> {user.user_name}{auth.status === "Verified" ? 
-         <VerifiedUserRoundedIcon className='verify'/>:<></>}</div></h1>
-          <div> <EmailIcon/>{user.email_id}</div>
-          <div>{!user.phone_number ? <></>:<><PhoneAndroidRoundedIcon/>{user.phone_number}</>}</div>
-        <div>{!user.work ? <></>:<><WorkIcon/>{user.work}</>}</div>
-        <div>{!user.education ? <></>:<><SchoolRoundedIcon/>{user.education}</>}</div>
+         <VerifiedUserRoundedIcon className='verify'/>:<></>}</div></h3>
+          <div> <EmailIcon style={{marginRight:".3rem"}}/>{user.email_id}</div>
+          <div>{!user.phone_number ? <></>:<><PhoneAndroidRoundedIcon style={{marginRight:".3rem"}}/>{user.phone_number}</>}</div>
+        <div>{!user.work ? <></>:<><WorkIcon style={{marginRight:".3rem"}}/>{user.work}</>}</div>
+        <div>{!user.education ? <></>:<><SchoolRoundedIcon style={{marginRight:".3rem"}}/>{user.education}</>}</div>
         
       
-        
-        <p>
-          {user.description}
-        </p>
       </div>
+      <div>
+         <div style={{display:"flex",justifyContent:"flex-end",marginRight:"-4rem",marginTop:".5rem"}}><ModalProfile/></div>
+       
+        <p style={{textAlign:"justify",width:"400px",marginTop:"-1rem"}}>
+        <b style={{marginRight:".3rem"}}>About:</b>
+          {user.description}
+        </p></div>
     </div><br/>
     <div className="wrapper-account"> 
     {Data.map((a)=> <>{

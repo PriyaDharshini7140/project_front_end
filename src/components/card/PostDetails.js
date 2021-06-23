@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme,colors) => ({
     marginTop:"1%",
   },
   like:{
-    color:"blue"
+    color:"#0d47a1"
   },
   menu:{
     backgroundColor:"rgba(10, 10,10,0.15)"
@@ -127,8 +127,15 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       <div className="boddy">
         {Data.map(a=>
         <>
-        {a._id ===state._id ?<div className='col-xl-7 col-lg-7 col-7'  >
-          <div className='homepage__card' key={a._id}>
+        {a._id ===state._id ?<div className='col-xl-7 col-lg-7 col-7' >
+          <div className='homepage__card' style={{height: "560px", direction: "ltr",
+       background: "rgba(0, 0,0,0.15)",
+       margin:"1rem",
+      //  padding:"-10rem",
+    overflow:"auto",
+    borderRadius:"40px",
+    
+   }}  key={a._id}>
             
           <div className="head">
      
@@ -139,11 +146,11 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                  
                 
                  <div className="user-name">
-                  <Link to={{pathname:'/userProfile',state:a.user}}  style={{fontFamily: "lucida Sans"}} className="user-name-link">
+                  <Link to={{pathname:'/userProfile',state:a.user}}   className="user-name-link">
                 <h5>{a.user.user_name} 
                  <VerifiedUserRoundedIcon className="verify"/></h5>
                  </Link> 
-                 <div style={{color:"white",fontSize:"small",fontFamily: "lucida Sans"}}> {moment(a.createdAt).format("MMMD,YYYY")}</div>
+                 <div style={{color:"white",fontSize:"small"}}> {moment(a.createdAt).format("MMMD,YYYY")}</div>
                  </div>
                  <div style={{marginLeft:"25rem"}}>
                   {auth.status === "Verified" ? <>
@@ -195,12 +202,12 @@ const [anchorEl, setAnchorEl] = React.useState(null);
             
              
              
-             <div class="post" style={{color:'black',fontFamily: "lucida Sans"}} key={a._id}>
+             <div class="post" style={{color:'black'}} key={a._id}>
                <div>
               {
               
               a.category.map((c)=>
-                <Chip key={c} label={c} size="small" style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
+                <Chip key={c} label={c} size="small" style={{backgroundColor:colors[Math.floor(Math.random() * 12)],marginRight:".3rem"}}
                 onClick={()=>history.push("/search_by_category",c)}
                 
                 />
@@ -211,11 +218,11 @@ const [anchorEl, setAnchorEl] = React.useState(null);
              </div>
              <br/>
 
-             <b>IdeaTitle:<Chip size="small" style={{backgroundColor:'lightblue',fontFamily: "lucida Sans"}} label={a.idea_title}/></b>
+             <b>IdeaTitle:<Chip size="small" style={{backgroundColor:'lightblue',marginLeft:".3rem"}} label={a.idea_title}/></b>
              <br/>
                <div>
                <div
-                 style={{textAlign:"justify",fontFamily: "lucida Sans"}} ><b>Description:</b>{a.post_text}</div>
+                 style={{textAlign:"justify"}} ><b>Description:</b>{a.post_text}</div>
                </div><br/>
                <div>
                {a.scope?<><b>Scope:</b>{a.scope}</>:<></>}</div>
@@ -223,18 +230,18 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                {a.enhancement?<><b >Enhancement to be done:</b>{a.enhancement}</>:<></>}
                </div><br/>
               
-            {/* <b>Requirements</b> */}
+           
             {a.requirements.frontend ?<div>FrontEnd:{a.requirements.frontend.map(e=><Chip label={e} size="small" 
-            style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
+            style={{backgroundColor:colors[Math.floor(Math.random() * 12)],marginRight:".3rem"}}
             onClick={()=>history.push("/search_by_category",e)}
             />)}</div>:<></>}
             
             {a.requirements.backend ?<div>BackEnd:{a.requirements.backend.map(e=><Chip label={e} size="small" 
-            style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
+            style={{backgroundColor:colors[Math.floor(Math.random() * 12)],marginRight:".3rem"}}
             onClick={()=>history.push("/search_by_category",e)}
             />)}</div>:<></>}
             {a.requirements.database ?<div>DataBase:{a.requirements.database.map(e=><Chip label={e} size="small" 
-            style={{backgroundColor:colors[Math.floor(Math.random() * 12)]}}
+            style={{backgroundColor:colors[Math.floor(Math.random() * 12)],marginRight:".3rem"}}
             onClick={()=>history.push("/search_by_category",e)}
             />)}</div>:<></>}
              <div className="text">
@@ -355,7 +362,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       //  padding:"-10rem",
     overflow:"auto",
     borderRadius:"40px",
-    height: "500px",
+    height: "560px",
     width: "50px"
     }}>
         <MvpCard Mvp={state._id}/>

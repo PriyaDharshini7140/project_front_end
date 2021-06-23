@@ -2,7 +2,14 @@
   
   /* height: 400px; */
 }
-
+.wrapper-Acc{
+  display: grid;
+  grid-template-columns:30% 20% 40%;
+  grid-gap:1rem;
+  background: rgba(0, 0,0,0.03);
+  margin:2rem;
+  border-radius: 20px;
+}
 .showcase .showcase-overlay {
   /* background-color: rgba(172, 110, 110, 0.4); */
   display: flex;

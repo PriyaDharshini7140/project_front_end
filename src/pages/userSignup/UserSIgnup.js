@@ -230,7 +230,7 @@ function UserSIgnup(props) {
          </center>
          <center>
          <div style={{marginLeft:"8rem"}}>
-         Already a User <Link to='/Sign in'>Login?</Link> </div>
+         Already a User <Link to='/'>Login?</Link> </div>
        
                </center>
                </div>

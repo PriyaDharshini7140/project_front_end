@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   like:{
-    color:"blue"
+    color:"#0d47a1"
   },
   unlike:{
     color:"rgb(39, 39, 38)"
@@ -87,9 +87,9 @@ function Alert(props) {
          <div className="head">
         <Avatar style={{marginTop:".2rem"}} src={e.user.user_profile}/>
 <div className="user-name">
-        <Link to={{pathname:'/userProfile',state:e.user}} style={{fontFamily: "lucida Sans"}} className="user-name-link">
+        <Link to={{pathname:'/userProfile',state:e.user}} className="user-name-link">
                    {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
-                   <div style={{color:"white",fontSize:"small",fontFamily: "lucida Sans"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
+                   <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                    </div>
            
           
@@ -102,7 +102,7 @@ function Alert(props) {
         
          </div>
           {/* <br/> */}
-          <div className="text" style={{color:"black",fontFamily: "lucida Sans",marginLeft:"1rem"}}>
+          <div className="text" style={{color:"black",marginLeft:"1rem"}}>
           <ShowMoreText
                
                lines={2}

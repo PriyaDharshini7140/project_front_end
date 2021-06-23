@@ -212,9 +212,9 @@ const handleSubmit = async(name,phone,work,education,description)=>{
 
   return (
     <div> 
-     <Avatar className={classes.pink}>
+    
       <EditRoundedIcon  onClick={handleOpen}/>
-      </Avatar>
+      
       
       <Modal
       style={{display: 'flex',

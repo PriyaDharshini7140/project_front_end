@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 // import axios from 'axios';
 import firebase from "firebase";
 import {storage} from '../../FireBase'
+import { BsFillChatSquareDotsFill } from 'react-icons/bs';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -153,8 +154,8 @@ console.log(url);
         </Button>
       </label>
        
-           
-      <progress className="imageupload__progress" value={Progress} max="100" /> 
+        {Progress > 0 ?   
+      <progress className="imageupload__progress" value={Progress} max="100" /> :<></>}
      
       <center>
       <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
@@ -163,6 +164,7 @@ console.log(url);
                        setTitle("")
                        setLink("")
                        setOpen(false)
+                       
                    }}>post</Button>
        </center>
         
