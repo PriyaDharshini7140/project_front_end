@@ -2,41 +2,110 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { Avatar,IconButton,TextField } from '@material-ui/core';
+import { IconButton,InputAdornment,TextField,Button } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import {useDispatch} from 'react-redux'
+import {Post} from '../../redux/postActions'
 
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Axios from 'axios';
+import { useSelector } from 'react-redux';
+
+import { useTheme } from '@material-ui/core/styles';
+
+import LinkIcon from '@material-ui/icons/Link';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+ 
+ 'Education Apps',
+ 'Rating and Review Application',
+ 'OTT(Over-the-top) Platform Application',
+ 'Real-Time Communication Application',
+ 'Question and Answer Platform',
+ 'social Media',
+ 'E-Commerce',
+ 'Fantasy Sports',
+ 'Expense/Account Management',
+ 'Content Management System',
+ 'Algorithm Visualizer Application',
+ 'Project Management Application',
+ 'Note-taking Application',
+ 'Matchmaking Application',
+ 'Blog Application'
+];
+const front = [
+  'JavaScript',
+  'Html',
+  'css',
+  'xml',
+  'jsx',
+  'bootStrap',
+  'React',
+  'Angular',
+  'Asp.net',
+'TypeScript',
+ 'React Native',
+ 
+ 
+ ];
+ const back = [
+  'Java',
+  'JavaScript',
+  'python',
+  'php',
+"c#",
+'express js',
+'node js',
+'ruby',
+"c++"
+
+ 
+ ];
+ const datab = [
+ 'oracle',
+ 'mysql',
+ 'postgreSql',
+ 'mongoDB',
+ "ibm DB2"
+ 
+ ];
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
-    width: 500,
-    height:300,
+// overflowY:"scroll",
+    position: 'relative',
+    display:"flex",
+    flexDirection:'column',
+ 
+    width: 800,
+  //  height:500,
     backgroundColor: theme.palette.background.paper,
-    borderRadius:"20px",
+    borderRadius:"10px",
     padding: theme.spacing(2, 4, 3),
-    borderColor:"rgb(243, 220, 220)",
+    borderColor:"transparent",
+  
+  // marginLeft:"6rem",
+  // marginTop:"-4rem",
+   
+    
   },
   text:{
-      width:340
+      width:"100%"
   },
   camera:{
     color:"rgb(97, 96, 96)",
@@ -49,119 +118,503 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
   display: 'none',
+} ,form_Control: {
+  margin: theme.spacing(1),
+  minWidth: 120,
+  maxWidth: 300,
+},
+chips: {
+  display: 'flex',
+  flexWrap: 'wrap',
+},
+chip: {
+  margin: 2,
+},
+select:{width:"50%"},
+noLabel: {
+  marginTop: theme.spacing(3),
+},
+in:{
+  width:"50%"
 }
  
 }));
 
-export default function SimpleModal({user}) {
+const filter = createFilterOptions()
+export default function SimpleModal() {
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
+  const auth = useSelector((state)=> state.user.authorization)
+  const theme = useTheme();
+  
+
+  // const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [postText,setPostText] = useState("");
-  const [postUrl,setPostUrl]=useState('');
-   const [up_vote,setupvote]=useState('0');
-   const [down_vote,setdownvote]=useState('0');
-   const [category,setCategory]=useState('');
+  const [image,setImage]=useState([]);
+  const [postUrl,setPostUrl]=useState([]);
+  const [title,setTitle]=useState('')
+  const [scope,setScope]=useState('')
+  const [enhancement,setEnhancement]=useState('')
+  const [frontEnd, setfrontEnd] = React.useState(null);
+  const [backEnd, setbackEnd] = React.useState(null);
+  const [db, setDb] = React.useState(null);
+  const [link,setLink]=useState("")
+  const [value, setValue] = React.useState(null);
+  // const[progress,setProgress] = useState(0);
+   const user = useSelector((state)=> state.user.users)
   console.log(user);
- 
-
-
-
-  
+  const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
     console.log("clicked");
   };
-  // const handleChange = (e) => {
-  //   if (e.target.files[0]) {
-  //     setPostUrl(e.target.files[0]);
-  //   }
-  // };
+ 
+  
+  const handleChangeMultiple = async(event) => {
+    const { files } = event.target;
+     console.log("files",files);
+   
+    const value = [];
+    
+    
+    for (let i = 0, l = files.length; i < l; i += 1) {
+      
+      var formdata = new FormData();
+      formdata.append("file",files[i]);
+    formdata.append("cloud_name", "ideawrapper");
+      formdata.append("upload_preset", "ideahub");
+      
+    
+      
+    
+      let res = await fetch(
+      "https://api.cloudinary.com/v1_1/ideawrapper/image/upload",
+      {
+          method: "post",
+          mode: "cors",
+          body: formdata
+      }
+      )
+      .then(res=>res.json())
+      .then(data=>{
+        console.log("progress",data)
+        
+        setPostUrl((e)=>[...e,data.url])
+        
+        
+      })
+      .catch(err=>{
+          console.log(err)
+      })
+    
+    }
+    
+    setImage(value);
+  };
+ 
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handlePost = (a,b,c,d,e) => {
-        console.log(a,b,c,d,e);
-        
-        Axios.post('http://localhost:4000/post/addPost',{
-          user_id:user._id,
-          post_text:a,
-          post_url:b,
-          category:c,
-          up_vote:d,
-          down_vote:e
-        }).then(
-          (res)=>console.log(res.data),
-         )
-        setOpen(false);
-    
-  }
-
-
-
-  
+ console.log(postUrl);
+ function validateTitle() {
+  if(!title)
+  return("Title Required")
+}
+function validateDescription() {
+  if(!postText)
+  return("Field required")
+}
+function validateCategory() {
+  if(!value)
+  return("Category not selected ")
+}
+function validateScope() {
+  if(!scope)
+  return("Field required")
+}
+function validateEnhance() {
+  if(!enhancement)
+  return("Field required")
+}
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <div className="modal__header">
-      <Avatar className="modal__header__avatar"/>
-                <div className="modal__header__body">
-                {user.user_name}
-                </div>
-      </div>
-     {/* <div> */}
+    <div className={classes.paper}>
+      <h5>Add idea</h5>
+      <TextField className={classes.in}
+          id="standard-multiline-flexible"
+          label="Title"
+          multiline
+          rowsMax={2}
+          onChange={(e)=>setTitle(e.target.value)}
+          variant='outlined'
+          helperText={validateTitle()}
+          />
       <TextField className={classes.text}
           id="standard-multiline-flexible"
           label="Type a Message"
           multiline
           rowsMax={4}
+          helperText={validateDescription()}
           onChange={(e)=>setPostText(e.target.value)}
-          />
-         {/* <progress className="imageupload__progress" value={Progress} max="100" /> */}
-        <input accept="file/*" className={classes.input} id="icon-button-file" type="file" onChange={(e)=>setPostUrl(e.target.value)} />
+          InputProps={{
+          
+          
+          endAdornment:
+            <InputAdornment position="end">
+               <input multiple accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={handleChangeMultiple} />
       <label htmlFor="icon-button-file">
         <IconButton className={classes.camera}  aria-label="upload picture" component="span">
         <AttachFileRoundedIcon  className='modal__input__item1' />
         </IconButton>
       </label>
+      
+            </InputAdornment>
+          }}
+          />
+       
+       
       <br/>
      
-        <select className="select"
-         
-          value={category}
-          onChange={(e)=>setCategory(e.target.value)}
-        >
-          <option value="0">category</option>
-          <option value='web developer'>web developer</option>
-          <option value='software developer'>software developer</option>
-          <option value='data analyst'>data analyst</option>
-          <option value='data scientist'>data scientist</option>
-          <option value='developer'>developer</option>
-        </select>
-      
        
-         <div className="modal___button">
-                <div className="modal___button_Container">
-                <button type="button" className="modal_Button" onClick={handleClose}>Back</button>
-                   <button type="button" className="modal_Button" onClick={()=>handlePost(postText,postUrl,category,up_vote,down_vote)}>Post</button>
-                </div>
-            </div>
+           
+          
 
+       <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={names}
+        
+        filterSelectedOptions
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setValue(newValue
+            );
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setValue( newValue.inputValue
+            );
+          } else {
+            setValue(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          // Suggest the creation of a new value
+          if (params.inputValue !== '') {
+            filtered.push(
+           params.inputValue,
+              //  `Add "${params.inputValue}"`,
+            );
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+       
+      
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option;
+        }}
+        renderOption={(option) => option}
+        
+        renderInput={(params) => (
+          <TextField
+          helperText={validateCategory()}
+            {...params}
+            variant="outlined"
+            label="Select Category"
+            // placeholder="Favorites"
+          />
+        )}
+      />
+
+     {console.log("value",value)}
+      <div>
+      <TextField 
+      style={{margin:"1rem"}}
+          id="standard-multiline-flexible"
+          label="Scope of this idea"
+          multiline
+          rowsMax={4}
+          helperText={validateScope()}
+          onChange={(e)=>setScope(e.target.value)}
+          variant="outlined"
+          />
+          {/* <br/> */}
+          <TextField  
+           helperText={validateEnhance()}
+          style={{margin:"1rem",width:"50%"}}
+          label="What enhancement should be done"
+          multiline
+          rowsMax={4}
+          onChange={(e)=>setEnhancement(e.target.value)}
+          variant="outlined"
+          />
+          </div>
+   {/* <br/> */}
+     <div>
+     Requirements :<br/>
+     <div style={{display:'flex',justifyContent:"space-evenly"}}>
+    
+     <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={front}
+        
+        filterSelectedOptions
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setfrontEnd(newValue
+            );
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setfrontEnd( newValue.inputValue
+            );
+          } else {
+            setfrontEnd(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          // Suggest the creation of a new value
+          if (params.inputValue !== '') {
+            filtered.push(
+           params.inputValue,
+              //  `Add "${params.inputValue}"`,
+            );
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+       
+      
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option;
+        }}
+        renderOption={(option) => option}
+        style={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Front-end"
+            // placeholder="Favorites"
+          />
+        )}
+      /> 
+     
+       <Autocomplete
+      multiple
+      id="tags-outlined"
+      options={back}
+      
+      filterSelectedOptions
+      onChange={(event, newValue) => {
+        if (typeof newValue === 'string') {
+          setbackEnd(newValue
+          );
+        } else if (newValue && newValue.inputValue) {
+          // Create a new value from the user input
+          setbackEnd( newValue.inputValue
+          );
+        } else {
+          setbackEnd(newValue);
+        }
+      }}
+      filterOptions={(options, params) => {
+        const filtered = filter(options, params);
+
+        // Suggest the creation of a new value
+        if (params.inputValue !== '') {
+          filtered.push(
+         params.inputValue,
+            //  `Add "${params.inputValue}"`,
+          );
+        }
+
+        return filtered;
+      }}
+      selectOnFocus
+      clearOnBlur
+      handleHomeEndKeys
+     
+    
+      getOptionLabel={(option) => {
+        // Value selected with enter, right from the input
+        if (typeof option === 'string') {
+          return option;
+        }
+        // Add "xxx" option created dynamically
+        if (option.inputValue) {
+          return option.inputValue;
+        }
+        // Regular option
+        return option;
+      }}
+      renderOption={(option) => option}
+      style={{ width: 300 }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          label="Back-end"
+          // placeholder="Favorites"
+        />
+      )}
+    /> 
+   
+     <Autocomplete
+    multiple
+    id="tags-outlined"
+    options={datab}
+    
+    filterSelectedOptions
+    onChange={(event, newValue) => {
+      if (typeof newValue === 'string') {
+        setDb(newValue
+        );
+      } else if (newValue && newValue.inputValue) {
+        // Create a new value from the user input
+        setDb( newValue.inputValue
+        );
+      } else {
+        setDb(newValue);
+      }
+    }}
+    filterOptions={(options, params) => {
+      const filtered = filter(options, params);
+
+      // Suggest the creation of a new value
+      if (params.inputValue !== '') {
+        filtered.push(
+       params.inputValue,
+          //  `Add "${params.inputValue}"`,
+        );
+      }
+
+      return filtered;
+    }}
+    selectOnFocus
+    clearOnBlur
+    handleHomeEndKeys
+   
+  
+    getOptionLabel={(option) => {
+      // Value selected with enter, right from the input
+      if (typeof option === 'string') {
+        return option;
+      }
+      // Add "xxx" option created dynamically
+      if (option.inputValue) {
+        return option.inputValue;
+      }
+      // Regular option
+      return option;
+    }}
+    renderOption={(option) => option}
+    style={{ width: 300 }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="outlined"
+        label="DataBase"
+        // placeholder="Favorites"
+      />
+    )}
+  />
+      
+      </div>
+      <br/> 
+      <div>
+      <TextField className={classes.text}
+          id="standard-multiline-flexible"
+          label="insert link(optional)"
+         type="url"
+         variant="outlined"
+          onChange={(e)=>setLink(e.target.value)}
+          InputProps={{
+          
+          
+          startAdornment:
+            <InputAdornment position="start">
+              <IconButton>
+            
+        <LinkIcon/>
+        </IconButton>
+      
+            </InputAdornment>
+          }}
+          />
+        
+       
+      </div>
+     </div>
+     
+     
+     
+           <div>
+        {!postUrl ? <></>:postUrl.map(e=><img src={e} style={{height:"50px"}} alt='img'/>)}
+      </div>
+      <center>
+      <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
+       <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=> {
+                     if(!value.length){
+                       alert("please select category")
+                     }
+                     else{
+                       console.log(enhancement);
+                      dispatch(Post(user._id,postText,postUrl,value,title,scope,link,enhancement,frontEnd,backEnd,db))
+                      setOpen(false)
+                     }
+                     
+                    
+                    }
+                  }disabled={validateCategory(),validateDescription(),validateEnhance(),validateScope(),validateTitle()}>post</Button>
+       </center>
+        
      
     </div>
   );
 
   return (
     <div>
-      <div className="sidebar__search">
-                <div className="sidebar__searchContainer"> 
-              <button 
-                   className="NavBar_Button" 
-                onClick={handleOpen}>Add Post</button>
+      {auth.status === 'Verified' ? <div>
+                <div> 
+              <div className="nl" style={{marginTop:".5rem",cursor:"pointer"}}
+                  //  className="NavBar_Button" 
+                onClick={handleOpen}>Add Idea</div>
               
                 </div>
-            </div>
+            </div>:<></> }
+      
       <Modal
+      style={{display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',}}
         open={open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

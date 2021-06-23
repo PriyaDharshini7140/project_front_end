@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Card, FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField } from '@material-ui/core';
-import './UserLogin.css'
-import { Link } from 'react-router-dom';
-import Axios from 'axios';
-import {connect} from 'react-redux';
+import React, { useState } from 'react'
+import { Button,FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField, Tooltip } from '@material-ui/core';
+import './Login.css'
+import { Link} from 'react-router-dom';
+import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import clsx from 'clsx';
+import EmailIcon from '@material-ui/icons/Email';
+import { fetchUsers } from '../../redux/Actions';
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import { validate } from 'react-email-validator';
+import { ToastContainer, toast } from 'material-react-toastify';
+  import 'material-react-toastify/dist/ReactToastify.css';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
         margin: theme.spacing(1),
         width: '25ch',
+        
       },
     },
     root1:{
@@ -26,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
              
              
             },
-        
+        width:"100%"
     },
     margin: {
         margin: theme.spacing(1),
@@ -37,21 +45,27 @@ const useStyles = makeStyles((theme) => ({
       textField: {
         width: '25ch',
       },
+      
+        icon:{
+          // color:"gray"
+        },
+     
   }));
 function UserLogin(props) {
-  console.log(props);
+const dispatch = useDispatch();
+console.log(props);
+
+  
     const classes = useStyles();
 const [email, setEmail] = useState('')
 const [password,setPassword] = useState('')
-const [isLoggedIn,setIsLoggedIn] = useState(false)
-const [Data,setData] = useState({})
+
+
     const [values, setValues] = React.useState({
         showPassword: false,
       });
     
-      const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-      };
+      
     
       const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
@@ -60,89 +74,95 @@ const [Data,setData] = useState({})
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
-
-      const login=(email_id,password)=>{
-         Axios.post('http://localhost:4000/user/login',{
-           email_id:email_id,
-         password:password}
-         )
-         .then((res)=>{setData(res.data)
-          console.log(res.data);
-         
-          alert(res.data.message)
-          // props.onLogin_user(Data)
-          if(res.data.message === "logged in successfully"){
-            props.history.push('/home page',res.data)
-          }
-        })
-         .catch((e)=>{console.log(e)})
-         console.log(Data);
+      
+      return (<div>
         
-      }
-  
-    return (
+        <div className='user-signup'>
         
-        <div className='user-login'>
-            <Card className='user-login-card'>
-                <center><h3>
-                    <b className="user-login-cardAction">
-               Hi Welcome Back !!!!
-       </b> </h3></center>
-           <form className={classes.root}  autoComplete="on">
-                
+       
+       <div className='inner-reg'>
+       <center><h5 style={{marginLeft:"7rem"}}>Login</h5></center>
+         <center>
+   <form className={classes.root}  autoComplete="on" >
+   
+          <div>
+           <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}} type="email" variant="outlined"
+             InputProps={{
+              startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
+            }}
           
-            <b>Email</b>          <center> <TextField id="outlined-basic" label='email' type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></center>
-           
-
-            
-             <b>Password</b>      <center> <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={(e)=>setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={70}
-          />
-        </FormControl></center>
-           
-             </form>
-            <div className={classes.root1}>
-             <Button className='user-login-card-button' onClick={()=>{login(email,password)}}>login</Button><br/>
-                 
-             <Button className='user-login-card-button' onClick={()=>{
+            onChange={(e)=>setEmail(e.target.value)} />
+               </div>
+               <div>
                 
-                 props.history.goBack()
-                 }}>Back</Button> <br/>
-                </div>
-              <center>
-       <Link to='/Sign up'>Create a Account</Link>  
-               </center>
-            </Card>
+          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+              
+              <TextField
+              style={{width:"40ch",marginLeft:"-.5rem",backgroundColor:"rgba(0, 0,0,0.03)"}}
+                id="outlined-adornment-password"
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                placeholder="password"
+                
+                variant="outlined"
+                onChange={(e)=>setPassword(e.target.value)}
+                InputProps={{
+                  startAdornment:<InputAdornment position="start"><LockOpenOutlinedIcon className={classes.icon}/></InputAdornment>,
+                
+                endAdornment:
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility className={classes.icon} /> : <VisibilityOff className={classes.icon}/>}
+                    </IconButton>
+                  </InputAdornment>
+                }}
+                labelWidth={70}
+              />
+            </FormControl>
+               
+           </div>
+         <center>
+         <Button  variant="contained" color="primary"style={{borderRadius:"40px",marginLeft:"8rem"}} onClick={()=>{ 
+               dispatch(fetchUsers(email,password))
+
+            }
+            
+            }>Login</Button>
+             <ToastContainer position="top-center"
+         autoClose={2000}
+         hideProgressBar
          
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover/>
+            </center><br/>
+         </form>
+         {/* </center> */}
+         </center>
+         <center>
+         <div style={{marginLeft:"8rem"}}>
+         Do you have an account create one <Link to='/Sign up'>Sign up?</Link> </div>
+         <div style={{marginLeft:"8rem"}}>
+         Forget password <Link to='/forgot password'>Reset</Link> </div>
+       
+               </center>
+               </div>
+               
+        </div>
+        
+        
         </div>
     )
 }
 
-const mapDispatchToProps=(dispatch)=>{
-  return{
-      onLogin_user : (user)=>dispatch({
-        type:'LOGIN_USER',
-        payload:user
-      }),
-  }
-}
 
-export default connect(null,mapDispatchToProps)(UserLogin);
+
+export default UserLogin;

@@ -9,3 +9,13 @@
     border-radius: 4px;
     transition: all 0.2s ease-out;
   }
+  .box {
+    width: 18px;
+    height: auto;
+    
+    color: #fff;
+    padding: 20px;
+    position: relative;
+    margin: 40px;
+  }
+  

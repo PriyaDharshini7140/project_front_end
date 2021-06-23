@@ -3,17 +3,13 @@
   margin: 0%;
   padding: 0;
   font-family:'PT Sans',sans-serif;
+  
+  
 }
 .app{
   
 
 }
 .app__body{
-
-  background-image:url('./images/wp2478210-idea-wallpapers.png');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-origin: border-box;
-  /* font-size: 100px; */
+ 
 }
