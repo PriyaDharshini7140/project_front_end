@@ -94,7 +94,6 @@ export const newFeeds = () => {
             dispatch(PostSuccess(res.data))
             dispatch(Comments())
             
-        //  dispatch(CategorySuccess(cat))
          })
 .catch((e)=>console.log(e))
     
@@ -112,6 +111,7 @@ export const newFeeds = () => {
                 return b.up_vote_count  - a.up_vote_count;
                })
            dispatch(LikePostSuccess(sorted))
+           
            })
   .catch((e)=>console.log(e))
       
@@ -640,6 +640,29 @@ export const mvp = (user_id,Post_id,title,link) => {
         
       }
     }
+    export const mvpSelected = (id) => {
+  
+   
+      return (dispatch) => {
+        const Token = () => localStorage.getItem("user");
+          
+        return axios.post(`${process.env.REACT_APP_PORT}/solution/selected`,{
+      _id:id
+     
+      },{
+        headers:{authorization:`Bearer ${Token()}`}
+       }).then(
+        (res)=>{console.log(res.data)
+  dispatch(mvpDisplay())
+       
+       },
+       ).catch((e)=>console.log(e))
+    
+        
+        
+      }
+    }
+
     export const DeleteMvp = (id) => {
       console.log("delete",id);
        

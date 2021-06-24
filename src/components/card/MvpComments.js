@@ -14,7 +14,7 @@ import MvpReplys from './MvpReply';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import Tooltip from '@material-ui/core/Tooltip';
-function MvpComments({Mvp}) {
+function MvpComments({Mvp,owner}) {
     const user = useSelector((state)=> state.user.users)
     const dispatch = useDispatch()
     console.log(Mvp);
@@ -40,7 +40,7 @@ function MvpComments({Mvp}) {
                    <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                    </div>
            
-                   {user._id === e.user._id ? <div style={{marginLeft:"8rem"}}>
+                   {user._id === e.user._id || owner === user._id? <div style={{marginLeft:"8rem"}}>
         
             <DeleteRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch(DeleteMvpCom(e._id))}/>
             
@@ -83,7 +83,7 @@ function MvpComments({Mvp}) {
                     <TextField
                 style={{width:"100%"}}
                 type="text"
-           
+           value={reply}
                 placeholder="add reply"
                 
                 // variant="outlined"
@@ -93,7 +93,9 @@ function MvpComments({Mvp}) {
                 endAdornment:
                   <InputAdornment position="end">
                     
-                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch(AddMvpReply(user._id,e._id,reply))}/>
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddMvpReply(user._id,e._id,reply));
+                    setReply(" ")
+                  }}/>
                     
                   </InputAdornment>
                 }}
@@ -102,7 +104,7 @@ function MvpComments({Mvp}) {
                        
                         
                     </div>
-                    <MvpReplys Mvp={e._id}/>
+                    <MvpReplys Mvp={e._id} owner={owner}/>
                 </div>
                 
                 </>

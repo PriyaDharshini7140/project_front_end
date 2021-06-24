@@ -73,7 +73,7 @@ const [show, handleShow] = useState(false);
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          {user === null || location.pathname === "/" || location.pathname === "/forgot password" ||location.pathname === "/Sign up" ? 
+          {user === null ||  location.pathname === "/forgot password"  ? 
           location.pathname === "/"? <Link
           to='/Sign up'
          
@@ -102,7 +102,7 @@ const [show, handleShow] = useState(false);
                 <div class="topbar-items">
                 
               
-     {location.pathname === "/" ?
+     {/* {location.pathname === "/" ?
          <Tooltip title='Register' arrow>
          <Link
               to='/Sign up'
@@ -131,7 +131,7 @@ const [show, handleShow] = useState(false);
              Sign in
             </Link>
             </Tooltip>}
-          
+           */}
             
             </div>
             </div>

@@ -12,7 +12,7 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import {DeleteMvpReply, MvpReplyUpVote, MvpReplyDownVote} from '../../redux/postActions';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 // import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
-function MvpReplys({Mvp}) {
+function MvpReplys({Mvp,owner}) {
     const user = useSelector((state)=> state.user.users)
     const dispatch = useDispatch()
     console.log(Mvp);
@@ -32,7 +32,7 @@ function MvpReplys({Mvp}) {
                       {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
                       <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                       </div>
-                   {user._id === e.user._id ? <div style={{marginLeft:"7rem"}}>
+                   {user._id === e.user._id || owner === user._id? <div style={{marginLeft:"7rem"}}>
         
             <DeleteRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch( DeleteMvpReply(e._id))}/>
             
