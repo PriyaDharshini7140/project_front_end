@@ -35,6 +35,9 @@ border:1px solid rgba(10, 10,10,0.001);
 
 margin: 1rem;
 }
+.green{
+  color:greenyellow
+}
 .lin{
   word-break: "break-all";}
 .homepage__card:hover{

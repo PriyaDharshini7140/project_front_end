@@ -26,9 +26,11 @@ import SearchAppBar from '../../components/Search/SearchBar';
 
 function Home() {
 const Data = useSelector((state)=> state.post.posts)
-const D =  Data.slice(0, 3)
+const Filter = Data.filter((e)=>e.mvp.length > 0)
+const D =  Filter.slice(0, 3)
 const data = useSelector((state)=> state.post.LikeSortedPosts)
-const week = data.filter((e)=>moment(e.createdAt).week() === moment().week())
+const F = data.filter((e)=>e.mvp.length > 0);
+const week = F.filter((e)=>moment(e.createdAt).week() === moment().week())
 console.log(week);
 const d=  week.slice(0, 3)
 console.log(d);

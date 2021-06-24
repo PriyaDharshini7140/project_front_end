@@ -89,7 +89,7 @@ const classes = useStyles()
          <div style={{display:"flex",justifyContent:"flex-end",marginRight:"-4rem",marginTop:".5rem"}}><ModalProfile/></div>
        
         <p style={{textAlign:"justify",width:"400px",marginTop:"-1rem"}}>
-        <b style={{marginRight:".3rem"}}>About:</b>
+        <b style={{marginRight:".3rem"}}>{user.description ?<>About:</>:<></> }</b>
           {user.description}
         </p></div>
     </div><br/>

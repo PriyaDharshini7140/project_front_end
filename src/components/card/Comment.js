@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     color:"rgb(39, 39, 38)"
   },
 }));
-function Comment({post}) {
+function Comment({post,owner}) {
   const user = useSelector((state)=> state.user.users)
 console.log(post);
 const dispatch = useDispatch();
@@ -94,7 +94,7 @@ function Alert(props) {
            
           
           
-         {user._id === e.user._id ? <div style={{marginTop:"-.5rem",marginLeft:"23rem"}}> 
+         {user._id === e.user._id || owner === user._id ? <div style={{marginTop:"-.5rem",marginLeft:"23rem"}}> 
         <IconButton>
             <DeleteRoundedIcon onClick={()=>dispatch(comDelete(e._id))}/>
              </IconButton>
@@ -169,7 +169,7 @@ function Alert(props) {
                 type="text"
              className={classes.input}
                 placeholder="add reply"
-                
+                value={reply}
                 // variant="outlined"
                 onChange={(e)=>setReply(e.target.value)}
                 InputProps={{
@@ -186,7 +186,7 @@ function Alert(props) {
                
               />
              
-              <Reply comment={e._id}/></>
+              <Reply comment={e._id} owner={owner}/></>
            :<></>}
 
            

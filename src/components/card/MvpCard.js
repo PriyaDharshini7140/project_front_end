@@ -1,11 +1,11 @@
 import { Avatar,  IconButton, InputAdornment, Menu, MenuItem, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import {useDispatch} from 'react-redux'
-import { mvpUpVote,mvpDownVote, DeleteMvp, AddMvpComment} from '../../redux/postActions'
+import { mvpUpVote,mvpDownVote, DeleteMvp, AddMvpComment, mvpSelected} from '../../redux/postActions'
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { FaHandsHelping } from "react-icons/fa";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import { BsFillChatFill} from "react-icons/bs";
@@ -49,9 +49,13 @@ const useStyles = makeStyles((theme,colors) => ({
     height: theme.spacing(5),
   },
   }));
-function MvpCard({Mvp}) {
+function MvpCard({Mvp,owner}) {
     const classes = useStyles();
     const Data = useSelector((state)=> state.post.mvp)
+    const select = Data && Data.filter((e)=>e && e.post_id === Mvp)
+    console.log(select);
+    const selected = select && select.filter((e)=>e && e.selected === true)
+    console.log(selected);
     const user = useSelector((state)=> state.user.users)
     const auth = useSelector((state)=> state.user.authorization)
     const dispatch = useDispatch()
@@ -112,10 +116,13 @@ function MvpCard({Mvp}) {
                    {e.user.user_name}<VerifiedUserRoundedIcon className='verify'/> </Link> <br/>
                    <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                    </div>
+                   
+                   
                    {user._id === e.user_id ? 
                    
                   
-                        <div style={{marginLeft:"10rem"}}>
+                        <div style={{marginLeft:"3rem"}}>
+
                   {auth.status === "Verified" ? <>
                  <IconButton>
                      <MoreVertIcon onClick={handleClick}/>
@@ -192,6 +199,25 @@ function MvpCard({Mvp}) {
                            
                            </div>
                            </Tooltip>
+                           <Tooltip title="click to select mvp" arrow>
+                             {owner === user._id ?
+                             <div>
+                               
+                             {selected.length > 0  ? e.selected === true ? 
+                   
+                   <FaHandsHelping onClick={()=>dispatch(mvpSelected(e._id))}  style={{color:"#ffeb3b",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>:<></>:<FaHandsHelping  onClick={()=>dispatch(mvpSelected(e._id))} style={{color:"white",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>}
+                  
+                          
+                   </div>:<></>}
+                    </Tooltip>
+                    <Tooltip title="Selected Mvp" arrow>
+                             <div>
+                           {selected.length > 0 && owner !== user._id ? e.selected === true ? 
+                   
+                   <FaHandsHelping   style={{color:"#ffeb3b",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>:<></>:<></>}
+                   </div>
+                    </Tooltip>  
+                  
                            </div>
                           <br/>
                            {values.showPassword === true? 
@@ -203,7 +229,7 @@ function MvpCard({Mvp}) {
                 type="text"
              className={classes.input}
                 placeholder="add comments"
-                
+                value={comment}
                 // variant="outlined"
                 onChange={(e)=>setComment(e.target.value)}
                 InputProps={{
@@ -211,7 +237,8 @@ function MvpCard({Mvp}) {
                 endAdornment:
                   <InputAdornment position="end">
                     
-                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch(AddMvpComment(user._id,e._id,comment))}/>
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddMvpComment(user._id,e._id,comment));
+                      setComment(" ")}}/>
                     
                   </InputAdornment>
                 }}
@@ -221,7 +248,7 @@ function MvpCard({Mvp}) {
                         
                     </div>
                     <div>
-                    <MvpComments Mvp={e._id}/>
+                    <MvpComments Mvp={e._id} owner={owner}/>
                 </div><br/>
                 
                 </>

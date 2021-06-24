@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     color:"rgb(39, 39, 38)"
   },
 }));
-function Reply({comment}) {
+function Reply({comment,owner}) {
   const dispatch = useDispatch()
   const user = useSelector((state)=> state.user.users)
 console.log(user);
@@ -77,7 +77,7 @@ return <MuiAlert elevation={6} variant="filled" {...props} />;
            
           
           
-         {user._id === e.user._id ? <div style={{marginLeft:"20rem"}}>
+         {user._id === e.user._id || owner === user._id ? <div style={{marginLeft:"18rem"}}>
         <IconButton>
             <DeleteRoundedIcon
              onClick={()=>

@@ -593,7 +593,7 @@ function validateEnhance() {
                      
                     
                     }
-                  }disabled={validateCategory(),validateDescription(),validateEnhance(),validateScope(),validateTitle()}>post</Button>
+                  }disabled={validateCategory(),validateTitle(),validateDescription(),validateEnhance(),validateScope()}>post</Button>
        </center>
         
      

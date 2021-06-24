@@ -36,8 +36,6 @@ export const fetchUsers = (email,password) => {
                            dispatch(auth())
                           dispatch(newFeeds())
                           dispatch(mvpDisplay())
-                          dispatch(mvpCommentDisplay())
-                          dispatch(MvpReplyDisplay())
                           dispatch(newFeedsLike())
                         }
                         else{

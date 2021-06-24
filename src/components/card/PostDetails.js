@@ -77,6 +77,8 @@ const Data = useSelector((state)=> state.post.posts)
   console.log(values);
   const MVP = useSelector((state)=> state.post.mvp)
  console.log(MVP);
+ const Postpresence =MVP && MVP.filter((e)=>e && e.post_id === state._id)
+
 const filter = MVP && MVP.filter((e)=>e && e.user_id === user._id)
 console.log(filter);
 const presence =filter && filter.filter((e)=>e && e.post_id === state._id)
@@ -310,7 +312,8 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                         
                      </IconButton>
                      </Tooltip>
-                     <div style={{marginTop:".8rem"}}>{presence.length > 0 ?<></>:<ModalMvp post={a}/>}</div>
+                     {a.user_id === user._id ? <></>:
+                     <div style={{marginTop:".8rem"}}>{presence.length > 0 ?<></>:<ModalMvp post={a}/>}</div>}
                     
                      
               </div>
@@ -321,7 +324,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                 type="text"
              className={classes.input}
                 placeholder="add comments"
-                
+                value={comment}
                 // variant="outlined"
                 onChange={(e)=>setComment(e.target.value)}
                 InputProps={{
@@ -329,8 +332,8 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                 endAdornment:
                   <InputAdornment position="end">
                     
-                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddComment(user._id,a._id,comment))
-                    setComment("")}
+                    <SendRoundedIcon style={{cursor:"pointer"}} onClick={()=>{dispatch(AddComment(user._id,a._id,comment));
+setComment(" ")}
                       }/>
                     
                   </InputAdornment>
@@ -338,7 +341,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                
               />
              
-              <Comment post={a._id}/></>
+              <Comment post={a._id} owner={a.user_id}/></>
               :<></>
 }
 
@@ -353,7 +356,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       </>
           )}
         
-        {presence.length > 0 ?
+        {Postpresence.length > 0 ?
         <div className="col-xl-4 col-lg-4 col-4" 
       
         style={{ direction: "ltr",
@@ -365,7 +368,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
     height: "560px",
     width: "50px"
     }}>
-        <MvpCard Mvp={state._id}/>
+        <MvpCard Mvp={state._id} owner={state.user_id}/>
         </div>:<></>}
         </div>
     )
