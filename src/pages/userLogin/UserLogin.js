@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { Button,FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField, Tooltip } from '@material-ui/core';
+import { Button,FormControl, IconButton, InputAdornment,  makeStyles, TextField } from '@material-ui/core';
 import './Login.css'
 import { Link} from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+// import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import clsx from 'clsx';
 import EmailIcon from '@material-ui/icons/Email';
 import { fetchUsers } from '../../redux/Actions';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
-import { validate } from 'react-email-validator';
-import { ToastContainer, toast } from 'material-react-toastify';
+// import { validate } from 'react-email-validator';
+import { ToastContainer} from 'material-react-toastify';
   import 'material-react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 function UserLogin(props) {
 const dispatch = useDispatch();
-console.log(props);
+// console.log(props);
 
   
     const classes = useStyles();
@@ -83,10 +83,10 @@ const [password,setPassword] = useState('')
        <div className='inner-reg'>
        <center><h5 style={{marginLeft:"7rem"}}>Login</h5></center>
          <center>
-   <form className={classes.root}  autoComplete="on" >
+   <form className={classes.root}>
    
           <div>
-           <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}} type="email" variant="outlined"
+           <TextField id="outlined-basic" placeholder='email' className="box-text" type="email" variant="outlined"
              InputProps={{
               startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
             }}
@@ -98,7 +98,8 @@ const [password,setPassword] = useState('')
           <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
               
               <TextField
-              style={{width:"40ch",marginLeft:"-.5rem",backgroundColor:"rgba(0, 0,0,0.03)"}}
+              className="box-text"
+              style={{marginLeft:"-.5rem"}}
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
                 value={values.password}

@@ -37,12 +37,45 @@ text-decoration: none;
 color:white;
 }
 
-@media (max-width: 1280px){
+@media (max-width: 960px){
  
   .wrapper-home{
     display: grid;
-   
+    grid-template-columns: repeat(1,1fr);
     grid-gap:1rem;
-    margin:1rem
+    /* margin:1rem */
   }
+  .home-link{
+    display: flex;
+    grid-template-columns:1fr;
+    grid-gap:1rem;
+    /* margin:1rem; */
+   
+   justify-content: center;
+  }
+  .s{
+    display:flex;
+    color:white;
+   max-width:110px;
+   /* align-self: center; */
+  }
+  .home-link-sub{
+    display: flex;
+    grid-template-columns:99% 1%;
+    grid-gap:1rem;
+    margin:1rem;
+    
+   justify-content: center;
+  }
+  .link-home{
+    color:white;
+    font-family: "lucidSans";
+    font-size: 20px;
+    /* font-family: cursive; */
+  }
+  .link-home:hover{
+  text-decoration: none;
+  color:white;
+  }
+  
 }

@@ -22,11 +22,10 @@ import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import Chip from '@material-ui/core/Chip';
 
 function Search(props) {
-  const user = useSelector((state)=> state.user.users)
-  console.log(user);
+
   const history = useHistory()
     const search = history.location.state
-    console.log(search);
+    // console.log(search);
 ;
    const data = useSelector((state)=> state.post.LikeSortedPosts)
    

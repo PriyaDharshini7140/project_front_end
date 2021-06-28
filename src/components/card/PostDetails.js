@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
-import { Avatar, Card, IconButton, Input, InputAdornment, Snackbar, TextField, Tooltip, Typography} from '@material-ui/core'
+import { Avatar,  IconButton,InputAdornment, Snackbar, TextField, Tooltip} from '@material-ui/core'
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import Comment from './Comment';
 import {UpVote,DownVote,DeletePost} from "../../redux/postActions"
-import ShowMoreText from 'react-show-more-text';
+// import ShowMoreText from 'react-show-more-text';
 import {Link, useHistory} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,7 +17,7 @@ import ModalEdit from '../modal/ModalEdit';
 import { useSelector,useDispatch } from 'react-redux';
 import {AddComment} from '../../redux/postActions'
 import Chip from '@material-ui/core/Chip';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 import Carousel from 'react-bootstrap/Carousel'
 import MuiAlert from '@material-ui/lab/Alert';
 import ModalReport from '../modal/ModalReport';
@@ -47,13 +47,7 @@ const useStyles = makeStyles((theme,colors) => ({
   }
  
 }));
-const AvatarUserDetails = withStyles((theme) => ({
-  tooltip: {
-  backgroundColor:"transparent",
-    maxWidth:220,
-   border: '20px',
-  },
-}))(Tooltip);
+
 
 function Post(props) {
   const colors =['#e57373','#f06292','#64b5f6','#4dd0e1','#4db6ac','#dce775','#ffb74d','#fff176','#ff8a65','#90a4ae','#18ffff']
@@ -61,7 +55,7 @@ const history = useHistory()
   const classes = useStyles();
   const user = useSelector((state)=> state.user.users)
   const state = history.location.state
-  console.log(state._id);
+  // console.log(state._id);
  
   console.log(classes);
   const [values, setValues] = useState({
@@ -74,15 +68,15 @@ const history = useHistory()
 // console.log(user);
 const auth = useSelector((state)=> state.user.authorization)
 const Data = useSelector((state)=> state.post.posts)
-  console.log(values);
+  // console.log(values);
   const MVP = useSelector((state)=> state.post.mvp)
- console.log(MVP);
+//  console.log(MVP);
  const Postpresence =MVP && MVP.filter((e)=>e && e.post_id === state._id)
 
 const filter = MVP && MVP.filter((e)=>e && e.user_id === user._id)
-console.log(filter);
+// console.log(filter);
 const presence =filter && filter.filter((e)=>e && e.post_id === state._id)
-console.log(presence);
+// console.log(presence);
 const dispatch = useDispatch();
 const [anchorEl, setAnchorEl] = React.useState(null);
    
@@ -129,10 +123,10 @@ const [anchorEl, setAnchorEl] = React.useState(null);
       <div className="boddy">
         {Data.map(a=>
         <>
-        {a._id ===state._id ?<div className='col-xl-7 col-lg-7 col-7' >
+        {a._id ===state._id ?<div className='col-xl-7 col-lg-7  col-sm-7' >
           <div className='homepage__card' style={{height: "560px", direction: "ltr",
        background: "rgba(0, 0,0,0.15)",
-       margin:"1rem",
+      
       //  padding:"-10rem",
     overflow:"auto",
     borderRadius:"40px",
@@ -154,9 +148,9 @@ const [anchorEl, setAnchorEl] = React.useState(null);
                  </Link> 
                  <div style={{color:"white",fontSize:"small"}}> {moment(a.createdAt).format("MMMD,YYYY")}</div>
                  </div>
-                 <div style={{marginLeft:"25rem"}}>
+                 <div>
                   {auth.status === "Verified" ? <>
-                 <IconButton>
+                 <IconButton  className="more">
                      <MoreVertIcon onClick={handleClick}/>
                  </IconButton>
                  <Menu
@@ -357,16 +351,16 @@ setComment(" ")}
           )}
         
         {Postpresence.length > 0 ?
-        <div className="col-xl-4 col-lg-4 col-4" 
+        <div className="col-xl-4 col-lg-4 col-sm-4" 
       
         style={{ direction: "ltr",
-       background: "rgba(0, 0,0,0.15)",
-       margin:"1rem",
+      //  background: "rgba(0, 0,0,0.15)",
+       marginTop:"1rem",
       //  padding:"-10rem",
     overflow:"auto",
     borderRadius:"40px",
     height: "560px",
-    width: "50px"
+    
     }}>
         <MvpCard Mvp={state._id} owner={state.user_id}/>
         </div>:<></>}

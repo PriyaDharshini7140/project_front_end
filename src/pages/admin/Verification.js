@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import { useSelector,useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { Deleteverification, Verification } from '../../redux/verficationAction';
@@ -31,16 +31,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 
 
 const useStyles = makeStyles({
   table: {
-    width:"900px",
-    margin:"1rem"
+    maxWidth:"900px",
+    // width:"900px",
+    marginTop:"1rem"
     
   },
 });
@@ -50,10 +47,10 @@ export default function CustomizedTables() {
   const dispatch = useDispatch()
     const user = useSelector((state)=> state.user.users)
   
-    console.log(user);
+    // console.log(user);
   
     const request = useSelector((state)=>state.verification.status)
-    console.log(request);
+    // console.log(request);
   return (
     <TableContainer>
       <center>

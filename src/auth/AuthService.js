@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ToastContainer, toast } from 'material-react-toastify';
+import {  toast } from 'material-react-toastify';
   import 'material-react-toastify/dist/ReactToastify.css';
 
   require("dotenv").config()
@@ -8,7 +8,7 @@ class AuthService {
  
   login(email_id,password) {
     return axios
-    .post(`${process.env.REACT_APP_PORT}/user/login`,{
+    .post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/login`,{
         email_id:email_id,
       password:password}
       )
@@ -82,61 +82,44 @@ class AuthService {
     localStorage.removeItem("user")
   }
   delete(){
-    const Token = () => localStorage.getItem("user");
-  return axios.delete(`${process.env.REACT_APP_PORT}/user/deleteUser/`, {
-   headers:{authorization:`Bearer ${Token()}`}
-  }).then(
-     (res)=> {
-        console.log(res.data);
-     }).catch((e)=>console.log(e))
+    
     
   }
   register(user_name, email_id, password) {
-    return axios.post(`${process.env.REACT_APP_PORT}/user/addUser`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/addUser`,{
         user_name:user_name,
         email_id:email_id,
         password:password
        }).then((res)=>{alert(res.data.message)
-        console.log(res.data.data._id);
+       
      
-      }).catch((e)=>console.log(e))
+      }).catch((e)=>e)
   }
 
   getCurrentUser() {
     const Token = () => localStorage.getItem("user");
-    return axios.post(`${process.env.REACT_APP_PORT}/user/particularUser`,{},{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/particularUser`,{},{
       headers:{authorization:`Bearer ${Token()}`}
-     }).then((res)=>{console.log("res",res.data)
+     }).then((res)=>{
          return res.data}
-     ).catch((e)=>console.log("err",e))
+     ).catch((e)=>e)
   }
 
   setPassword( email_id) {
-    return axios.post(`${process.env.REACT_APP_PORT}/user/forgetPassword`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/forgetPassword`,{
        
         email_id:email_id
        
        }).then((res)=>{
-        console.log(res.data);
+        
         alert(res.data.message)
             
-      }).catch((e)=>console.log(e))
+      }).catch((e)=>e)
   }
 
-  UpdatePassword(email_id,password) {
-    return axios.post(`${process.env.REACT_APP_PORT}/user/updatePassword`,{
-       
-        email_id:email_id,
-        password:password
-       
-       }).then((res)=>{
-        console.log(res.data);
-        alert(res.data.message)
-            
-      }).catch((e)=>console.log(e))
-  }
+
   setNewPassword(password,token) {
-    return axios.post(`${process.env.REACT_APP_PORT}/user/new-password`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/new-password`,{
        
         password:password,
         token:token
@@ -145,7 +128,7 @@ class AuthService {
         
         alert(res.data.message)
             
-      }).catch((e)=>console.log(e))
+      }).catch((e)=>e)
   }
 }
 

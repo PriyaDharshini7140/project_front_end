@@ -1,44 +1,41 @@
 import React, { useEffect, useState } from 'react';
-// import { Button } from './Button';
+
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined';
-// import Dropdown from './Dropdown';
-import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+
 import SimpleModal from '../modal/Modal';
 import PersistentDrawerRight from '../Menubar/MenuBar';
 import { useHistory,useLocation } from "react-router-dom";
-import AuthService from '../../auth/AuthService';
-import { Badge, IconButton, Menu, MenuItem, Tooltip,Button } from '@material-ui/core';
-import MenuLeft from '../Menubar/MenuLeft';
+
+import { Badge,Button } from '@material-ui/core';
+
 import {useSelector} from "react-redux"
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
-import ListIcon from '@material-ui/icons/List';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+
 import SearchAppBar from '../Search/SearchBar';
-import ModalNotification from '../modal/ModalNotification';
+
+import {useDispatch} from 'react-redux'
+import { logout } from '../../redux/Actions';
 function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [category, setCategory] = useState('');
-  const auth = useSelector((state)=> state.user.authorization)
- 
+  
+const dispatch = useDispatch()
+  
  const user = useSelector((state)=> state.user.users)
- console.log(user);
+//  console.log(user);
 let history = useHistory();
 let location = useLocation()
-console.log(location); 
+// console.log(location); 
 const report = useSelector((state)=>state.verification.reports)
 const len = report ? report.length : ""
-console.log(len);
+// console.log(len);
+const [click, setClick] = useState(false);
+// const [dropdown, setDropdown] = useState(false);
+  const handleClick = () => setClick(!click);
+  
+  
+  const closeMobileMenu = () => setClick(false)
+
 const [show, handleShow] = useState(false);
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -50,182 +47,151 @@ const [show, handleShow] = useState(false);
     });
    
   }, []);
+  
 
   return (
     <>
-   {/* <div class="wrapper-class"> */}
-        {/* <div class="wrap"> */}
+   
       
         {user === null || location.pathname === "/" || location.pathname === "/Sign up" || location.pathname === "/forgot password" ||location.pathname === "/Sign in" ? <>
          
        
-        <nav className={show ? "topbar-class active":"topbar-class"}>
-              <div  className="containHome">
+        <nav className={show ? "navbar active":"navbar"}>
+              
              
-                <h5 className="app-name"> 
-                <div class="navlist">
-                <ListIcon onClick={handleClick}/>
-                <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>
-          {user === null ||  location.pathname === "/forgot password"  ? 
-          location.pathname === "/"? <Link
-          to='/Sign up'
-         
-          
-        >
-         Register
-        </Link>:<Link
-              to='/'
-             
-              
-            >
-             Sign in
-            </Link>:<Link
-              to='/'
-              
-              
-            >
-             Sign in
-            </Link>
-        }
-       
-        </MenuItem>
-        </Menu>
-                </div>
-                IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
-                <div class="topbar-items">
+                <h5  className='navbar-logo' style={{marginLeft:"-60rem"}} onClick={closeMobileMenu}> 
                 
-              
-     {/* {location.pathname === "/" ?
-         <Tooltip title='Register' arrow>
-         <Link
-              to='/Sign up'
-              className='topbar-links'
-              
-            >
-             Register
-            </Link>
-            </Tooltip>
-            :location.pathname === "/" ? 
-            <Tooltip title='Login' arrow>
-            <Link
-              to='/'
-              className='topbar-links'
-              
-            >
-             Sign in
-            </Link>
-            </Tooltip>
-            :<Tooltip title='Login' arrow>
-            <Link
-              to='/'
-              className='topbar-links'
-              
-            >
-             Sign in
-            </Link>
-            </Tooltip>}
-           */}
-            
-            </div>
-            </div>
+                IDEA WRAPPER <WbIncandescentOutlinedIcon/>
+                <i class='fab fa-firstdraft' />
+                </h5>
             </nav>
            
-        </>: user.role === 'user' && (location.pathname === "/home page" ||location.pathname === "/notifications" ||location.pathname === "/Weekly Top Picks" ||location.pathname === "/AllPosts" ||location.pathname === "/postDetails" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
+        </>: user.role === 'user' && (location.pathname === "/home page" || location.pathname === "/solution"  ||location.pathname === "/notifications" ||location.pathname === "/Weekly Top Picks" ||location.pathname === "/AllPosts" ||location.pathname === "/postDetails" || location.pathname === "/Account"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile")? 
         
         <>
-         <nav className={show ? "topbar-class active":"topbar-class"}>
-         <div class="containHome">
-           {/* {location.pathname === "/Account" ||location.pathname === "/postDetails" ||location.pathname === "/Weekly Top Picks" ||location.pathname === "/AllPosts"  || location.pathname === "/search_by_category" || location.pathname === "/userProfile" ? <MenuLeft/>:""} */}
-           <h5 className="app-name">IDEA WRAPPER <WbIncandescentOutlinedIcon/></h5>
-           
-         
-         <div class="topbar-items">
-           
-         
-         <div className='topbar-links' style={{marginTop:"-.2rem"}}>
-         <SearchAppBar/>
-       
-          </div>
-         
-          {location.pathname === "/home page" ? <></>:<div  className='topbar-links'>
-         <Link to="/home page" className="nl">Home page</Link>
-       
-          </div>}
-          <div style={{marginTop:"-.5rem"}} className='topbar-links'>
-          <SimpleModal user={user}/>
-          </div>
-          <div style={{marginTop:"-.5rem"}} className='topbar-links'>
-           <PersistentDrawerRight  user={user}/>
-           </div>
+         <nav className={show ? "navbar active":"navbar"}>
+         <h5  className='navbar-logo'> 
+         IDEA WRAPPER <WbIncandescentOutlinedIcon/>
         
+                   
+                <i class='fab fa-firstdraft' />
+                </h5>
+        <div className='menu-icon' onClick={handleClick}>
+          <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+        </div>
+        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          <li className='nav-item' >
+            <div className='nav-links' onClick={closeMobileMenu}><SearchAppBar/></div>
+          
+          </li>
+          
+          <li
+            className='nav-item'
+            
+          >
+             {location.pathname === "/home page" ? <></>:
+         <Link to="/home page" onClick={closeMobileMenu} className='nav-links'>Home page</Link>
+       
+         }
+        
+          </li>
+          <li className='nav-item'>
+            <div className='nav-links' onClick={closeMobileMenu}><SimpleModal user={user}/></div>
+          
+          </li>
+          <li className='nav-item' >
+            <div className='nav-links' onClick={closeMobileMenu}> {user.user_name}<VerifiedUserRoundedIcon className='verify'/> </div>
+          
+          </li>
          
          
-           
-      </div>
-      </div></nav>
+          
+          <li >
+            <div
+          className='nav-links-mobile'
+              onClick={closeMobileMenu}></div>
+            <PersistentDrawerRight  user={user}/>
+          
+          </li>
+        </ul>
+        
+        </nav>
+        
         
         </>
         
         :
         
-        <>
-        <nav className={show ? "topbar-class active":"topbar-class"}>
-         <div class="containHome">
        
+        <nav className={show ? "navbar active":"navbar"}>
         { user.role === 'admin'&& location.pathname === "/verification"  ? "":""}
-        <h5 className="app-name">{user.user_name}{user.role}</h5>
-        <div class="topbar-items">
-        <div className='topbar-links'>
-          {location.pathname === "/verification"  ? <> 
-         
+        <h5  className='navbar-logo'> 
+                
+        {user.user_name}{user.role}
+                <i class='fab fa-firstdraft' />
+                </h5>
+        <div className='menu-icon' onClick={handleClick}>
+          <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+        </div>
+        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          
+          <li
+            className='nav-item'
+            
+          >
+             {location.pathname === "/verification" ? <></>:
+       
+        <Link
+            to='/verification'
+            className='nav-links'
+           
+          >
+           Home page
+          </Link>
+        
+       
+       
+         }
+          </li>
+          <li className='nav-item'>
           <Link
               to='/verified Users'
-              className='topbar-links'>
+              className='nav-links'>
                  
              user list
             
             </Link>
-           
-             <Link
+          
+          </li>
+          <li className='nav-item'>
+          <Link
              to='/reports'
-             className='topbar-links'>
+             className='nav-links'>
                <Badge badgeContent={len} max={999} color="error">
             Reports
             </Badge>
-           </Link></>
-            :<Link
-              to='/verification'
-              className='topbar-links'
-             
-            >
-             Home page
-            </Link>}
-            </div>
-         
-            <div className='topbar-links'>
-           
-       <Button variant="contained" color="primary" style={{borderRadius:"40px"}} onClick={()=>{
-          AuthService.logout()
+           </Link>
+          </li>
+          
+          <li className='nav-item'>
+          <Button variant="contained" color="primary" style={{borderRadius:"40px"}} onClick={()=>{
+          dispatch(logout())
           history.replace("/")
-          window.location.reload()
+          // window.location.reload()
           }}>logout</Button>
-    </div>
-        </div>
-        </div>
+          </li>
+        </ul>
+         
+       
+       
+       
+         
+           
         </nav>
-
-        </>}
+}
+       
         
-        {/* </div> */}
-
-        {/* </div> */}
+       
        
     </>
   );

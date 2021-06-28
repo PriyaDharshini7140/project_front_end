@@ -84,10 +84,9 @@ export default function SearchAppBar() {
   const [open,setOpen] = useState(false)
   const Data = useSelector((state)=>state.post.posts)
   Data.map(e=>e.category.map(a=>category.includes(a) === true ? <></>:category.push(a)))
-  console.log(category);
+  // console.log(category);
   const {
-    getRootProps,
-    getInputLabelProps,
+  
     getInputProps,
     getListboxProps,
     getOptionProps,

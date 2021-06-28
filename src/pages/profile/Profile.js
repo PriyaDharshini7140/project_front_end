@@ -3,13 +3,12 @@ import "./Profile.css"
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {Button, Container, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup} from '@material-ui/core';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import {Button, IconButton} from '@material-ui/core';
+
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
-import {connect, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useLocation} from "react-router-dom";
-import Axios from 'axios';
-import AuthService from "../../auth/AuthService"
+
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux'
@@ -50,11 +49,11 @@ function Profile(props) {
    
     const [description, setDescription] =useState('');
    const history = useHistory();
-  console.log(history)
+  // console.log(history)
   const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user);
 const handleSubmit = async(age,gender,phone_number,description)=>{
-  console.log(description ,age);
+  // console.log(description ,age);
   var formdata = new FormData();
 
   formdata.append("file", image);

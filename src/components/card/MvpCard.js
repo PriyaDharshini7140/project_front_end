@@ -17,8 +17,9 @@ import { makeStyles} from '@material-ui/core/styles';
 import ModalMvpEdit from '../modal/ModalMvpEdit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import { HiBadgeCheck } from "react-icons/hi";
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme,colors) => ({
   
@@ -45,22 +46,22 @@ const useStyles = makeStyles((theme,colors) => ({
     color: theme.palette.getContrastText("#1769aa"),
     backgroundColor: "#1769aa",
     marginLeft:".5rem",
-    width: theme.spacing(5),
-    height: theme.spacing(5),
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
   }));
 function MvpCard({Mvp,owner}) {
     const classes = useStyles();
     const Data = useSelector((state)=> state.post.mvp)
     const select = Data && Data.filter((e)=>e && e.post_id === Mvp)
-    console.log(select);
+    // console.log(select);
     const selected = select && select.filter((e)=>e && e.selected === true)
-    console.log(selected);
+    // console.log(selected);
     const user = useSelector((state)=> state.user.users)
     const auth = useSelector((state)=> state.user.authorization)
     const dispatch = useDispatch()
-    console.log(Mvp);
-    console.log(Data);
+    // console.log(Mvp);
+    // console.log(Data);
     const [values, setValues] = useState({
         showPassword: false,
       });
@@ -73,28 +74,7 @@ function MvpCard({Mvp,owner}) {
      
    
    
-    const [open, setOpen] = React.useState(false);
-    const [Open, setopen] = React.useState(false);
-    const handleOpen = () => {
-      setopen(true);
-    };
-    const handle = () => {
-      setOpen(true);
-    };
-    const Close = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setopen(false);
-    };
-    const handleclose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setOpen(false);
-    };
+    
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
      
@@ -163,14 +143,14 @@ function MvpCard({Mvp,owner}) {
              :<></>}
     </div>
     <div style={{display:'flex',flexDirection:"row"}}>
-    <h6 style={{color:"rgb(37, 37, 36)",marginTop:".5rem"}}>{e.solution_title}
+    <h6 style={{color:"rgb(37, 37, 36)",marginTop:".5rem"}}>{e.solution_title} </h6>
     <a href={e.link}>
      <Tooltip title="Download Zip File" arrow>
-     <Avatar className={classes.pink} size='small'>
-    <GetAppRoundedIcon variant="contained"/>
-      </Avatar>
+    
+    <GetAppRoundedIcon style={{color:"white",marginTop:".4rem"}} />
+    
 </Tooltip> </a>  
-     </h6>
+    
         
     </div>
     
@@ -205,16 +185,18 @@ function MvpCard({Mvp,owner}) {
                                
                              {selected.length > 0  ? e.selected === true ? 
                    
-                   <FaHandsHelping onClick={()=>dispatch(mvpSelected(e._id))}  style={{color:"#ffeb3b",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>:<></>:<FaHandsHelping  onClick={()=>dispatch(mvpSelected(e._id))} style={{color:"white",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>}
+                   <FaHandsHelping onClick={()=>dispatch(mvpSelected(e._id))}  style={{color:"#76ff03",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>:<></>:<FaHandsHelping  onClick={()=>dispatch(mvpSelected(e._id))} style={{color:"white",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>}
                   
                           
                    </div>:<></>}
                     </Tooltip>
-                    <Tooltip title="Selected Mvp" arrow>
+                    <Tooltip title="Approved Mvp" arrow>
                              <div>
                            {selected.length > 0 && owner !== user._id ? e.selected === true ? 
-                   
-                   <FaHandsHelping   style={{color:"#ffeb3b",cursor:"pointer",fontSize:"30px",marginLeft:"1rem"}}/>:<></>:<></>}
+                          
+                          
+                    <HiBadgeCheck   style={{color:"#76ff03",cursor:"pointer",fontSize:"30px",marginLeft:"1rem",marginTop:"-.2rem"}}/>
+                   :<></>:<></>}
                    </div>
                     </Tooltip>  
                   
