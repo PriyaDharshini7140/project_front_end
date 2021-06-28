@@ -18,8 +18,8 @@ export const Post = (user_id,post_text,postUrl,category,title,scope,link,enhance
   
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-      console.log(category);
-    return  axios.post(`${process.env.REACT_APP_PORT}/post/addPost`,{
+      // console.log(category);
+    return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/post/addPost`,{
         user_id:user_id,
         idea_title:title,
         post_text:post_text,
@@ -39,7 +39,7 @@ export const Post = (user_id,post_text,postUrl,category,title,scope,link,enhance
        headers:{authorization:`Bearer ${Token()}`}
       }).then(
         (res)=>{
-         console.log("post",res.data);
+        //  console.log("post",res.data);
          dispatch(newFeeds())
          dispatch(newFeedsLike())
        }
@@ -54,7 +54,7 @@ export const AddComment = (user_id,post_id,comment) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.post(`${process.env.REACT_APP_PORT}/comment/addComment`,{
+    return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/addComment`,{
          user_id:user_id,
     post_id:post_id,
     comment_text:comment,
@@ -64,14 +64,14 @@ export const AddComment = (user_id,post_id,comment) => {
         (res)=>{
          console.log("post",res.data);
          const Token = () => localStorage.getItem("user");
-         return axios.post(`${process.env.REACT_APP_PORT}/comment/getComment`,{
+         return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/getComment`,{
           
          },{
              headers:{authorization:`Bearer ${Token()}`}
           })
          .then(
              (res)=> {
-                console.log(res.data)
+                // console.log(res.data)
                 dispatch(CommentSuccess(res.data))
                 dispatch(newFeeds())
              })
@@ -84,13 +84,13 @@ export const AddComment = (user_id,post_id,comment) => {
 export const newFeeds = () => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-     return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
+     return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/newFeed/`,{},{
          headers:{authorization:`Bearer ${Token()}`}
       })
      .then(
        
          (res)=> {
-            console.log(res.data)
+            // console.log(res.data)
             dispatch(PostSuccess(res.data))
             dispatch(Comments())
             
@@ -102,7 +102,7 @@ export const newFeeds = () => {
   export const newFeedsLike = () => {
     return (dispatch) => {
       const Token = () => localStorage.getItem("user");
-       return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
+       return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/newFeed/`,{},{
            headers:{authorization:`Bearer ${Token()}`}
         })
        .then(
@@ -122,20 +122,20 @@ export const newFeeds = () => {
 
   export const AccountPage = (e) => {
     return (dispatch) => {
-      console.log("new",e);
+      // console.log("new",e);
       dispatch(PostSuccess(e))
       }
     }
     export const Comments = () => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-          axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{
+          axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/getComment/`,{
        
           },{
             headers:{authorization:`Bearer ${Token()}`}
          }).then(
             (res)=>{
-              console.log("api success",res.data);
+              // console.log("api success",res.data);
                dispatch(CommentSuccess(res.data))
                dispatch(replys())
              }
@@ -149,7 +149,7 @@ export const newFeeds = () => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return  axios.post(`${process.env.REACT_APP_PORT}/reply/addReply`,{
+          return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/addReply`,{
                user_id:user_id,
     comment_id:comment_id,
     reply_text:reply
@@ -159,14 +159,14 @@ export const newFeeds = () => {
               (res)=>{
                console.log("post",res.data);
                const Token = () => localStorage.getItem("user");
-               return axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{
+               return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/getReply`,{
                 
                },{
                    headers:{authorization:`Bearer ${Token()}`}
                 })
                .then(
                    (res)=> {
-                      console.log(res.data)
+                      // console.log(res.data)
                       dispatch(ReplySuccess(res.data))
                       dispatch(Comments())
                    })
@@ -180,13 +180,13 @@ export const newFeeds = () => {
       export const replys = () => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
-            axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{
+            axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/getReply`,{
          
             },{
               headers:{authorization:`Bearer ${Token()}`}
            }).then(
               (res)=>{
-                console.log("reply api success",res.data);
+                // console.log("reply api success",res.data);
                  dispatch(ReplySuccess(res.data))
                }
              )
@@ -217,14 +217,14 @@ export const CategorySuccess = category => {
   }
 }
 export const CommentSuccess = comments => {
-console.log("success",comments);
+// console.log("success",comments);
   return {
     type:ADD_COMMENT_SUCCESS,
     payload:comments
   }
 }
 export const ReplySuccess = replys => {
-  console.log("success",replys);
+  // console.log("success",replys);
     return {
       type:ADD_REPLY_SUCCESS,
       payload:replys
@@ -244,13 +244,14 @@ export const UpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/post/like`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/post/like`,{
   _id:id,
   user_id:user_id
   },{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
-    (res)=>{console.log(res.data)
+    (res)=>{
+      // console.log(res.data)
      dispatch(newFeeds())
      dispatch(newFeedsLike())
    },
@@ -266,13 +267,14 @@ export const DownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/post/dislike`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/post/dislike`,{
   _id:id,
   user_id:user_id
   },{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
-    (res)=>{console.log(res.data)
+    (res)=>{
+      // console.log(res.data)
       dispatch(newFeeds())
       dispatch(newFeedsLike())
    
@@ -288,12 +290,12 @@ export const DeletePost = (id) => {
    
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-      console.log(Token());
-    return axios.delete(`${process.env.REACT_APP_PORT}/post/deletePost/${id}`,{
+      // console.log(Token());
+    return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/post/deletePost/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{
-      console.log(Token());
+      // console.log(Token());
       
       dispatch(newFeeds())
       dispatch(newFeedsLike())
@@ -311,7 +313,7 @@ export const EditPost = (id,postId,postText,title,scope,enhancement,category) =>
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.patch(`${process.env.REACT_APP_PORT}/post/updatePost/${id}/${postId}`,{
+    return  axios.patch(`https://us-central1-project-ec76e.cloudfunctions.net/app/post/updatePost/${id}/${postId}`,{
     
       idea_title:title,
       post_text:postText,
@@ -323,14 +325,14 @@ export const EditPost = (id,postId,postText,title,scope,enhancement,category) =>
        headers:{authorization:`Bearer ${Token()}`}
       }).then(
         (res)=>{
-         console.log("post",res.data);
+        //  console.log("post",res.data);
          const Token = () => localStorage.getItem("user");
-         return axios.post(`${process.env.REACT_APP_PORT}/user/newFeed/`,{},{
+         return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/newFeed/`,{},{
              headers:{authorization:`Bearer ${Token()}`}
           })
          .then(
              (res)=> {
-                console.log(res.data)
+                // console.log(res.data)
                 dispatch(PostSuccess(res.data))
              })
     .catch((e)=>console.log(e))
@@ -345,7 +347,7 @@ export const comUpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/comment/like`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/like`,{
   _id:id,
   user_id:user_id
   },{
@@ -353,11 +355,11 @@ export const comUpVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(CommentSuccess(res.data))
          }
         
@@ -376,7 +378,7 @@ export const comDownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/comment/dislike`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/dislike`,{
   _id:id,
   user_id:user_id
   },{
@@ -384,11 +386,11 @@ export const comDownVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(CommentSuccess(res.data))
          }
         
@@ -407,16 +409,17 @@ export const comDelete = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.delete(`${process.env.REACT_APP_PORT}/comment/deleteComment/${id}`,{
+    return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/deleteComment/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
-    (res)=>{console.log(res.data)
+    (res)=>{
+      // console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/comment/getComment/`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/comment/getComment/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(CommentSuccess(res.data))
           dispatch(newFeeds())
          }
@@ -436,16 +439,16 @@ export const repDelete = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.delete(`${process.env.REACT_APP_PORT}/reply/deleteReply/${id}`,{
+    return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/deleteReply/${id}`,{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/getReply`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(ReplySuccess(res.data))
           dispatch(Comments())
          }
@@ -465,7 +468,7 @@ export const repUpVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/reply/like`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/like`,{
   _id:id,
   user_id:user_id
   },{
@@ -473,11 +476,11 @@ export const repUpVote = (id,user_id) => {
    }).then(
     (res)=>{console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply/`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/getReply/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(ReplySuccess(res.data))
          }
         
@@ -496,19 +499,20 @@ export const repDownVote = (id,user_id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return axios.post(`${process.env.REACT_APP_PORT}/reply/dislike`,{
+    return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/dislike`,{
   _id:id,
   user_id:user_id
   },{
     headers:{authorization:`Bearer ${Token()}`}
    }).then(
-    (res)=>{console.log(res.data)
+    (res)=>{
+      // console.log(res.data)
       const Token = () => localStorage.getItem("user");
-      axios.post(`${process.env.REACT_APP_PORT}/reply/getReply/`,{},{
+      axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/reply/getReply/`,{},{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
          (res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           dispatch(ReplySuccess(res.data))
          }
         
@@ -525,7 +529,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-     return axios.post(`${process.env.REACT_APP_PORT}/solution/addSolution`,{
+     return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/addSolution`,{
       
       user_id:user_id,
       post_id:Post_id,
@@ -537,7 +541,7 @@ export const mvp = (user_id,Post_id,title,link) => {
      .then(
          (res)=> {
           //  alert(res.data.status)
-            console.log("mvp",res.data)
+            // console.log("mvp",res.data)
             dispatch(mvpDisplay())
             
          })
@@ -550,16 +554,17 @@ export const mvp = (user_id,Post_id,title,link) => {
           
     return (dispatch) => {
       const Token = () => localStorage.getItem("user");
-       return axios.post(`${process.env.REACT_APP_PORT}/solution/getMvp`,{},{
+       return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/getMvp`,{},{
            headers:{authorization:`Bearer ${Token()}`}
         })
        .then(
            (res)=> {
             //  alert(res.data.status)
-              console.log(res.data)
+              // console.log(res.data)
               dispatch(mvpSuccess(res.data))
               dispatch(mvpCommentDisplay())
              dispatch(newFeeds())
+             dispatch(newFeedsLike())
            })
   .catch((e)=>console.log(e))
       
@@ -569,7 +574,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-         return axios.patch(`${process.env.REACT_APP_PORT}/solution/updateSolution/${id}/${Post_id}`,{
+         return axios.patch(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/updateSolution/${id}/${Post_id}`,{
           
          
          solution_title:title,
@@ -580,7 +585,7 @@ export const mvp = (user_id,Post_id,title,link) => {
          .then(
              (res)=> {
               //  alert(res.data.status)
-                console.log("mvp",res.data)
+                // console.log("mvp",res.data)
                 dispatch(mvpDisplay())
                 
              })
@@ -602,13 +607,14 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return axios.post(`${process.env.REACT_APP_PORT}/solution/like`,{
+        return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/like`,{
       _id:id,
       user_id:user_id
       },{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
-        (res)=>{console.log(res.data)
+        (res)=>{
+          // console.log(res.data)
           dispatch(mvpDisplay())
        
        },
@@ -624,13 +630,14 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return axios.post(`${process.env.REACT_APP_PORT}/solution/dislike`,{
+        return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/dislike`,{
       _id:id,
       user_id:user_id
       },{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
-        (res)=>{console.log(res.data)
+        (res)=>{
+          // console.log(res.data)
   dispatch(mvpDisplay())
        
        },
@@ -646,13 +653,14 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return axios.post(`${process.env.REACT_APP_PORT}/solution/selected`,{
+        return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/selected`,{
       _id:id
      
       },{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
-        (res)=>{console.log(res.data)
+        (res)=>{
+          // console.log(res.data)
   dispatch(mvpDisplay())
        
        },
@@ -668,8 +676,8 @@ export const mvp = (user_id,Post_id,title,link) => {
        
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-          console.log(Token());
-        return axios.delete(`${process.env.REACT_APP_PORT}/solution/deleteMvp/${id}`,{
+          // console.log(Token());
+        return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/solution/deleteMvp/${id}`,{
         headers:{authorization:`Bearer ${Token()}`}
        }).then(
         (res)=>{
@@ -686,13 +694,13 @@ export const mvp = (user_id,Post_id,title,link) => {
           
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
-         return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/getComment`,{},{
+         return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpComment/getComment`,{},{
              headers:{authorization:`Bearer ${Token()}`}
           })
          .then(
              (res)=> {
               //  alert(res.data.status)
-                console.log(res.data)
+                // console.log(res.data)
                 dispatch(mvpCommentSuccess(res.data))
                 // dispatch(MvpReplyDisplay()) 
              })
@@ -706,7 +714,7 @@ export const mvp = (user_id,Post_id,title,link) => {
       return (dispatch) => {
         const Token = () => localStorage.getItem("user");
           
-        return  axios.post(`${process.env.REACT_APP_PORT}/mvpComment/addMvpComment`,{
+        return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpComment/addMvpComment`,{
              user_id:user_id,
        solution_id:solution_id,
         comment_text:comment,
@@ -714,7 +722,7 @@ export const mvp = (user_id,Post_id,title,link) => {
            headers:{authorization:`Bearer ${Token()}`}
           }).then(
             (res)=>{
-             console.log("post",res.data);
+            //  console.log("post",res.data);
              dispatch(mvpCommentDisplay())
              dispatch(mvpDisplay())
            }
@@ -735,13 +743,14 @@ export const mvp = (user_id,Post_id,title,link) => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/like`,{
+          return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpComment/like`,{
         _id:id,
         user_id:user_id
         },{
           headers:{authorization:`Bearer ${Token()}`}
          }).then(
-          (res)=>{console.log(res.data)
+          (res)=>{
+            // console.log(res.data)
             dispatch(mvpCommentDisplay())
          
          },
@@ -757,13 +766,14 @@ export const mvp = (user_id,Post_id,title,link) => {
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
             
-          return axios.post(`${process.env.REACT_APP_PORT}/mvpComment/dislike`,{
+          return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpComment/dislike`,{
         _id:id,
         user_id:user_id
         },{
           headers:{authorization:`Bearer ${Token()}`}
          }).then(
-          (res)=>{console.log(res.data)
+          (res)=>{
+            // console.log(res.data)
             dispatch(mvpCommentDisplay())
          },
          ).catch((e)=>console.log(e))
@@ -777,8 +787,8 @@ export const mvp = (user_id,Post_id,title,link) => {
          
         return (dispatch) => {
           const Token = () => localStorage.getItem("user");
-            console.log(Token());
-          return axios.delete(`${process.env.REACT_APP_PORT}/mvpComment/deleteComment/${id}`,{
+            // console.log(Token());
+          return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpComment/deleteComment/${id}`,{
           headers:{authorization:`Bearer ${Token()}`}
          }).then(
           (res)=>{
@@ -805,7 +815,7 @@ export const mvp = (user_id,Post_id,title,link) => {
           return (dispatch) => {
             const Token = () => localStorage.getItem("user");
               
-            return  axios.post(`${process.env.REACT_APP_PORT}/mvpReply/addReply`,{
+            return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpReply/addReply`,{
                  user_id:user_id,
       comment_id:comment_id,
       reply_text:reply
@@ -827,14 +837,14 @@ export const mvp = (user_id,Post_id,title,link) => {
               
          
                  
-                 return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/getReply`,{
+                 return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpReply/getReply`,{
                   
                  },{
                      headers:{authorization:`Bearer ${Token()}`}
                   })
                  .then(
                      (res)=> {
-                        console.log(res.data)
+                        // console.log(res.data)
                         dispatch(mvpReplySuccess(res.data))
                         dispatch(mvpCommentDisplay())
                      })
@@ -847,13 +857,14 @@ export const mvp = (user_id,Post_id,title,link) => {
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
                     
-                  return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/like`,{
+                  return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpReply/like`,{
                 _id:id,
                 user_id:user_id
                 },{
                   headers:{authorization:`Bearer ${Token()}`}
                  }).then(
-                  (res)=>{console.log(res.data)
+                  (res)=>{
+                    // console.log(res.data)
                     dispatch(MvpReplyDisplay())
                  
                  },
@@ -869,13 +880,14 @@ export const mvp = (user_id,Post_id,title,link) => {
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
                     
-                  return axios.post(`${process.env.REACT_APP_PORT}/mvpReply/dislike`,{
+                  return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpReply/dislike`,{
                 _id:id,
                 user_id:user_id
                 },{
                   headers:{authorization:`Bearer ${Token()}`}
                  }).then(
-                  (res)=>{console.log(res.data)
+                  (res)=>{
+                    // console.log(res.data)
                     dispatch(MvpReplyDisplay())
                  },
                  ).catch((e)=>console.log(e))
@@ -889,8 +901,8 @@ export const mvp = (user_id,Post_id,title,link) => {
                  
                 return (dispatch) => {
                   const Token = () => localStorage.getItem("user");
-                    console.log(Token());
-                  return axios.delete(`${process.env.REACT_APP_PORT}/mvpReply/deleteReply/${id}`,{
+                    // console.log(Token());
+                  return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/mvpReply/deleteReply/${id}`,{
                   headers:{authorization:`Bearer ${Token()}`}
                  }).then(
                   (res)=>{

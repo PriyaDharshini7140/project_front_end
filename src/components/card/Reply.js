@@ -6,14 +6,14 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import moment from "moment"
 import MuiAlert from '@material-ui/lab/Alert';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+// import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShowMoreText from 'react-show-more-text';
 import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { repDelete, repUpVote,repDownVote } from '../../redux/postActions';
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
+// import ClearIcon from '@material-ui/icons/Clear';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 const useStyles = makeStyles((theme) => ({
   like:{
@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
 function Reply({comment,owner}) {
   const dispatch = useDispatch()
   const user = useSelector((state)=> state.user.users)
-console.log(user);
+// console.log(user);
 const Data = useSelector((state)=> state.post.replys)
-console.log(user);
-console.log(Data); 
+// console.log(user);
+// console.log(Data); 
 const classes = useStyles();
     
-console.log(Data);
+// console.log(Data);
 
 const [open, setOpen] = React.useState(false);
 const [Open, setopen] = React.useState(false);
@@ -77,7 +77,7 @@ return <MuiAlert elevation={6} variant="filled" {...props} />;
            
           
           
-         {user._id === e.user._id || owner === user._id ? <div style={{marginLeft:"18rem"}}>
+         {user._id === e.user._id || owner === user._id ? <div>
         <IconButton>
             <DeleteRoundedIcon
              onClick={()=>

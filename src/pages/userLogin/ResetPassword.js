@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Card, FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput, TextField, Tooltip } from '@material-ui/core';
+import { Button, FormControl, IconButton, InputAdornment,  makeStyles,  TextField } from '@material-ui/core';
 import './UserLogin.css'
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import clsx from 'clsx';
-import EmailIcon from '@material-ui/icons/Email';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 
@@ -44,10 +44,10 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 function ResetPassword(props) {
-const dispatch = useDispatch();
-console.log(props.location.pathname);
+
+
 const {token} = useParams()
-console.log(token)
+
   
     const classes = useStyles();
 

@@ -7,32 +7,32 @@ import {
   AUTH
 } from './Types'
 
-import { createBrowserHistory } from "history";
-import {Comments, mvpCommentDisplay, mvpDisplay, MvpReplyDisplay, newFeeds, newFeedsLike} from './postActions';
+
+import { mvpDisplay, newFeeds, newFeedsLike} from './postActions';
 import {reqVerification} from './verficationAction';
 import axios from 'axios';
 
 require("dotenv").config()
 
-const history = createBrowserHistory();
+
 
 export const fetchUsers = (email,password) => {
   
    
   return (dispatch) => {
-    console.log(history);
+   
     dispatch(fetchUsersRequest())
       AuthService.login(email,password)
       .then(response => {
         const users = response
-        console.log(users.role);
+        // console.log(users.role);
         if(users.message === "logged in successfully"&& localStorage.getItem('user') !== null)
                     {
                       
                       AuthService.getCurrentUser().then(res => {
                         dispatch(fetchUsersSuccess(res))
                         if(users.role === "user"){
-                          console.log(users._id);
+                          // console.log(users._id);
                            dispatch(auth())
                           dispatch(newFeeds())
                           dispatch(mvpDisplay())
@@ -47,11 +47,49 @@ export const fetchUsers = (email,password) => {
                     }
 })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         // error.message is the error message
         dispatch(fetchUsersFailure(error.message))
       })
   }
+}
+export const logout=()=> {
+  return(dispatch)=>{
+    localStorage.removeItem("user")
+    dispatch(fetchUsersSuccess())
+  }
+ 
+}
+export const UpdatePassword=(email_id,password)=> {
+  return(dispatch)=>{
+    const Token = () => localStorage.getItem("user");
+  return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/updatePassword`,{
+     
+      email_id:email_id,
+      password:password
+     
+     }, {
+      headers:{authorization:`Bearer ${Token()}`}
+     }).then((res)=>{
+      // console.log(res.data);
+      alert("password has been set")
+          
+    }).catch((e)=>console.log(e))
+  }
+}
+export const DeleteAccount=()=> {
+  return(dispatch)=>{
+    const Token = () => localStorage.getItem("user");
+  return axios.delete(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/deleteUser/`, {
+   headers:{authorization:`Bearer ${Token()}`}
+  }).then(
+     (res)=> {
+      localStorage.removeItem("user")
+     
+     }).catch((e)=>console.log(e))
+    
+  }
+ 
 }
 export const updateUser = (id,name,phone,profile,work,edu,des,cover) => {
   
@@ -59,7 +97,7 @@ export const updateUser = (id,name,phone,profile,work,edu,des,cover) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.patch(`${process.env.REACT_APP_PORT}/user/updateUser/${id}`,{
+    return  axios.patch(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/updateUser/${id}`,{
      user_name:name,
      phone_number:phone,
      profile_picture:profile,
@@ -70,7 +108,7 @@ export const updateUser = (id,name,phone,profile,work,edu,des,cover) => {
        headers:{authorization:`Bearer ${Token()}`}
       }).then(
         (res)=>{
-         console.log("user",res.data);
+        //  console.log("user",res.data);
          dispatch(fetchUsersSuccess(res.data))
          dispatch(newFeeds())
          dispatch(auth())
@@ -87,13 +125,13 @@ export const auth = (id) => {
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
       
-    return  axios.post(`${process.env.REACT_APP_PORT}/verification/status`,{},
+    return  axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/verification/status`,{},
       {
        headers:{authorization:`Bearer ${Token()}`}
       }
       ).then(
         (res)=>{
-         console.log("status",res.data);
+        //  console.log("status",res.data);
          dispatch(authSuccess(res.data))
         
         
@@ -106,7 +144,7 @@ export const userRequest = (id) => {
                
   return (dispatch) => {
     const Token = () => localStorage.getItem("user");
-     return axios.post(`${process.env.REACT_APP_PORT}/verification/verification`,{
+     return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/verification/verification`,{
       user_id:id
       
      },{
@@ -115,7 +153,7 @@ export const userRequest = (id) => {
      .then(
          (res)=> {
            
-            console.log(res.data)
+            // console.log(res.data)
             
             dispatch(auth())
            

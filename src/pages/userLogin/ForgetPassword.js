@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Button, InputAdornment, makeStyles, TextField, Tooltip } from '@material-ui/core';
+import { Button, InputAdornment, makeStyles, TextField } from '@material-ui/core';
 import './UserLogin.css'
 
 import {useDispatch} from "react-redux";
 
-import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+
 
 import EmailIcon from '@material-ui/icons/Email';
 
@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 function ForgetPassword(props) {
-const dispatch = useDispatch();
-console.log(props);
+
+
 
   
     const classes = useStyles();

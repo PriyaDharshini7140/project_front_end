@@ -5,24 +5,22 @@ import "./Modal.css"
 import {TextField } from '@material-ui/core';
 
 import {useDispatch} from 'react-redux'
-import {Post} from '../../redux/postActions'
-import AuthService from '../../auth/AuthService';
+// import {Post} from '../../redux/postActions'
+// import AuthService from '../../auth/AuthService';
 import { useSelector } from 'react-redux';
 
 import MenuItem from '@material-ui/core/MenuItem';
-import { reports } from '../../redux/verficationAction';
-import { Button, InputAdornment, Tooltip } from '@material-ui/core';
+// import { reports } from '../../redux/verficationAction';
+import { Button, InputAdornment} from '@material-ui/core';
 
-import {  Card, FormControl, IconButton, InputLabel, OutlinedInput,} from '@material-ui/core';
+import { FormControl, IconButton} from '@material-ui/core';
 // import './UserLogin.css'
-import { Link, Redirect, useParams } from 'react-router-dom';
 // import {useDispatch} from "react-redux";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import clsx from 'clsx';
-import EmailIcon from '@material-ui/icons/Email';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { UpdatePassword } from '../../redux/Actions';
 // import {useDispatch} from "react-redux";
 
 // import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
@@ -88,14 +86,14 @@ export default function ModalPassword() {
 
 
   const [open, setOpen] = React.useState(false);
-  const [email,setEmail] = useState("");
+  // const [email,setEmail] = useState("");
   const [password,setPassword] = useState("")
    const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user.email_id);
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
   const [values, setValues] = React.useState({
     showPassword: false,
@@ -132,7 +130,7 @@ export default function ModalPassword() {
          <center>
            
                 
-           <div>
+           {/* <div>
            <TextField id="outlined-basic" 
            style={{width:"100%"}}
             InputProps={{
@@ -141,7 +139,7 @@ export default function ModalPassword() {
             placeholder='email'
            type="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/>
           </div>
-          
+           */}
            <div>
            <FormControl className={clsx(classes.margin)} variant="outlined">
           {console.log(password)}
@@ -177,9 +175,10 @@ export default function ModalPassword() {
             {/* <div className={classes.root1}> */}
             <center>
       <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
-       <Button variant="contained" color="primary" style={{borderRadius:"20px"}}onClick={()=>
-            AuthService.updatePassword(email,password)
-            }>set</Button>
+       <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=>{
+            dispatch(UpdatePassword(user.email_id,password));
+            setOpen(false)
+            }}>set</Button>
        </center>
                 
               

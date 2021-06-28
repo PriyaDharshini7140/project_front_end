@@ -69,11 +69,11 @@ export default function ModalReport({postId}) {
   const [postText,setPostText] = useState("");
 
    const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user);
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
  
   const handleClose = () => {

@@ -10,3 +10,14 @@
     grid-gap: 1rem;
     grid-auto-rows: min-content(200px auto);
 }
+@media (max-width: 960px){
+ 
+  .wrapper{
+    display:grid;
+    grid-template-columns:repeat(1,1fr);
+    grid-gap: 1rem;
+    grid-auto-rows: min-content(200px auto);
+  }
+  
+  
+}

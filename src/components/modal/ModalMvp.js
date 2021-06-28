@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import {Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import LinkIcon from '@material-ui/icons/Link';
+import {Button, TextField } from '@material-ui/core';
+// import LinkIcon from '@material-ui/icons/Link';
 import {useDispatch} from 'react-redux'
 import {mvp} from '../../redux/postActions'
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector } from 'react-redux';
 // import axios from 'axios';
-import firebase from "firebase";
-import {storage} from '../../FireBase'
-import { BsFillChatSquareDotsFill } from 'react-icons/bs';
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+import {storage} from '../../FireBase'
+
+
+
 
 
 
@@ -86,6 +84,25 @@ export default function ModalMvp({post}) {
   const handleClose = () => {
     setOpen(false);
   };
+  
+    const Filevalidation = (e) => {
+      var maxSize = 4 * 1024 ;
+      // console.log("maxSize",maxSize);
+      const { files } = e.target;
+      // console.log("files",files);
+         if (files && files[0]) {
+                      var fsize = files[0].size/1024;
+                      // console.log("fileSize",fsize);
+                      if(fsize > maxSize) {
+                         alert('Maximum file size exceed');
+                         return false;
+                      } else {
+                        setImage(files[0])
+                      }
+           }
+      
+  }
+  
   const handleUpload = () => {
     const uploadTask = storage.ref(`zip/${image.name}`).put(image);
     uploadTask.on(
@@ -115,7 +132,7 @@ console.log(url);
             setProgress(0);
             
             setImage(null);
-          });
+          })
       }
     );
   };
@@ -145,7 +162,8 @@ console.log(url);
         id="contained-button-file"
         // multiple
         type="file"
-        onChange={(e)=>setImage(e.target.files[0])}
+        
+        onChange={Filevalidation}
 
       />
       <label htmlFor="contained-button-file">
@@ -153,19 +171,21 @@ console.log(url);
           Upload
         </Button>
       </label>
-       
+      <p id="size"></p>
         {Progress > 0 ?   
       <progress className="imageupload__progress" value={Progress} max="100" /> :<></>}
-     
+      (FileFormat:.Zip,MaxSize:4Mb)
       <center>
       <Button variant="contained" color="primary" onClick={handleClose} style={{borderRadius:"20px"}}>back</Button>
        <Button variant="contained" color="primary" style={{borderRadius:"20px"}} onClick={()=>{
+        
                       handleUpload()
                        setTitle("")
                        setLink("")
                        setOpen(false)
                        
                    }}>post</Button>
+                  
        </center>
         
 
@@ -176,7 +196,7 @@ console.log(url);
   return (
     <div>
      
-<Button variant='contained' style={{borderRadius:"40px"}} onClick={handleOpen} color="primary">add solution</Button>
+<Button variant='contained' style={{borderRadius:"40px"}} onClick={handleOpen} color="primary" >add solution</Button>
  
  
  

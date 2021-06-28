@@ -31,9 +31,9 @@ const D =  Filter.slice(0, 3)
 const data = useSelector((state)=> state.post.LikeSortedPosts)
 const F = data.filter((e)=>e.mvp.length > 0);
 const week = F.filter((e)=>moment(e.createdAt).week() === moment().week())
-console.log(week);
+// console.log(week);
 const d=  week.slice(0, 3)
-console.log(d);
+// console.log(d);
 const history = useHistory()
 
     return (

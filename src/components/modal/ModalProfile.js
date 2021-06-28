@@ -27,16 +27,15 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     margin:'auto',
-    width: 700,
-    height:500,
-   
+   maxWidth:"700px",
+   maxHeight:"500px",
     backgroundColor: theme.palette.background.paper,
     borderRadius:"20px",
     padding: theme.spacing(2, 4, 3),
     borderColor:"rgb(243, 220, 220)",
     display:'flex',
-    flexDirection:'row'
-   
+    flexDirection:'column',
+     overflowY:"scroll",
   },
   text:{
       width:340
@@ -89,7 +88,7 @@ noLabel: {
  function ModalProfile() {
   const classes = useStyles();
   const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user);
   const [work, setWork] = useState(user.work);
     // const [img,setImge] =useState("");
     const [image, setImage] =useState('');
@@ -135,7 +134,7 @@ const handleSubmit = async(name,phone,work,education,description)=>{
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
   
   const handleClose = () => {
@@ -212,9 +211,9 @@ const handleSubmit = async(name,phone,work,education,description)=>{
 
   return (
     <div> 
-    
+    <Avatar className={classes.pink}>
       <EditRoundedIcon  onClick={handleOpen}/>
-      
+      </Avatar>
       
       <Modal
       style={{display: 'flex',

@@ -2,32 +2,21 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import "./Modal.css"
-import { IconButton,InputAdornment,TextField,Button } from '@material-ui/core';
+import { IconButton,InputAdornment,TextField,Button,Tooltip } from '@material-ui/core';
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import {useDispatch} from 'react-redux'
 import {Post} from '../../redux/postActions'
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+// import { useTheme } from '@material-ui/core/styles';
 
 import LinkIcon from '@material-ui/icons/Link';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+
+;
 
 const names = [
  
@@ -91,9 +80,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     display:"flex",
     flexDirection:'column',
- 
-    width: 800,
-  //  height:500,
+minWidth:"200px",
+
+  
     backgroundColor: theme.palette.background.paper,
     borderRadius:"10px",
     padding: theme.spacing(2, 4, 3),
@@ -105,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     
   },
   text:{
-      width:"100%"
+      width:"70%"
   },
   camera:{
     color:"rgb(97, 96, 96)",
@@ -135,7 +124,9 @@ noLabel: {
   marginTop: theme.spacing(3),
 },
 in:{
-  width:"50%"
+  // width:"20%",
+  display:"flex",
+  flexDirection:"row"
 }
  
 }));
@@ -144,7 +135,7 @@ const filter = createFilterOptions()
 export default function SimpleModal() {
   const classes = useStyles();
   const auth = useSelector((state)=> state.user.authorization)
-  const theme = useTheme();
+  // const theme = useTheme();
   
 
   // const [modalStyle] = React.useState(getModalStyle);
@@ -162,17 +153,17 @@ export default function SimpleModal() {
   const [value, setValue] = React.useState(null);
   // const[progress,setProgress] = useState(0);
    const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user);
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
  
   
   const handleChangeMultiple = async(event) => {
     const { files } = event.target;
-     console.log("files",files);
+    //  console.log("files",files);
    
     const value = [];
     
@@ -197,7 +188,7 @@ export default function SimpleModal() {
       )
       .then(res=>res.json())
       .then(data=>{
-        console.log("progress",data)
+        // console.log("progress",data)
         
         setPostUrl((e)=>[...e,data.url])
         
@@ -239,7 +230,8 @@ function validateEnhance() {
   const body = (
     <div className={classes.paper}>
       <h5>Add idea</h5>
-      <TextField className={classes.in}
+      <div>
+      <TextField 
           id="standard-multiline-flexible"
           label="Title"
           multiline
@@ -253,6 +245,7 @@ function validateEnhance() {
           label="Type a Message"
           multiline
           rowsMax={4}
+          variant='outlined'
           helperText={validateDescription()}
           onChange={(e)=>setPostText(e.target.value)}
           InputProps={{
@@ -270,19 +263,20 @@ function validateEnhance() {
             </InputAdornment>
           }}
           />
+          </div>
        
        
       <br/>
      
        
            
-          
+          <div  className={classes.in}>
 
        <Autocomplete
         multiple
         id="tags-outlined"
         options={names}
-        
+       
         filterSelectedOptions
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
@@ -339,10 +333,10 @@ function validateEnhance() {
         )}
       />
 
-     {console.log("value",value)}
-      <div>
+   
+      
       <TextField 
-      style={{margin:"1rem"}}
+      // style={{margin:"1rem"}}
           id="standard-multiline-flexible"
           label="Scope of this idea"
           multiline
@@ -354,15 +348,15 @@ function validateEnhance() {
           {/* <br/> */}
           <TextField  
            helperText={validateEnhance()}
-          style={{margin:"1rem",width:"50%"}}
+       
           label="What enhancement should be done"
           multiline
           rowsMax={4}
           onChange={(e)=>setEnhancement(e.target.value)}
           variant="outlined"
           />
-          </div>
-   {/* <br/> */}
+        
+   </div>
      <div>
      Requirements :<br/>
      <div style={{display:'flex',justifyContent:"space-evenly"}}>
@@ -604,11 +598,13 @@ function validateEnhance() {
     <div>
       {auth.status === 'Verified' ? <div>
                 <div> 
-              <div className="nl" style={{marginTop:".5rem",cursor:"pointer"}}
+                  <Tooltip title="Click to Add Idea" arrow>
+              <div className="nl" style={{cursor:"pointer"}}
                   //  className="NavBar_Button" 
                 onClick={handleOpen}>Add Idea</div>
-              
+              </Tooltip>
                 </div>
+                
             </div>:<></> }
       
       <Modal

@@ -11,10 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory ,useLocation} from 'react-router';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import AuthService from '../../auth/AuthService';
+// import AuthService from '../../auth/AuthService';
 import { Avatar } from '@material-ui/core';
 import {useDispatch } from 'react-redux';
-import { userRequest } from '../../redux/Actions';
+import { DeleteAccount, logout, userRequest } from '../../redux/Actions';
 
 import { ToastContainer, toast } from 'material-react-toastify';
   import 'material-react-toastify/dist/ReactToastify.css';
@@ -95,10 +95,10 @@ export default function PersistentDrawerRight() {
                   <MenuItem onClick={handleClose}><b style={{fontSize:"small"}}>{user.user_name}</b></MenuItem>
                   <MenuItem onClick={handleClose}><Link to={{pathname:'/Account',state:user}} style={{color:'black',textDecoration:"none"}}>My Account</Link></MenuItem>
           <MenuItem onClick={()=>{
-          
-          AuthService.logout()
+          dispatch(logout())
+          // AuthService.logout()
           history.replace("/")
-          window.location.reload()
+          // window.location.reload()
           }}>Logout</MenuItem>
                   </MenuList>:<MenuList autoFocusItem={open} id="menu-list-grow"  onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClose}><b style={{fontSize:"small"}}>{user.user_name}</b></MenuItem>
@@ -130,9 +130,9 @@ export default function PersistentDrawerRight() {
         {
           
           if(window.confirm("Do you want to delete your account")){
-           AuthService.delete();
+            dispatch(DeleteAccount())
            history.replace("/");
-          window.location.reload();
+          // window.location.reload();
           }
          
          
@@ -140,9 +140,9 @@ export default function PersistentDrawerRight() {
       }>Delete Account</MenuItem>
           <MenuItem onClick={()=>{
              
-          AuthService.logout()
+             dispatch(logout())
           history.replace("/")
-          window.location.reload()
+          // window.location.reload()
           }}>Logout</MenuItem>
           
                   </MenuList>}

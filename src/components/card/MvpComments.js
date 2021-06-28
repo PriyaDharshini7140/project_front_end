@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+// import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import moment from "moment"
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
@@ -11,13 +11,13 @@ import { BsReplyFill} from "react-icons/bs";
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import { MvpComDownVote, MvpComUpVote ,DeleteMvpCom, AddMvpReply} from '../../redux/postActions';
 import MvpReplys from './MvpReply';
-import ClearIcon from '@material-ui/icons/Clear';
+// import ClearIcon from '@material-ui/icons/Clear';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import Tooltip from '@material-ui/core/Tooltip';
 function MvpComments({Mvp,owner}) {
     const user = useSelector((state)=> state.user.users)
     const dispatch = useDispatch()
-    console.log(Mvp);
+    // console.log(Mvp);
     const [reply, setReply] = useState("")
     const [values, setValues] = useState({
         showPassword: false,
@@ -26,7 +26,7 @@ function MvpComments({Mvp,owner}) {
         setValues({ ...values, showPassword: !values.showPassword });
       };
    const comments = useSelector((state)=>state.post.mvpComments)
-   console.log(comments);
+  //  console.log(comments);
     return (
         <div>
            {comments.map((e)=><>
@@ -40,7 +40,7 @@ function MvpComments({Mvp,owner}) {
                    <div style={{color:"white",fontSize:"small"}}>{moment(e.createdAt).format("MMMD,YYYY")}</div>
                    </div>
            
-                   {user._id === e.user._id || owner === user._id? <div style={{marginLeft:"8rem"}}>
+                   {user._id === e.user._id || owner === user._id? <div>
         
             <DeleteRoundedIcon style={{cursor:"pointer"}} onClick={()=>dispatch(DeleteMvpCom(e._id))}/>
             

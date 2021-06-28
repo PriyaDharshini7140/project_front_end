@@ -70,17 +70,33 @@ export default function ModalMvpEdit({post}) {
   const [link,setLink] = useState(post.link);
   const [image,setImage] =useState(post.link)
    const user = useSelector((state)=> state.user.users)
-  console.log(post);
+  // console.log(post);
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
  
   const handleClose = () => {
     setOpen(false);
   };
- 
+  const Filevalidation = (e) => {
+    var maxSize = 4 * 1024 ;
+    // console.log("maxSize",maxSize);
+    const { files } = e.target;
+    // console.log("files",files);
+       if (files && files[0]) {
+                    var fsize = files[0].size/1024;
+                    // console.log("fileSize",fsize);
+                    if(fsize > maxSize) {
+                       alert('Maximum file size exceed');
+                       return false;
+                    } else {
+                      setImage(files[0])
+                    }
+         }
+    
+}
   const handleUpload = () => {
     const uploadTask = storage.ref(`zip/${image.name}`).put(image);
     uploadTask.on(
@@ -104,7 +120,7 @@ export default function ModalMvpEdit({post}) {
           .getDownloadURL()
           .then((url) => {
            
-console.log(url);
+// console.log(url);
 
             dispatch(mvpEdit(user,post,title,url))
 
@@ -137,7 +153,7 @@ console.log(url);
         id="contained-button-file"
         // multiple
         type="file"
-        onChange={(e)=>setImage(e.target.files[0])}
+        onChange={Filevalidation}
 
       />
       <label htmlFor="contained-button-file">

@@ -1,12 +1,11 @@
-import { Avatar,Button,IconButton, Snackbar,InputAdornment,Tooltip,TextField } from '@material-ui/core'
+import { Avatar,IconButton, Snackbar,InputAdornment,Tooltip,TextField } from '@material-ui/core'
 import { BsReplyFill } from "react-icons/bs";
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import'./PostCard.css'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import RedoRoundedIcon from '@material-ui/icons/RedoRounded';
+
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
 import { useSelector,useDispatch } from 'react-redux';
 import ShowMoreText from 'react-show-more-text';
@@ -33,21 +32,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Comment({post,owner}) {
   const user = useSelector((state)=> state.user.users)
-console.log(post);
+// console.log(post);
 const dispatch = useDispatch();
     const Data = useSelector((state)=>state.post.comments)
-    const rep = useSelector((state)=>state.post.replys)
+    // const rep = useSelector((state)=>state.post.replys)
     // const [Open,setOpen] = useState(1);
     const [reply,setReply] = useState('');
-    console.log(Data.map(e=>e._id));
+    // console.log(Data.map(e=>e._id));
     const [values, setValues] = useState({
       showPassword: false,
     });
     const handleClickShowPassword = () => {
       setValues({ ...values, showPassword: !values.showPassword });
     };
-console.log(Data);
-console.log(rep);
+// console.log(Data);
+// console.log(rep);
 // console.log(Open);
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -94,7 +93,7 @@ function Alert(props) {
            
           
           
-         {user._id === e.user._id || owner === user._id ? <div style={{marginTop:"-.5rem",marginLeft:"23rem"}}> 
+         {user._id === e.user._id || owner === user._id ? <div style={{marginTop:"-.5rem"}}> 
         <IconButton>
             <DeleteRoundedIcon onClick={()=>dispatch(comDelete(e._id))}/>
              </IconButton>

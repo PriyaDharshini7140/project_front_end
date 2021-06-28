@@ -1,25 +1,24 @@
-import { Avatar, InputAdornment, TextField } from '@material-ui/core';
-import React, { useState } from 'react'
+import { Avatar} from '@material-ui/core';
+import React from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
 import VerifiedUserRoundedIcon from '@material-ui/icons/VerifiedUserRounded';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 import moment from "moment"
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
-import { BsReplyFill} from "react-icons/bs";
-import SendRoundedIcon from '@material-ui/icons/SendRounded';
+
 import {DeleteMvpReply, MvpReplyUpVote, MvpReplyDownVote} from '../../redux/postActions';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 // import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 function MvpReplys({Mvp,owner}) {
     const user = useSelector((state)=> state.user.users)
     const dispatch = useDispatch()
-    console.log(Mvp);
+    // console.log(Mvp);
     
    
    const replys = useSelector((state)=>state.post.mvpReplys)
-   console.log(replys);
+//    console.log(replys);
     return (
         <div>
            {replys.map((e)=><>
@@ -40,7 +39,7 @@ function MvpReplys({Mvp,owner}) {
              
              :<></>}
              </div>
-             <div style={{marginLeft:".5rem"}}>
+             <div>
              {e.reply_text}
              </div>
              <div className="footer">

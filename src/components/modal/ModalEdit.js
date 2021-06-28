@@ -8,15 +8,12 @@ import {useDispatch} from 'react-redux'
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+
 
 import MenuItem from '@material-ui/core/MenuItem';
 
 import {EditPost} from '../../redux/postActions'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 const names = [
  
@@ -99,19 +96,19 @@ export default function ModalEdit({post}) {
   const [scope,setScope]=useState(post.scope)
   const [enhancement,setEnhancement]=useState(post.enhancement)
   const [value, setValue] = React.useState(null);
-  const [link,setLink]=useState(post.link)
+  // const [link,setLink]=useState(post.link)
   // const[progress,setProgress] = useState(0);
    const user = useSelector((state)=> state.user.users)
-  console.log(user);
+  // console.log(user);
   const dispatch = useDispatch()
   const  handleOpen = () => {
     setOpen(true);
-    console.log("clicked");
+    // console.log("clicked");
   };
  
   const handleChangeMultiple = async(event) => {
     const { files } = event.target;
-     console.log("files",files);
+    //  console.log("files",files);
    
     const value = [];
     
@@ -136,7 +133,7 @@ export default function ModalEdit({post}) {
       )
       .then(res=>res.json())
       .then(data=>{
-        console.log("progress",data)
+        // console.log("progress",data)
         
         setPostUrl((e)=>[...e,data.url])
         
@@ -154,7 +151,7 @@ export default function ModalEdit({post}) {
   const handleClose = () => {
     setOpen(false);
   };
- console.log(postUrl);
+//  console.log(postUrl);
  function validateCategory() {
   if(!value)
   return("Category not selected ")

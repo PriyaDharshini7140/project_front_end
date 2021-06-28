@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import {Button, Tooltip } from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import './UserSIgnup.css'
 import { Link } from 'react-router-dom';
 // import Axios from 'axios';
@@ -7,11 +7,11 @@ import {FormControl, IconButton, InputAdornment,makeStyles,  TextField } from '@
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
-import AuthService from '../../auth/AuthService';
+// import AuthService from '../../auth/AuthService';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+// import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import { ToastContainer, toast } from 'material-react-toastify';
 import 'material-react-toastify/dist/ReactToastify.css';
 
@@ -61,9 +61,7 @@ function UserSIgnup(props) {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-      const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-      };
+     
     
       const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
@@ -93,7 +91,7 @@ function UserSIgnup(props) {
       }
     }
    function register(user_name, email_id, password) {
-      return axios.post(`${process.env.REACT_APP_PORT}/user/addUser`,{
+      return axios.post(`https://us-central1-project-ec76e.cloudfunctions.net/app/user/addUser`,{
           user_name:user_name,
           email_id:email_id,
           password:password
@@ -123,7 +121,7 @@ function UserSIgnup(props) {
               })
            }
           
-          console.log(res.data.data._id);
+          // console.log(res.data.data._id);
        
         }).catch((e)=>console.log(e))
     }
@@ -153,7 +151,7 @@ function UserSIgnup(props) {
    <div >
     <TextField id="outlined-basic" 
     
-    style={{width:"40ch",backgroundColor:"rgba(0, 0,0,0.03)"}}
+    className="box-text"
     InputProps={{
       startAdornment: <InputAdornment position="start"><PersonIcon className={classes.icon}/></InputAdornment>,
     }}
@@ -161,7 +159,7 @@ function UserSIgnup(props) {
                
           </div>
           <div>
-           <TextField id="outlined-basic" placeholder='email' style={{width:"40ch",color:"white"}} type="email" variant="outlined" helperText={ValidateEmail()}
+           <TextField id="outlined-basic" placeholder='email'  className="box-text" style={{color:"white"}} type="email" variant="outlined" helperText={ValidateEmail()}
              InputProps={{
               startAdornment: <InputAdornment position="start"><EmailIcon className={classes.icon}/></InputAdornment>,
             }}
@@ -173,7 +171,8 @@ function UserSIgnup(props) {
           <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
               
               <TextField
-              style={{width:"40ch",marginLeft:"-.5rem",backgroundColor:"rgba(0, 0,0,0.03)"}}
+               className="box-text"
+              style={{marginLeft:"-.5rem"}}
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
                 value={values.password}
